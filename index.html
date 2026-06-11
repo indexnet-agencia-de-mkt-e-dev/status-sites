@@ -5,1409 +5,336 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Indexnet — Status dos Sites</title>
 <style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f4f6f9;color:#1a1a2e}
-  header{background:#1a1a2e;color:#fff;padding:24px 32px;display:flex;justify-content:space-between;align-items:center}
-  header h1{font-size:1.4rem;letter-spacing:.5px}
-  header small{opacity:.6;font-size:.8rem}
-  .cards{display:flex;gap:16px;padding:24px 32px;flex-wrap:wrap}
-  .card{background:#fff;border-radius:10px;padding:20px 28px;flex:1;min-width:160px;box-shadow:0 2px 8px rgba(0,0,0,.07)}
-  .card .num{font-size:2rem;font-weight:700;color:#1a1a2e}
-  .card .label{font-size:.8rem;color:#666;margin-top:4px}
-  .card .bar{height:6px;background:#eee;border-radius:3px;margin-top:12px}
-  .card .bar-fill{height:6px;border-radius:3px;background:#22c55e}
-  .search-wrap{padding:0 32px 16px}
-  input[type=text]{width:100%;max-width:400px;padding:10px 16px;border:1px solid #ddd;border-radius:8px;font-size:.9rem}
-  table{width:100%;border-collapse:collapse;background:#fff;margin:0 32px;width:calc(100% - 64px);border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.07)}
-  th{background:#1a1a2e;color:#fff;padding:12px 16px;text-align:left;font-size:.8rem;text-transform:uppercase;letter-spacing:.5px}
-  td{padding:11px 16px;border-bottom:1px solid #f0f0f0;font-size:.875rem}
-  tr:last-child td{border-bottom:none}
-  tr.done td:first-child{border-left:3px solid #22c55e}
-  tr.pending td:first-child{border-left:3px solid #f59e0b}
-  .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:600}
-  .badge.ok{background:#dcfce7;color:#166534}
-  .badge.no{background:#fee2e2;color:#991b1b}
-  .srv{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.72rem;font-weight:600}
-  .srv.hi{background:#dbeafe;color:#1e40af}
-  .srv.hg{background:#fef9c3;color:#854d0e}
-  .srv.ab{background:#f3e8ff;color:#6b21a8}
-  a{color:#2563eb;text-decoration:none}
-  a:hover{text-decoration:underline}
-  footer{text-align:center;padding:32px;color:#999;font-size:.8rem}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f4f6f9;color:#1a1a2e;font-size:14px}
+header{background:#1a1a2e;color:#fff;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+header h1{font-size:1.2rem}
+.hdr-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.hdr-right small{opacity:.6;font-size:.75rem}
+button{padding:7px 16px;border:none;border-radius:6px;cursor:pointer;font-size:.8rem;font-weight:600}
+.btn-edit{background:#3b82f6;color:#fff}
+.btn-save{background:#22c55e;color:#fff;display:none}
+.btn-cancel{background:#6b7280;color:#fff;display:none}
+.btn-token{background:#f59e0b;color:#fff}
+.btn-logout{background:#ef4444;color:#fff;display:none}
+.token-bar{background:#fef9c3;border-bottom:1px solid #fde68a;padding:10px 24px;font-size:.8rem;display:none;align-items:center;gap:8px}
+.token-bar input{flex:1;max-width:420px;padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:.8rem}
+.cards{display:flex;gap:12px;padding:16px 24px;flex-wrap:wrap}
+.card{background:#fff;border-radius:8px;padding:16px 20px;flex:1;min-width:130px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.card .num{font-size:1.8rem;font-weight:700}
+.card .lbl{font-size:.75rem;color:#666;margin-top:2px}
+.card .bar{height:5px;background:#eee;border-radius:3px;margin-top:8px}
+.card .bar-fill{height:5px;border-radius:3px;background:#22c55e}
+.controls{padding:0 24px 12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.controls input,.controls select{padding:7px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:.8rem}
+.controls input{width:260px}
+.tbl-wrap{padding:0 24px 32px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+th{background:#1a1a2e;color:#fff;padding:10px 12px;text-align:left;font-size:.72rem;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid #f0f0f0;vertical-align:middle;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafafa}
+tr.done td:first-child{border-left:3px solid #22c55e}
+tr.partial td:first-child{border-left:3px solid #f59e0b}
+tr.none td:first-child{border-left:3px solid #ef4444}
+.badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:.7rem;font-weight:600}
+.ok{background:#dcfce7;color:#166534}.no{background:#fee2e2;color:#991b1b}
+.srv{display:inline-block;padding:2px 7px;border-radius:4px;font-size:.68rem;font-weight:600}
+.hi{background:#dbeafe;color:#1e40af}.hg{background:#fef9c3;color:#854d0e}.ab{background:#f3e8ff;color:#6b21a8}
+.status-sel,.resp-sel,.edit-input{padding:4px 8px;border:1px solid #d1d5db;border-radius:4px;font-size:.78rem;background:#fff;width:100%}
+.st-pend{color:#92400e;background:#fef3c7;border-color:#fde68a}
+.st-prog{color:#1e40af;background:#dbeafe;border-color:#bfdbfe}
+.st-done{color:#166534;background:#dcfce7;border-color:#86efac}
+td.editable{background:#fffbeb}
+td[contenteditable=true]{outline:2px solid #3b82f6;border-radius:2px;background:#eff6ff}
+a{color:#2563eb;text-decoration:none}a:hover{text-decoration:underline}
+footer{text-align:center;padding:20px;color:#999;font-size:.75rem}
+.saving{opacity:.5;pointer-events:none}
+#toast{position:fixed;bottom:24px;right:24px;background:#1a1a2e;color:#fff;padding:12px 20px;border-radius:8px;font-size:.85rem;display:none;z-index:999}
 </style>
 </head>
 <body>
 <header>
   <h1>Indexnet — Status dos Sites</h1>
-  <small>Atualizado em 11/06/2026 20:21</small>
+  <div class="hdr-right">
+    <small id="updated-at"></small>
+    <button class="btn-edit" onclick="startEdit()">✏️ Editar</button>
+    <button class="btn-save" onclick="saveData()">💾 Salvar</button>
+    <button class="btn-cancel" onclick="cancelEdit()">✕ Cancelar</button>
+    <button class="btn-logout" onclick="logout()">Sair</button>
+    <button onclick="loadData()" style="background:#374151;color:#fff">↻ Atualizar</button>
+  </div>
 </header>
-<div class="cards">
-  <div class="card">
-    <div class="num">189</div>
-    <div class="label">Total de clientes</div>
-  </div>
-  <div class="card">
-    <div class="num">25</div>
-    <div class="label">Com repo GitHub</div>
-    <div class="bar"><div class="bar-fill" style="width:13%"></div></div>
-  </div>
-  <div class="card">
-    <div class="num">164</div>
-    <div class="label">Sem repo GitHub</div>
-  </div>
-  <div class="card">
-    <div class="num">34</div>
-    <div class="label">Com Cloudflare</div>
-    <div class="bar"><div class="bar-fill" style="width:18%"></div></div>
-  </div>
-  <div class="card">
-    <div class="num">155</div>
-    <div class="label">Sem Cloudflare</div>
-  </div>
+
+<div class="token-bar" id="token-bar">
+  <span>Token GitHub:</span>
+  <input type="password" id="token-input" placeholder="ghp_...">
+  <button onclick="saveToken()" style="background:#22c55e;color:#fff">Salvar token</button>
+  <small style="color:#92400e">O token fica salvo só no seu browser</small>
 </div>
-<div class="search-wrap">
-  <input type="text" id="search" placeholder="Filtrar por cliente ou domínio..." oninput="filterTable()">
+
+<div class="cards" id="cards"></div>
+
+<div class="controls">
+  <input type="text" id="search" placeholder="🔍 Filtrar cliente ou domínio..." oninput="filterRows()">
+  <select id="fil-srv" onchange="filterRows()">
+    <option value="">Todos os servidores</option>
+    <option>Hostinger</option><option>Hostgator</option><option>Ambos</option>
+  </select>
+  <select id="fil-gh" onchange="filterRows()">
+    <option value="">GitHub: todos</option>
+    <option value="true">Com repo</option>
+    <option value="false">Sem repo</option>
+  </select>
+  <select id="fil-cf" onchange="filterRows()">
+    <option value="">Cloudflare: todos</option>
+    <option value="ok">Ativo</option>
+    <option value="no">Sem Cloudflare</option>
+  </select>
+  <select id="fil-status" onchange="filterRows()">
+    <option value="">Status: todos</option>
+    <option>Pendente</option><option>Em andamento</option><option>Concluído</option>
+  </select>
 </div>
+
+<div class="tbl-wrap">
 <table id="tbl">
-  <thead>
-    <tr>
-      <th>Cliente</th><th>Domínio</th><th>Servidor</th><th>GitHub</th><th>Cloudflare</th>
-    </tr>
-  </thead>
-  <tbody>
-        <tr class="pending">
-          <td><strong>ctccbauru</strong></td>
-          <td><a href="https://ctccbauru.com.br" target="_blank">ctccbauru.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>jmpisos</strong></td>
-          <td><a href="https://jmpisosindustriais.com.br" target="_blank">jmpisosindustriais.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>bauruguindastes</strong></td>
-          <td><a href="https://bauruguindastes.com.br" target="_blank">bauruguindastes.com.br</a></td>
-          <td><span class="srv ab">Hostinger </span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>forteprotecoes</strong></td>
-          <td><a href="https://forteprotecoes.com.br" target="_blank">forteprotecoes.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>msexaustec</strong></td>
-          <td><a href="https://msexaustec.com.br" target="_blank">msexaustec.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>leprocosmeticos</strong></td>
-          <td><a href="https://leprocosmeticos.com.br" target="_blank">leprocosmeticos.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>lepro</strong></td>
-          <td><a href="https://lepro.com.br" target="_blank">lepro.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>leprocosmetics2</strong></td>
-          <td><a href="https://leprocosmetics.com" target="_blank">leprocosmetics.com</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>cardapex</strong></td>
-          <td><a href="https://cardapex.com.br" target="_blank">cardapex.com.br</a></td>
-          <td><span class="srv ab">Hostgator </span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>leprocosmetics</strong></td>
-          <td><a href="https://leprocosmetics.com.br" target="_blank">leprocosmetics.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>leprousa</strong></td>
-          <td><a href="https://leprousa.com" target="_blank">leprousa.com</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>tecnologiaorgan</strong></td>
-          <td><a href="https://tecnologiaorgan.com.br" target="_blank">tecnologiaorgan.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>esquina</strong></td>
-          <td><a href="https://esquinadopaodequeijo.com.br" target="_blank">esquinadopaodequeijo.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>claudiogabriele</strong></td>
-          <td><a href="https://claudiogabriele.com.br" target="_blank">claudiogabriele.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>rafaelahernandez</strong></td>
-          <td><a href="https://rafaelahernandez.com.br" target="_blank">rafaelahernandez.com.br</a></td>
-          <td><span class="srv hi">Hostinger</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>grupompr</strong></td>
-          <td><a href="https://grupompr.com.br" target="_blank">grupompr.com.br</a></td>
-          <td><span class="srv hi">Hostinger</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>lojacoala</strong></td>
-          <td><a href="https://lojacoala.com.br" target="_blank">lojacoala.com.br</a></td>
-          <td><span class="srv ab">-</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>companhianacionaldealcool</strong></td>
-          <td><a href="https://www.companhianacionaldealcool.com.br" target="_blank">www.companhianacionaldealcool.com.br</a></td>
-          <td><span class="srv ab">-</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>viana</strong></td>
-          <td><a href="https://vianaoffshore.com.br" target="_blank">vianaoffshore.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>denise</strong></td>
-          <td><a href="https://denisereal.com.br" target="_blank">denisereal.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>cgarcia</strong></td>
-          <td><a href="https://cgarcia.com.br" target="_blank">cgarcia.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>epolcar</strong></td>
-          <td><a href="https://epolcar.com.br" target="_blank">epolcar.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>autosemlimites</strong></td>
-          <td><a href="https://autoescolasemlimites.com.br" target="_blank">autoescolasemlimites.com.br</a></td>
-          <td><span class="srv ab">Hostgator </span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>brulimpeza</strong></td>
-          <td><a href="https://brulimplimpeza.com.br" target="_blank">brulimplimpeza.com.br</a></td>
-          <td><span class="srv hi">Hostinger</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>craquele</strong></td>
-          <td><a href="https://craquele.com.br" target="_blank">craquele.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>fnob</strong></td>
-          <td><a href="https://fnob.com.br" target="_blank">fnob.com.br</a></td>
-          <td><span class="srv ab">-</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>gemmini</strong></td>
-          <td><a href="https://gemminibauru.com.br" target="_blank">gemminibauru.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>gmginox</strong></td>
-          <td><a href="https://gmginox.com.br" target="_blank">gmginox.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>carlalambertini</strong></td>
-          <td><a href="https://institutocarlalambertini.com.br" target="_blank">institutocarlalambertini.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>lokma</strong></td>
-          <td><a href="https://lokmacafe.com.br" target="_blank">lokmacafe.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>mgu</strong></td>
-          <td><a href="https://mgu.com.br" target="_blank">mgu.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>nativi</strong></td>
-          <td><a href="https://nativiconstrutora.com.br" target="_blank">nativiconstrutora.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>Rede Memorial Fortaleza</strong></td>
-          <td><a href="https://https://redememorialfortaleza.com.br/" target="_blank">https://redememorialfortaleza.com.br/</a></td>
-          <td><span class="srv hi">Hostinger</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>TV OK Brasil</strong></td>
-          <td><a href="https://http://tvokbrasil.com.br/" target="_blank">http://tvokbrasil.com.br/</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>phoenixosasco</strong></td>
-          <td><a href="https://phoenixosasco.com.br" target="_blank">phoenixosasco.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>prontovet</strong></td>
-          <td><a href="https://prontovetbauru.com.br" target="_blank">prontovetbauru.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>oftcor</strong></td>
-          <td><a href="https://oftcor.com.br" target="_blank">oftcor.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>rotaspaulistas</strong></td>
-          <td><a href="https://rotaspaulistas.com.br" target="_blank">rotaspaulistas.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>oliveiraaquecedo</strong></td>
-          <td><a href="https://oliveiraaquecedorsolar.com.br" target="_blank">oliveiraaquecedorsolar.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>transfast</strong></td>
-          <td><a href="https://transfast.com.br" target="_blank">transfast.com.br</a></td>
-          <td><span class="srv ab">Hostinger </span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>adbelembauru</strong></td>
-          <td><a href="https://adbelembauru.com.br" target="_blank">adbelembauru.com.br</a></td>
-          <td><span class="srv ab">Hostgator </span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>LP VipPlanos</strong></td>
-          <td><a href="https://https://planosdesaude.vipplanos.com.br/" target="_blank">https://planosdesaude.vipplanos.com.br/</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>LP Indexnet</strong></td>
-          <td><a href="https://http://sites.indexnet.com.br/" target="_blank">http://sites.indexnet.com.br/</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>Loja Virtual Indexnet</strong></td>
-          <td><a href="https://https://lojavirtual.indexnet.com.br/" target="_blank">https://lojavirtual.indexnet.com.br/</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>grabs</strong></td>
-          <td><a href="https://grabs.com.br" target="_blank">grabs.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>sercon</strong></td>
-          <td><a href="https://serconbauru.com.br" target="_blank">serconbauru.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>casadosfiltros</strong></td>
-          <td><a href="https://casadosfiltros.ind.br" target="_blank">casadosfiltros.ind.br</a></td>
-          <td><span class="srv ab">Hostgator </span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>ciao3</strong></td>
-          <td><a href="https://ciao3.com.br" target="_blank">ciao3.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>siteparaclinica</strong></td>
-          <td><a href="https://siteparaclinica.com.br" target="_blank">siteparaclinica.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>epold</strong></td>
-          <td><a href="https://epold.com.br" target="_blank">epold.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>esgotecbauru</strong></td>
-          <td><a href="https://esgotecbauru.com.br" target="_blank">esgotecbauru.com.br</a></td>
-          <td><span class="srv ab">Hostinger / Hostgator  (gerando bkp geral) </span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>exatos</strong></td>
-          <td><a href="https://exatos.com.br" target="_blank">exatos.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>telenergia</strong></td>
-          <td><a href="https://telenergia.com.br" target="_blank">telenergia.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>jolie café</strong></td>
-          <td><a href="https://www.joliecafe.com.br" target="_blank">www.joliecafe.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>musa</strong></td>
-          <td><a href="https://lojasmusa.com.br" target="_blank">lojasmusa.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>mestrealimentos</strong></td>
-          <td><a href="https://mestrealimentos.com.br" target="_blank">mestrealimentos.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>mkm</strong></td>
-          <td><a href="https://mkmmenswear.com.br" target="_blank">mkmmenswear.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>padariacopa</strong></td>
-          <td><a href="https://padariacopacabana.com.br" target="_blank">padariacopacabana.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>drpaulobernardi</strong></td>
-          <td><a href="https://drpaulobernardi.com.br" target="_blank">drpaulobernardi.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>pedagio</strong></td>
-          <td><a href="https://lojapedagio.com.br" target="_blank">lojapedagio.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>deleoni</strong></td>
-          <td><a href="https://deleoni.com.br" target="_blank">deleoni.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>sdrengenharia</strong></td>
-          <td><a href="https://sdrengenharia.com.br" target="_blank">sdrengenharia.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>urnasdeleoni</strong></td>
-          <td><a href="https://urnasdeleoni.com.br" target="_blank">urnasdeleoni.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>astorhotel</strong></td>
-          <td><a href="https://astorhotelbauru.com.br" target="_blank">astorhotelbauru.com.br</a></td>
-          <td><span class="srv ab">Hostgator </span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>espacotear</strong></td>
-          <td><a href="https://espacotearinteriores.com.br" target="_blank">espacotearinteriores.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>cartomantedosfamosos</strong></td>
-          <td><a href="https://cartomantedosfamosos.com.br" target="_blank">cartomantedosfamosos.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>camesba</strong></td>
-          <td><a href="https://camesbaenxovais.com.br" target="_blank">camesbaenxovais.com.br</a></td>
-          <td><span class="srv ab">Hostgator </span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>dezotti</strong></td>
-          <td><a href="https://dezottiseguros.com.br" target="_blank">dezottiseguros.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>divulgar</strong></td>
-          <td><a href="https://divulgarsitenogoogle.com.br" target="_blank">divulgarsitenogoogle.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>baraero</strong></td>
-          <td><a href="https://baraeroclubebauru.com.br" target="_blank">baraeroclubebauru.com.br</a></td>
-          <td><span class="srv ab">Hostgator </span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>sdr engenharia</strong></td>
-          <td><a href="https://www.sdrengenharia.com.br" target="_blank">www.sdrengenharia.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>casa da limpeza</strong></td>
-          <td><a href="https://casadalimpezabauru.com.br" target="_blank">casadalimpezabauru.com.br</a></td>
-          <td><span class="srv ab">Hostgator </span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>dentistabauru</strong></td>
-          <td><a href="https://dentistabauru.com.br" target="_blank">dentistabauru.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>esqelegante</strong></td>
-          <td><a href="https://esquinaelegante.com.br" target="_blank">esquinaelegante.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>jaffacosmeticos</strong></td>
-          <td><a href="https://jaffacosmeticos.com.br" target="_blank">jaffacosmeticos.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>jsa</strong></td>
-          <td><a href="https://jsa-assessoria.com.br" target="_blank">jsa-assessoria.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>memorial</strong></td>
-          <td><a href="https://memorialbauru.com.br" target="_blank">memorialbauru.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>neo</strong></td>
-          <td><a href="https://neoarquitetura.com" target="_blank">neoarquitetura.com</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>ogmcaps</strong></td>
-          <td><a href="https://ogmcaps.com" target="_blank">ogmcaps.com</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>ortodiagnosis</strong></td>
-          <td><a href="https://ortodiagnosis.com.br" target="_blank">ortodiagnosis.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>shomertech</strong></td>
-          <td><a href="https://shomertech.com" target="_blank">shomertech.com</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>esfihalibanesabauru</strong></td>
-          <td><a href="https://esfiharialibanesa.com.br" target="_blank">esfiharialibanesa.com.br</a></td>
-          <td><span class="srv ab">Hostgator CARDAPEX</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>jaquelenilanches</strong></td>
-          <td><a href="https://jaquelenilanches.com.br" target="_blank">jaquelenilanches.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>acaispeed</strong></td>
-          <td><a href="https://acaispeed.com.br" target="_blank">acaispeed.com.br</a></td>
-          <td><span class="srv ab">Hostgator </span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>estorillanchesbauru</strong></td>
-          <td><a href="https://estorillanchesbauru.com.br" target="_blank">estorillanchesbauru.com.br</a></td>
-          <td><span class="srv ab">CARDAPEX</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>packtoyou</strong></td>
-          <td><a href="https://packtoyou.com.br" target="_blank">packtoyou.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>santakarmem</strong></td>
-          <td><a href="https://santakarmem.com.br" target="_blank">santakarmem.com.br</a></td>
-          <td><span class="srv ab">INATIVO</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>mousta</strong></td>
-          <td><a href="https://mousta.com.br" target="_blank">mousta.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>jmpinheiro</strong></td>
-          <td><a href="https://jmpinheiro.adv.br" target="_blank">jmpinheiro.adv.br</a></td>
-          <td><span class="srv ab">Não está em nenhum dos servidores</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>rosamarinha</strong></td>
-          <td><a href="https://rosamarinhacosmeticos.com.br" target="_blank">rosamarinhacosmeticos.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>amarracoes</strong></td>
-          <td><a href="https://amarracoesevidenciagoiania.com.br" target="_blank">amarracoesevidenciagoiania.com.br</a></td>
-          <td><span class="srv ab">Hostgator </span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>integra</strong></td>
-          <td><a href="https://integrabauru.com.br" target="_blank">integrabauru.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>domus</strong></td>
-          <td><a href="https://domuscare.com.br" target="_blank">domuscare.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>idalinaisencoes</strong></td>
-          <td><a href="https://idalinaisencoes.com.br" target="_blank">idalinaisencoes.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>vargasengenhariabauru</strong></td>
-          <td><a href="https://vargasengenhariabauru.com.br" target="_blank">vargasengenhariabauru.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>temploespiritual</strong></td>
-          <td><a href="https://temploespiritual.com.br" target="_blank">temploespiritual.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>kikakau</strong></td>
-          <td><a href="https://kikakau.com.br" target="_blank">kikakau.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>catalogowhatsapp</strong></td>
-          <td><a href="https://catalogowhatsapp.com.br" target="_blank">catalogowhatsapp.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>uaiemporio</strong></td>
-          <td><a href="https://uaiemporio.com.br" target="_blank">uaiemporio.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>spettin555</strong></td>
-          <td><a href="https://spettin555.com.br" target="_blank">spettin555.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>pedidosonline</strong></td>
-          <td><a href="https://pedidosonline.com.br" target="_blank">pedidosonline.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>epedido</strong></td>
-          <td><a href="https://epedido.com.br" target="_blank">epedido.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>semlimites</strong></td>
-          <td><a href="https://autoescolasemlimites.com.br" target="_blank">autoescolasemlimites.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>baurucatcom</strong></td>
-          <td><a href="https://baurucat.com.br" target="_blank">baurucat.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>baurucat</strong></td>
-          <td><a href="https://baurucatfundacoes.com.br" target="_blank">baurucatfundacoes.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>boost</strong></td>
-          <td><a href="https://boostcontabil.com.br" target="_blank">boostcontabil.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>limpeza</strong></td>
-          <td><a href="https://casadalimpezabauru.com.br" target="_blank">casadalimpezabauru.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>chaplin</strong></td>
-          <td><a href="https://chaplinmarilia.com.br" target="_blank">chaplinmarilia.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>paulobernardi</strong></td>
-          <td><a href="https://drpaulobernardi.com.br" target="_blank">drpaulobernardi.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>enerluz</strong></td>
-          <td><a href="https://enerluzequipamentos.com.br" target="_blank">enerluzequipamentos.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>escolatide</strong></td>
-          <td><a href="https://escolatide.com.br" target="_blank">escolatide.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>libanesabauru</strong></td>
-          <td><a href="https://esfiharialibanesa.com.br" target="_blank">esfiharialibanesa.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>esquadrao</strong></td>
-          <td><a href="https://esquadraocoala.com.br" target="_blank">esquadraocoala.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>everestlondrinac</strong></td>
-          <td><a href="https://everestlondrina.com.br" target="_blank">everestlondrina.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>evtparana</strong></td>
-          <td><a href="https://everestparana.com.br" target="_blank">everestparana.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>homensdeguerra</strong></td>
-          <td><a href="https://homensdeguerra.com.br" target="_blank">homensdeguerra.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>cartoon</strong></td>
-          <td><a href="https://lojacartoonbauru.com.br" target="_blank">lojacartoonbauru.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>maelaura</strong></td>
-          <td><a href="https://maelauradeoxossi.com.br" target="_blank">maelauradeoxossi.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>maquinadegelorio</strong></td>
-          <td><a href="https://maquinadegelorio.com.br" target="_blank">maquinadegelorio.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>maquinasdegelo</strong></td>
-          <td><a href="https://maquinasdegeloeverestbauru.com.br" target="_blank">maquinasdegeloeverestbauru.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>nivelbox</strong></td>
-          <td><a href="https://nivelbox.com.br" target="_blank">nivelbox.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>copacabana</strong></td>
-          <td><a href="https://padariacopacabana.com.br" target="_blank">padariacopacabana.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>purificadoresrio</strong></td>
-          <td><a href="https://purificadoresrio.com.br" target="_blank">purificadoresrio.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>greenville</strong></td>
-          <td><a href="https://residencialgreenville.com.br" target="_blank">residencialgreenville.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>silka</strong></td>
-          <td><a href="https://silka.eng.br" target="_blank">silka.eng.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>smartsip</strong></td>
-          <td><a href="https://smartsip.com.br" target="_blank">smartsip.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>sosfiltrosdeagua</strong></td>
-          <td><a href="https://sosfiltrosdeagua.com.br" target="_blank">sosfiltrosdeagua.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>termall</strong></td>
-          <td><a href="https://termall.com.br" target="_blank">termall.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>toutlissie</strong></td>
-          <td><a href="https://toutlissieprofessional.com.br" target="_blank">toutlissieprofessional.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>wquadros</strong></td>
-          <td><a href="https://wquadrosadvocacia.com" target="_blank">wquadrosadvocacia.com</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>brulimp</strong></td>
-          <td><a href="https://brulimplimpeza.com.br" target="_blank">brulimplimpeza.com.br</a></td>
-          <td><span class="srv hi">Hostinger</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>esgotec</strong></td>
-          <td><a href="https://esgotecbauru.com.br" target="_blank">esgotecbauru.com.br</a></td>
-          <td><span class="srv hi">Hostinger</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>transfastbrasil</strong></td>
-          <td><a href="https://transfast.com.br" target="_blank">transfast.com.br</a></td>
-          <td><span class="srv hi">Hostinger</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>cartomante</strong></td>
-          <td><a href="https://cartomantedosfamosos.com.br" target="_blank">cartomantedosfamosos.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>estorillanches</strong></td>
-          <td><a href="https://estorillanchesbauru.com.br" target="_blank">estorillanchesbauru.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>templo</strong></td>
-          <td><a href="https://temploespiritual.com.br" target="_blank">temploespiritual.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>tvok</strong></td>
-          <td><a href="https://tvokbrasil.com.br" target="_blank">tvokbrasil.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>vargas</strong></td>
-          <td><a href="https://vargasengenhariabauru.com.br" target="_blank">vargasengenhariabauru.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>zaya</strong></td>
-          <td><a href="https://zayabeauty.com.br" target="_blank">zayabeauty.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>desensuprematec</strong></td>
-          <td><a href="https://desentupidorasuprematec.com.br" target="_blank">desentupidorasuprematec.com.br</a></td>
-          <td><span class="srv ab">Hostinger </span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>copaiba</strong></td>
-          <td><a href="https://copaibapalacehotel.com.br" target="_blank">copaibapalacehotel.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge ok">✓ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>lokan</strong></td>
-          <td><a href="https://lokan.com.br" target="_blank">lokan.com.br</a></td>
-          <td><span class="srv ab">Hostinger / Hostgator</span></td>
-          <td><span class="badge ok">✓ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>lemca</strong></td>
-          <td><a href="https://lemca.com.br" target="_blank">lemca.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>seebbauru</strong></td>
-          <td><a href="https://seebbauru.org.br" target="_blank">seebbauru.org.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>dallon</strong></td>
-          <td><a href="https://dallon.com.br" target="_blank">dallon.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge ok">✓ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>packforyou</strong></td>
-          <td><a href="https://packforyou.com.br" target="_blank">packforyou.com.br</a></td>
-          <td><span class="srv ab">Hostinger / Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>master</strong></td>
-          <td><a href="https://masterbauru.com.br" target="_blank">masterbauru.com.br</a></td>
-          <td><span class="srv hi">Hostinger</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>mrincorporadora</strong></td>
-          <td><a href="https://mrincorporadora.com.br" target="_blank">mrincorporadora.com.br</a></td>
-          <td><span class="srv hi">Hostinger</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>index</strong></td>
-          <td><a href="https://indexnet.com.br" target="_blank">indexnet.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>desentopja</strong></td>
-          <td><a href="https://desentopja.com.br" target="_blank">desentopja.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge ok">✓ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>vipplanos</strong></td>
-          <td><a href="https://vipplanos.com.br" target="_blank">vipplanos.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge ok">✓ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>ananery</strong></td>
-          <td><a href="https://ananerybauru.com.br" target="_blank">ananerybauru.com.br</a></td>
-          <td><span class="srv ab">Hostgator </span></td>
-          <td><span class="badge ok">✓ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>alcoolferreira</strong></td>
-          <td><a href="https://alcoolferreira.com.br" target="_blank">alcoolferreira.com.br</a></td>
-          <td><span class="srv hi">Hostinger</span></td>
-          <td><span class="badge ok">✓ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>baurutec</strong></td>
-          <td><a href="https://desentupidorabaurutec.com.br" target="_blank">desentupidorabaurutec.com.br</a></td>
-          <td><span class="srv ab">Hostinger </span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>totalsolo</strong></td>
-          <td><a href="https://totalsolo.com.br" target="_blank">totalsolo.com.br</a></td>
-          <td><span class="srv ab">Hostinger (Esta suspenso na hostgator)</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>fertorq</strong></td>
-          <td><a href="https://fertorq.com.br" target="_blank">fertorq.com.br</a></td>
-          <td><span class="srv hi">Hostinger</span></td>
-          <td><span class="badge ok">✓ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>excelite</strong></td>
-          <td><a href="https://excelite.com.br" target="_blank">excelite.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>perfilledlemca</strong></td>
-          <td><a href="https://perfilled.lemca.com.br" target="_blank">perfilled.lemca.com.br</a></td>
-          <td><span class="srv ab">Subdominio</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>silvioikoma</strong></td>
-          <td><a href="https://silvioikoma.com.br" target="_blank">silvioikoma.com.br</a></td>
-          <td><span class="srv ab">Hostinger </span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>alsofer</strong></td>
-          <td><a href="https://alsofer.com.br" target="_blank">alsofer.com.br</a></td>
-          <td><span class="srv ab">Hostgator </span></td>
-          <td><span class="badge ok">✓ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>apta</strong></td>
-          <td><a href="https://aptasoftware.com.br" target="_blank">aptasoftware.com.br</a></td>
-          <td><span class="srv ab">Hostgator </span></td>
-          <td><span class="badge ok">✓ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>Ananery</strong></td>
-          <td><a href="https://https://ananery.com.br/" target="_blank">https://ananery.com.br/</a></td>
-          <td><span class="srv hi">Hostinger</span></td>
-          <td><span class="badge ok">✓ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>grazie</strong></td>
-          <td><a href="https://grazieprofessional.com.br" target="_blank">grazieprofessional.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge ok">✓ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>drpaulopittelli</strong></td>
-          <td><a href="https://drpaulopittelli.com.br" target="_blank">drpaulopittelli.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>looping</strong></td>
-          <td><a href="https://loopingfest.com.br" target="_blank">loopingfest.com.br</a></td>
-          <td><span class="srv hi">Hostinger</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>idxhost</strong></td>
-          <td><a href="https://indexhost.com.br" target="_blank">indexhost.com.br</a></td>
-          <td><span class="srv ab">Hostinger / Hostgator  (gerando bkp geral) </span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>vinagreen</strong></td>
-          <td><a href="https://vinagreen.com.br" target="_blank">vinagreen.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge ok">✓ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>baurudemolicao</strong></td>
-          <td><a href="https://baurudemolicao.com.br" target="_blank">baurudemolicao.com.br</a></td>
-          <td><span class="srv ab">Hostgator </span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>llkrental</strong></td>
-          <td><a href="https://llkrental.com.br" target="_blank">llkrental.com.br</a></td>
-          <td><span class="srv ab">Hostinger </span></td>
-          <td><span class="badge ok">✓ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>vemflors</strong></td>
-          <td><a href="https://vemflors.com.br" target="_blank">vemflors.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>cna</strong></td>
-          <td><a href="https://cna.ind.br" target="_blank">cna.ind.br</a></td>
-          <td><span class="srv hi">Hostinger</span></td>
-          <td><span class="badge ok">✓ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>adbelem</strong></td>
-          <td><a href="https://adbelembauru.com.br" target="_blank">adbelembauru.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge ok">✓ GitHub</span></td>
-          <td><span class="badge no">✗ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>elementscosmetic</strong></td>
-          <td><a href="https://elementscosmeticos.com.br" target="_blank">elementscosmeticos.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>gaboardi</strong></td>
-          <td><a href="https://gaboardiparkhotel.com.br" target="_blank">gaboardiparkhotel.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>jvrflorestal</strong></td>
-          <td><a href="https://jvrflorestal.com.br" target="_blank">jvrflorestal.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>solucao</strong></td>
-          <td><a href="https://sesolucao.com.br" target="_blank">sesolucao.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>indexhost</strong></td>
-          <td><a href="https://indexhost.com.br" target="_blank">indexhost.com.br</a></td>
-          <td><span class="srv hi">Hostinger</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>mrconstrutora</strong></td>
-          <td><a href="https://mrincorporadora.com.br" target="_blank">mrincorporadora.com.br</a></td>
-          <td><span class="srv hi">Hostinger</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>memorialfor</strong></td>
-          <td><a href="https://redememorialfortaleza.com.br" target="_blank">redememorialfortaleza.com.br</a></td>
-          <td><span class="srv hi">Hostinger</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="pending">
-          <td><strong>leproes</strong></td>
-          <td><a href="https://leprocosmetics.es" target="_blank">leprocosmetics.es</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge no">✗ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="done">
-          <td><strong>engetmix</strong></td>
-          <td><a href="https://engetmix.com.br" target="_blank">engetmix.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge ok">✓ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="done">
-          <td><strong>tragial</strong></td>
-          <td><a href="https://tragial.com.br" target="_blank">tragial.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge ok">✓ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="done">
-          <td><strong>dacol</strong></td>
-          <td><a href="https://dacolbrasil.com.br" target="_blank">dacolbrasil.com.br</a></td>
-          <td><span class="srv ab">Hostinger </span></td>
-          <td><span class="badge ok">✓ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="done">
-          <td><strong>obadias</strong></td>
-          <td><a href="https://obadiasplanejados.com.br" target="_blank">obadiasplanejados.com.br</a></td>
-          <td><span class="srv hg">Hostgator</span></td>
-          <td><span class="badge ok">✓ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="done">
-          <td><strong>pontobela</strong></td>
-          <td><a href="https://pontobela.com.br" target="_blank">pontobela.com.br</a></td>
-          <td><span class="srv ab">Hostgator / Hostinger</span></td>
-          <td><span class="badge ok">✓ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="done">
-          <td><strong>bauruelevadores</strong></td>
-          <td><a href="https://bauruelevadores.com.br" target="_blank">bauruelevadores.com.br</a></td>
-          <td><span class="srv ab">Hostgator </span></td>
-          <td><span class="badge ok">✓ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="done">
-          <td><strong>agriex</strong></td>
-          <td><a href="https://agriex.com.br" target="_blank">agriex.com.br</a></td>
-          <td><span class="srv ab">?</span></td>
-          <td><span class="badge ok">✓ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="done">
-          <td><strong>construtorars</strong></td>
-          <td><a href="https://construtorars.com.br" target="_blank">construtorars.com.br</a></td>
-          <td><span class="srv hi">Hostinger</span></td>
-          <td><span class="badge ok">✓ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-        <tr class="done">
-          <td><strong>suprematec</strong></td>
-          <td><a href="https://desentupidorasuprematec.com.br" target="_blank">desentupidorasuprematec.com.br</a></td>
-          <td><span class="srv hi">Hostinger</span></td>
-          <td><span class="badge ok">✓ GitHub</span></td>
-          <td><span class="badge ok">✓ Cloudflare</span></td>
-        </tr>
-  </tbody>
+<thead>
+<tr>
+  <th>#</th><th>Cliente</th><th>Domínio</th><th>Servidor</th>
+  <th>GitHub</th><th>Cloudflare</th>
+  <th>Plataforma</th><th>PHP</th><th>WP</th>
+  <th>Responsável</th><th>Status GH</th><th>Status CF</th>
+  <th>Prioridade</th><th>Observações</th>
+</tr>
+</thead>
+<tbody id="tbody"></tbody>
 </table>
-<footer>Indexnet — gerado automaticamente pelo check_sites.py</footer>
+</div>
+
+<footer id="footer">Indexnet · gerado por check_sites.py</footer>
+<div id="toast"></div>
+
 <script>
-function filterTable(){
-  const q = document.getElementById('search').value.toLowerCase();
-  document.querySelectorAll('#tbl tbody tr').forEach(r => {
-    r.style.display = r.innerText.toLowerCase().includes(q) ? '' : 'none';
+const ORG  = 'indexnet-agencia-de-mkt-e-dev';
+const REPO = 'status-sites';
+const RAW  = `https://raw.githubusercontent.com/${ORG}/${REPO}/main/data.json`;
+const API  = `https://api.github.com/repos/${ORG}/${REPO}/contents/data.json`;
+
+let DATA = null;
+let editMode = false;
+
+function toast(msg, ok=true) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = ok ? '#166534' : '#991b1b';
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 3000);
+}
+
+async function loadData() {
+  try {
+    const r = await fetch(RAW + '?t=' + Date.now());
+    DATA = await r.json();
+    renderCards(DATA.stats);
+    renderTable(DATA.clients);
+    document.getElementById('updated-at').textContent = 'Atualizado: ' + DATA.updated_at;
+    document.getElementById('footer').textContent = 'Indexnet · gerado por check_sites.py · ' + DATA.updated_at;
+  } catch(e) { toast('Erro ao carregar dados: ' + e.message, false); }
+}
+
+function renderCards(s) {
+  if (!s) return;
+  const pgh = s.total ? Math.round(s.github_sim/s.total*100) : 0;
+  const pcf = s.total ? Math.round(s.cf_ativo/s.total*100) : 0;
+  document.getElementById('cards').innerHTML = `
+    <div class="card"><div class="num">${s.total}</div><div class="lbl">Total clientes</div></div>
+    <div class="card"><div class="num">${s.github_sim}</div><div class="lbl">Com GitHub</div>
+      <div class="bar"><div class="bar-fill" style="width:${pgh}%"></div></div></div>
+    <div class="card"><div class="num">${s.github_nao}</div><div class="lbl">Sem GitHub</div></div>
+    <div class="card"><div class="num">${s.cf_ativo}</div><div class="lbl">Com Cloudflare</div>
+      <div class="bar"><div class="bar-fill" style="width:${pcf}%"></div></div></div>
+    <div class="card"><div class="num">${s.cf_nao}</div><div class="lbl">Sem Cloudflare</div></div>`;
+}
+
+function statusClass(v) {
+  if (v==='Concluído') return 'st-done';
+  if (v==='Em andamento') return 'st-prog';
+  return 'st-pend';
+}
+
+function renderTable(clients) {
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = '';
+  clients.forEach((c, i) => {
+    const ghOk = c.github === true;
+    const cfOk = (c.cloudflare||'').startsWith('Ativ');
+    const rowCls = ghOk && cfOk ? 'done' : (ghOk || cfOk ? 'partial' : 'none');
+    const srvCls = c.servidor==='Hostgator' ? 'hg' : (c.servidor==='Hostinger' ? 'hi' : 'ab');
+    const tr = document.createElement('tr');
+    tr.className = rowCls;
+    tr.dataset.idx = i;
+    tr.innerHTML = `
+      <td>${i+1}</td>
+      <td><strong>${c.username}</strong></td>
+      <td><a href="https://${c.domain}" target="_blank">${c.domain}</a></td>
+      <td><span class="srv ${srvCls}">${c.servidor||'?'}</span></td>
+      <td><span class="badge ${ghOk?'ok':'no'}">${ghOk?'✓':'✗'} GitHub</span></td>
+      <td><span class="badge ${cfOk?'ok':'no'}">${cfOk?'✓':'✗'} CF</span></td>
+      <td class="editable" data-field="_platform">${c._platform||''}</td>
+      <td class="editable" data-field="_php_ver">${c._php_ver||''}</td>
+      <td class="editable" data-field="_wp_ver">${c._wp_ver||''}</td>
+      <td class="editable" data-field="_responsavel">
+        <select class="resp-sel" data-field="_responsavel" onchange="markDirty(this)" disabled>
+          <option value="">—</option>
+          <option ${c._responsavel==='Dev 1'?'selected':''}>Dev 1</option>
+          <option ${c._responsavel==='Dev 2'?'selected':''}>Dev 2</option>
+          <option ${c._responsavel==='Concluído'?'selected':''}>Concluído</option>
+        </select>
+      </td>
+      <td class="editable" data-field="_status_gh">
+        <select class="status-sel ${statusClass(c._status_gh||'Pendente')}" data-field="_status_gh" onchange="markDirty(this);this.className='status-sel '+statusClass(this.value)" disabled>
+          <option ${(c._status_gh||'Pendente')==='Pendente'?'selected':''}>Pendente</option>
+          <option ${c._status_gh==='Em andamento'?'selected':''}>Em andamento</option>
+          <option ${c._status_gh==='Concluído'?'selected':''}>Concluído</option>
+        </select>
+      </td>
+      <td class="editable" data-field="_status_cf">
+        <select class="status-sel ${statusClass(c._status_cf||'Pendente')}" data-field="_status_cf" onchange="markDirty(this);this.className='status-sel '+statusClass(this.value)" disabled>
+          <option ${(c._status_cf||'Pendente')==='Pendente'?'selected':''}>Pendente</option>
+          <option ${c._status_cf==='Em andamento'?'selected':''}>Em andamento</option>
+          <option ${c._status_cf==='Concluído'?'selected':''}>Concluído</option>
+        </select>
+      </td>
+      <td class="editable" data-field="_prioridade">${c._prioridade||''}</td>
+      <td class="editable" data-field="_obs" style="white-space:normal;min-width:180px">${c._obs||''}</td>`;
+    tbody.appendChild(tr);
   });
 }
+
+let dirty = false;
+function markDirty(el) { dirty = true; }
+
+function startEdit() {
+  const token = localStorage.getItem('gh_token');
+  if (!token) {
+    document.getElementById('token-bar').style.display = 'flex';
+    return;
+  }
+  enterEditMode();
+}
+
+function saveToken() {
+  const v = document.getElementById('token-input').value.trim();
+  if (!v) return;
+  localStorage.setItem('gh_token', v);
+  document.getElementById('token-bar').style.display = 'none';
+  document.querySelector('.btn-logout').style.display = 'inline-block';
+  enterEditMode();
+  toast('Token salvo! Modo edição ativado.');
+}
+
+function logout() {
+  localStorage.removeItem('gh_token');
+  document.querySelector('.btn-logout').style.display = 'none';
+  cancelEdit();
+  toast('Token removido.');
+}
+
+function enterEditMode() {
+  editMode = true;
+  dirty = false;
+  document.querySelector('.btn-edit').style.display = 'none';
+  document.querySelector('.btn-save').style.display = 'inline-block';
+  document.querySelector('.btn-cancel').style.display = 'inline-block';
+  if (localStorage.getItem('gh_token')) document.querySelector('.btn-logout').style.display = 'inline-block';
+  document.querySelectorAll('td.editable').forEach(td => {
+    const sel = td.querySelector('select');
+    if (sel) { sel.disabled = false; return; }
+    td.contentEditable = 'true';
+    td.addEventListener('input', () => dirty = true);
+  });
+  toast('Modo edição ativado. Edite as células e clique Salvar.');
+}
+
+function cancelEdit() {
+  editMode = false;
+  document.querySelector('.btn-edit').style.display = 'inline-block';
+  document.querySelector('.btn-save').style.display = 'none';
+  document.querySelector('.btn-cancel').style.display = 'none';
+  renderTable(DATA.clients);
+}
+
+async function saveData() {
+  const token = localStorage.getItem('gh_token');
+  if (!token) { toast('Sem token. Clique em Editar primeiro.', false); return; }
+  collectEdits();
+  const body = document.querySelector('.tbl-wrap');
+  body.classList.add('saving');
+  try {
+    const getResp = await fetch(API, { headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' } });
+    const meta = await getResp.json();
+    const sha = meta.sha;
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(DATA, null, 2))));
+    const putResp = await fetch(API, {
+      method: 'PUT',
+      headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'update manual ' + new Date().toLocaleString('pt-BR'), content, sha })
+    });
+    if (putResp.ok) {
+      toast('Salvo com sucesso!');
+      dirty = false;
+      cancelEdit();
+    } else {
+      const err = await putResp.json();
+      toast('Erro: ' + (err.message||putResp.status), false);
+    }
+  } catch(e) { toast('Erro ao salvar: ' + e.message, false); }
+  body.classList.remove('saving');
+}
+
+function collectEdits() {
+  document.querySelectorAll('#tbody tr').forEach(tr => {
+    const idx = parseInt(tr.dataset.idx);
+    if (isNaN(idx)) return;
+    const c = DATA.clients[idx];
+    tr.querySelectorAll('td.editable').forEach(td => {
+      const field = td.dataset.field;
+      const sel = td.querySelector('select');
+      if (sel) { c[field] = sel.value; return; }
+      c[field] = td.innerText.trim();
+    });
+  });
+}
+
+function filterRows() {
+  const q  = document.getElementById('search').value.toLowerCase();
+  const srv = document.getElementById('fil-srv').value;
+  const gh  = document.getElementById('fil-gh').value;
+  const cf  = document.getElementById('fil-cf').value;
+  const st  = document.getElementById('fil-status').value;
+  document.querySelectorAll('#tbody tr').forEach(tr => {
+    const idx = parseInt(tr.dataset.idx);
+    const c = DATA.clients[idx];
+    let show = true;
+    if (q && !tr.innerText.toLowerCase().includes(q)) show = false;
+    if (srv && c.servidor !== srv) show = false;
+    if (gh === 'true' && c.github !== true) show = false;
+    if (gh === 'false' && c.github !== false) show = false;
+    if (cf === 'ok' && !(c.cloudflare||'').startsWith('Ativ')) show = false;
+    if (cf === 'no' && (c.cloudflare||'').startsWith('Ativ')) show = false;
+    if (st && (c._status_gh !== st && c._status_cf !== st)) show = false;
+    tr.style.display = show ? '' : 'none';
+  });
+}
+
+// Avisa se sair com edições não salvas
+window.addEventListener('beforeunload', e => { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
+
+// Verifica se já tem token salvo
+if (localStorage.getItem('gh_token')) document.querySelector('.btn-logout').style.display = 'inline-block';
+
+loadData();
 </script>
 </body>
 </html>
