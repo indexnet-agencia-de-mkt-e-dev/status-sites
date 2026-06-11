@@ -82,7 +82,7 @@ select.fil:focus{outline:2px solid var(--blue)}
 /* ── TABLE ── */
 .tbl-wrap{padding:16px 28px 40px;overflow-x:auto}
 table{width:100%;border-collapse:separate;border-spacing:0;background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden}
-thead th{background:var(--navy2);color:#e2e8f0;padding:10px 12px;text-align:left;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.6px;white-space:nowrap;border-bottom:2px solid var(--navy);position:sticky;top:110px}
+thead th{background:var(--navy2);color:#e2e8f0;padding:10px 12px;text-align:left;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.6px;white-space:nowrap;border-bottom:2px solid var(--navy)}
 thead th:first-child{border-radius:var(--radius) 0 0 0}
 thead th:last-child{border-radius:0 var(--radius) 0 0}
 tbody tr:hover td{background:#f8fafc}
@@ -108,6 +108,7 @@ tr.none td:first-child{box-shadow:inset 3px 0 0 #e5e7eb}
 .srv-hi{background:var(--blue-bg);color:#1d4ed8}
 .srv-hg{background:#fef9c3;color:#92400e}
 .srv-ab{background:var(--purple-bg);color:#6d28d9}
+.srv-out{background:#f1f5f9;color:#64748b}
 
 /* ── STATUS DROPDOWNS ── */
 .st-sel{padding:4px 8px;border-radius:6px;font-size:.75rem;font-weight:600;font-family:inherit;border:1px solid;cursor:pointer;width:100%}
@@ -306,7 +307,8 @@ function renderCards(s) {
 
 /* ── Status helpers ── */
 function stCls(v) { return v==='Concluído'?'st-done':v==='Em andamento'?'st-prog':'st-pend'; }
-function srvCls(v) { return v==='Hostgator'?'srv-hg':v==='Hostinger'?'srv-hi':'srv-ab'; }
+function srvCls(v) { return v==='Hostgator'?'srv-hg':v==='Hostinger'?'srv-hi':v==='Ambos'?'srv-ab':'srv-out'; }
+
 
 /* ── Table render ── */
 function renderTable(clients) {
