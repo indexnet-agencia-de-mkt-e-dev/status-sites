@@ -1,5 +1,5 @@
 {
-  "updated_at": "11/06/2026 20:31",
+  "updated_at": "11/06/2026 20:35",
   "stats": {
     "total": 189,
     "github_sim": 25,
@@ -236,9 +236,9 @@
       "_status_cf": "Pendente",
       "_prioridade": "",
       "_obs": "",
-      "_platform": "HTML",
-      "_php_ver": "7.4 ",
-      "_wp_ver": "6.5.5"
+      "_platform": "Wordpress",
+      "_php_ver": "8.1",
+      "_wp_ver": ""
     },
     {
       "username": "Ananery",
