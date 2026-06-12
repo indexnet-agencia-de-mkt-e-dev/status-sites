@@ -1260,7 +1260,7 @@
       "username": "ctccbauru",
       "domain": "ctccbauru.com.br",
       "servidor": "Hostgator",
-      "suspended": false,
+      "suspended": true,
       "disk": "3541 MB",
       "backup": "2025-08-21 00:00:00",
       "platform": "Wordpress ",
