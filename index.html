@@ -133,6 +133,12 @@ a:hover{text-decoration:underline}
 
 footer{text-align:center;padding:24px;color:var(--text3);font-size:.72rem;border-top:1px solid var(--border);background:var(--surface)}
 
+/* ── COLUNAS EXTRAS (ocultas por padrão) ── */
+.col-extra{display:none}
+table.show-cols .col-extra{display:table-cell}
+.btn-cols{background:rgba(99,102,241,.12);color:#6366f1;border:1px solid rgba(99,102,241,.25);padding:6px 12px;border-radius:7px;font-size:.75rem;font-weight:600;cursor:pointer;white-space:nowrap;font-family:inherit}
+.btn-cols:hover{background:rgba(99,102,241,.2)}
+
 /* ── EMPTY STATE ── */
 #empty{display:none;text-align:center;padding:60px 24px;color:var(--text3)}
 #empty .ico{font-size:2.5rem;margin-bottom:12px}
@@ -211,6 +217,7 @@ footer{text-align:center;padding:24px;color:var(--text3);font-size:.72rem;border
     <option>Pendente</option><option>Em andamento</option><option>Concluído</option>
   </select>
   <span class="count-badge" id="count-badge"></span>
+  <button class="btn-cols" id="btn-cols" onclick="toggleCols()">▾ Plataforma / PHP / WP</button>
 </div>
 
 <div class="tbl-wrap">
@@ -227,9 +234,9 @@ footer{text-align:center;padding:24px;color:var(--text3);font-size:.72rem;border
         <th>Status GitHub</th>
         <th>Status CF</th>
         <th>Prioridade</th>
-        <th>Plataforma</th>
-        <th>PHP</th>
-        <th>WordPress</th>
+        <th class="col-extra">Plataforma</th>
+        <th class="col-extra">PHP</th>
+        <th class="col-extra">WordPress</th>
         <th class="obs-col">Observações</th>
       </tr>
     </thead>
@@ -353,14 +360,21 @@ function renderTable(clients) {
         </select>
       </td>
       <td class="editable" data-field="_prioridade" style="text-align:center">${esc(c._prioridade||'')}</td>
-      <td class="editable" data-field="_platform">${esc(c._platform||c.platform||'')}</td>
-      <td class="editable" data-field="_php_ver"><code style="font-size:.75rem">${esc(c._php_ver||c.php_ver||'')}</code></td>
-      <td class="editable" data-field="_wp_ver"><code style="font-size:.75rem">${esc(c._wp_ver||c.wp_ver||'')}</code></td>
+      <td class="editable col-extra" data-field="_platform">${esc(c._platform||c.platform||'')}</td>
+      <td class="editable col-extra" data-field="_php_ver"><code style="font-size:.75rem">${esc(c._php_ver||c.php_ver||'')}</code></td>
+      <td class="editable col-extra" data-field="_wp_ver"><code style="font-size:.75rem">${esc(c._wp_ver||c.wp_ver||'')}</code></td>
       <td class="editable obs-col" data-field="_obs">${esc(c._obs||c.obs||'')}</td>`;
     tbody.appendChild(tr);
     visible++;
   });
   updateCount(visible, clients.length);
+}
+
+function toggleCols() {
+  const tbl = document.getElementById('tbl');
+  const btn = document.getElementById('btn-cols');
+  const on = tbl.classList.toggle('show-cols');
+  btn.textContent = on ? '▴ Ocultar colunas extras' : '▾ Plataforma / PHP / WP';
 }
 
 function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
