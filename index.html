@@ -106,6 +106,17 @@ tr.suspended td:first-child{box-shadow:inset 3px 0 0 var(--red)!important}
 .badge-cf-ok{background:var(--green-bg);color:#15803d;border:1px solid #bbf7d0}
 .badge-cf-no{background:#f1f5f9;color:#64748b;border:1px solid #e2e8f0}
 
+/* ── CHECK ICONS ── */
+th.chk-col{width:46px;text-align:center;padding:10px 4px}
+td.chk-col{width:46px;text-align:center;padding:9px 4px}
+.ck{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;font-size:.8rem;font-weight:700;line-height:1}
+.ck-ok{background:#dcfce7;color:#16a34a}
+.ck-no{background:#f1f5f9;color:#cbd5e1}
+.plg-ok{background:#dcfce7;color:#15803d;border:1px solid #bbf7d0}
+.plg-no{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
+.speed-link{font-size:1rem;text-decoration:none;opacity:.7;transition:opacity .15s}
+.speed-link:hover{opacity:1}
+
 /* Servidor tags */
 .srv{display:inline-block;padding:2px 8px;border-radius:5px;font-size:.68rem;font-weight:600;letter-spacing:.2px}
 .srv-hi{background:var(--blue-bg);color:#1d4ed8}
@@ -201,6 +212,10 @@ table.show-cols .col-extra{display:table-cell}
     <option value="">Todos os servidores</option>
     <option>Hostinger</option><option>Hostgator</option><option>Ambos</option>
   </select>
+  <select class="fil" id="fil-plat" onchange="filterRows()">
+    <option value="">Plataforma: todas</option>
+    <option>WordPress</option><option>HTML</option><option>Tray</option><option>Outro</option>
+  </select>
   <select class="fil" id="fil-gh" onchange="filterRows()">
     <option value="">GitHub: todos</option>
     <option value="true">✓ Com repo</option>
@@ -225,7 +240,7 @@ table.show-cols .col-extra{display:table-cell}
     <option value="yes">Só suspensos</option>
   </select>
   <span class="count-badge" id="count-badge"></span>
-  <button class="btn-cols" id="btn-cols" onclick="toggleCols()">▾ Plataforma / PHP / WP</button>
+  <button class="btn-cols" id="btn-cols" onclick="toggleCols()">▾ Gestão</button>
 </div>
 
 <div class="tbl-wrap">
@@ -236,16 +251,20 @@ table.show-cols .col-extra{display:table-cell}
         <th>Cliente</th>
         <th>Domínio</th>
         <th>Servidor</th>
-        <th>GitHub</th>
-        <th>Cloudflare</th>
-        <th>Responsável</th>
-        <th>Status GitHub</th>
-        <th>Status CF</th>
-        <th>Prioridade</th>
-        <th class="col-extra">Plataforma</th>
-        <th class="col-extra">PHP</th>
-        <th class="col-extra">WordPress</th>
-        <th class="obs-col">Observações</th>
+        <th>Plataforma</th>
+        <th class="chk-col" title="GitHub">GH</th>
+        <th class="chk-col" title="Cloudflare">CF</th>
+        <th class="chk-col" title="Tráfego">Tráf.</th>
+        <th>Plugins</th>
+        <th>WP</th>
+        <th>PHP</th>
+        <th class="chk-col" title="PHP-FPM ativo">FPM</th>
+        <th class="chk-col" title="PageSpeed Insights">⚡</th>
+        <th class="col-extra">Responsável</th>
+        <th class="col-extra">Status GH</th>
+        <th class="col-extra">Status CF</th>
+        <th class="col-extra">Prioridade</th>
+        <th class="col-extra obs-col">Observações</th>
       </tr>
     </thead>
     <tbody id="tbody"></tbody>
@@ -341,39 +360,50 @@ function renderTable(clients) {
     const stgh = c._status_gh || 'Pendente';
     const stcf = c._status_cf || 'Pendente';
     const resp = c._responsavel || '';
+    const platform = c._platform || c.platform || '';
+    const wpVer   = c._wp_ver  || c.wp_ver  || '';
+    const phpVer  = c._php_ver || c.php_ver || '';
+    const traff   = !!(c.traffic && String(c.traffic).trim() !== '' && String(c.traffic).toLowerCase() !== 'none' && String(c.traffic) !== '0' && String(c.traffic).toLowerCase() !== 'false');
+    const fpmVal  = String(c.php_fpm||'').toLowerCase().trim();
+    const fpmOk   = fpmVal && fpmVal !== 'none' && fpmVal !== 'false' && fpmVal !== '0' && fpmVal !== 'não' && fpmVal !== 'nao' && fpmVal !== '';
+    const speedUrl = `https://pagespeed.web.dev/analysis?url=https://${c.domain}`;
     tr.innerHTML = `
       <td class="num-col">${i+1}</td>
       <td><strong style="color:var(--navy)">${esc(c.username)}</strong>${isSusp?'<span class="badge badge-susp">⚠ Suspenso</span>':''}</td>
       <td><a href="https://${c.domain}" target="_blank">${esc(c.domain)}</a></td>
       <td><span class="srv ${srvCls(c.servidor)}">${esc(c.servidor||'?')}</span></td>
-      <td><span class="badge ${ghOk?'badge-gh-ok':'badge-gh-no'}">${ghOk?'✓':'✗'} GitHub</span></td>
-      <td><span class="badge ${cfOk?'badge-cf-ok':'badge-cf-no'}">${cfOk?'✓':'✗'} CF</span></td>
-      <td class="editable" data-field="_responsavel">
+      <td class="editable" data-field="_platform" style="font-size:.78rem">${esc(platform)}</td>
+      <td class="chk-col"><span class="ck ${ghOk?'ck-ok':'ck-no'}">${ghOk?'✓':'✗'}</span></td>
+      <td class="chk-col"><span class="ck ${cfOk?'ck-ok':'ck-no'}">${cfOk?'✓':'✗'}</span></td>
+      <td class="chk-col"><span class="ck ${traff?'ck-ok':'ck-no'}">${traff?'✓':'✗'}</span></td>
+      <td class="editable" data-field="_plugins">${pluginsBadge(c._plugins||c.plugins||'')}</td>
+      <td class="editable" data-field="_wp_ver"><code style="font-size:.75rem">${esc(wpVer)}</code></td>
+      <td class="editable" data-field="_php_ver"><code style="font-size:.75rem">${esc(phpVer)}</code></td>
+      <td class="chk-col editable" data-field="_php_fpm"><span class="ck ${fpmOk?'ck-ok':'ck-no'}">${fpmOk?'✓':'✗'}</span></td>
+      <td class="chk-col"><a href="${speedUrl}" target="_blank" class="speed-link" title="Abrir PageSpeed Insights">⚡</a></td>
+      <td class="editable col-extra" data-field="_responsavel">
         <select class="resp-sel" data-field="_responsavel" onchange="markDirty()" disabled>
           <option value="" ${!resp?'selected':''}>— Ninguém</option>
           <option ${resp==='Dev 1'?'selected':''}>Dev 1</option>
           <option ${resp==='Dev 2'?'selected':''}>Dev 2</option>
         </select>
       </td>
-      <td class="editable" data-field="_status_gh">
+      <td class="editable col-extra" data-field="_status_gh">
         <select class="st-sel ${stCls(stgh)}" data-field="_status_gh" onchange="markDirty();this.className='st-sel '+stCls(this.value)" disabled>
           <option ${stgh==='Pendente'?'selected':''}>Pendente</option>
           <option ${stgh==='Em andamento'?'selected':''}>Em andamento</option>
           <option ${stgh==='Concluído'?'selected':''}>Concluído</option>
         </select>
       </td>
-      <td class="editable" data-field="_status_cf">
+      <td class="editable col-extra" data-field="_status_cf">
         <select class="st-sel ${stCls(stcf)}" data-field="_status_cf" onchange="markDirty();this.className='st-sel '+stCls(this.value)" disabled>
           <option ${stcf==='Pendente'?'selected':''}>Pendente</option>
           <option ${stcf==='Em andamento'?'selected':''}>Em andamento</option>
           <option ${stcf==='Concluído'?'selected':''}>Concluído</option>
         </select>
       </td>
-      <td class="editable" data-field="_prioridade" style="text-align:center">${esc(c._prioridade||'')}</td>
-      <td class="editable col-extra" data-field="_platform">${esc(c._platform||c.platform||'')}</td>
-      <td class="editable col-extra" data-field="_php_ver"><code style="font-size:.75rem">${esc(c._php_ver||c.php_ver||'')}</code></td>
-      <td class="editable col-extra" data-field="_wp_ver"><code style="font-size:.75rem">${esc(c._wp_ver||c.wp_ver||'')}</code></td>
-      <td class="editable obs-col" data-field="_obs">${esc(c._obs||c.obs||'')}</td>`;
+      <td class="editable col-extra" data-field="_prioridade" style="text-align:center">${esc(c._prioridade||'')}</td>
+      <td class="editable col-extra obs-col" data-field="_obs">${esc(c._obs||c.obs||'')}</td>`;
     tbody.appendChild(tr);
     visible++;
   });
@@ -384,7 +414,21 @@ function toggleCols() {
   const tbl = document.getElementById('tbl');
   const btn = document.getElementById('btn-cols');
   const on = tbl.classList.toggle('show-cols');
-  btn.textContent = on ? '▴ Ocultar colunas extras' : '▾ Plataforma / PHP / WP';
+  btn.textContent = on ? '▴ Ocultar gestão' : '▾ Gestão';
+}
+
+function pluginsBadge(v) {
+  const s = String(v||'').trim();
+  if (!s || s === 'None' || s === '') return '<span style="color:var(--text3);font-size:.75rem">—</span>';
+  const n = parseInt(s);
+  if (!isNaN(n)) {
+    if (n === 0) return '<span class="badge plg-ok">✓ Ok</span>';
+    return `<span class="badge plg-no">⚠ ${n} desat.</span>`;
+  }
+  const lv = s.toLowerCase();
+  if (lv.includes('desat') || lv.includes('desatual')) return `<span class="badge plg-no">⚠ ${esc(s)}</span>`;
+  if (lv.includes('atualiz') || lv === 'ok') return '<span class="badge plg-ok">✓ Ok</span>';
+  return `<span style="font-size:.75rem">${esc(s)}</span>`;
 }
 
 function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
@@ -508,6 +552,12 @@ function filterRows() {
     const susp = document.getElementById('fil-susp').value;
     if (susp === 'yes' && !c.suspended) ok = false;
     if (susp === 'no' && c.suspended) ok = false;
+    const plat = document.getElementById('fil-plat').value;
+    if (plat) {
+      const p = (c._platform||c.platform||'').toLowerCase();
+      if (plat === 'Outro') { if (['wordpress','html','tray'].some(x => p.includes(x))) ok = false; }
+      else if (!p.includes(plat.toLowerCase())) ok = false;
+    }
     tr.style.display = ok ? '' : 'none';
     if (ok) shown++;
   });
