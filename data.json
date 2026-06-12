@@ -36,8 +36,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "x"
     },
     {
       "username": "adbelem",
@@ -67,8 +67,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "adbelembauru",
@@ -99,7 +99,7 @@
       "_php_ver": "-",
       "_wp_ver": "6.5.5",
       "_plugins": "-",
-      "_php_fpm": "-"
+      "_php_fpm": "✓"
     },
     {
       "username": "agriex",
@@ -129,8 +129,8 @@
       "_platform": "Loja Integrada",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "alcoolferreira",
@@ -160,8 +160,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.3",
-      "_plugins": "Atualizar",
-      "_php_fpm": "Ativo"
+      "_plugins": "✓ Ok",
+      "_php_fpm": "✓"
     },
     {
       "username": "alsofer",
@@ -191,8 +191,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.9",
-      "_plugins": "2025-12-08 00:00:00",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 2025 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "amarracoes",
@@ -222,8 +222,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.5.5",
-      "_plugins": "26/06/24",
-      "_php_fpm": ""
+      "_plugins": "⚠ 26 desat.",
+      "_php_fpm": "✗"
     },
     {
       "username": "ananery",
@@ -252,9 +252,9 @@
       "_obs": "",
       "_platform": "Wordpress",
       "_php_ver": "8.1",
-      "_wp_ver": "",
-      "_plugins": "26/06/24",
-      "_php_fpm": "-"
+      "_wp_ver": "6.5.5",
+      "_plugins": "⚠ 26 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "Ananery",
@@ -284,8 +284,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": "Ativo"
+      "_plugins": "—",
+      "_php_fpm": "✓"
     },
     {
       "username": "apta",
@@ -315,8 +315,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.5.5",
-      "_plugins": "2025-12-08 00:00:00",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 2025 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "astorhotel",
@@ -347,7 +347,7 @@
       "_php_ver": "-",
       "_wp_ver": "-",
       "_plugins": "-",
-      "_php_fpm": ""
+      "_php_fpm": "✗"
     },
     {
       "username": "autosemlimites",
@@ -377,8 +377,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "26/11/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 26 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "baraero",
@@ -409,7 +409,7 @@
       "_php_ver": "-",
       "_wp_ver": "-",
       "_plugins": "-",
-      "_php_fpm": ""
+      "_php_fpm": "✗"
     },
     {
       "username": "baurucat",
@@ -439,8 +439,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "baurucatcom",
@@ -470,8 +470,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "baurudemolicao",
@@ -501,8 +501,8 @@
       "_platform": "Wordpress",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "bauruelevadores",
@@ -532,8 +532,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.5.5",
-      "_plugins": "27/06/24",
-      "_php_fpm": ""
+      "_plugins": "⚠ 27 desat.",
+      "_php_fpm": "✗"
     },
     {
       "username": "bauruguindastes",
@@ -563,8 +563,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.2",
       "_wp_ver": "6.8.2",
-      "_plugins": "06/10/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 6 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "baurutec",
@@ -594,8 +594,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.3",
-      "_plugins": "2025-10-13 00:00:00",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 2025 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "boost",
@@ -625,8 +625,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "brulimp",
@@ -656,8 +656,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "brulimpeza",
@@ -687,8 +687,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.3",
-      "_plugins": "26/11/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 26 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "camesba",
@@ -718,8 +718,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.3",
       "_wp_ver": "6.5.5",
-      "_plugins": "2024-06-27 00:00:00",
-      "_php_fpm": ""
+      "_plugins": "⚠ 2024 desat.",
+      "_php_fpm": "✗"
     },
     {
       "username": "cardapex",
@@ -750,7 +750,7 @@
       "_php_ver": "7.4",
       "_wp_ver": "-",
       "_plugins": "-",
-      "_php_fpm": "Ativo"
+      "_php_fpm": "✓"
     },
     {
       "username": "carlalambertini",
@@ -780,8 +780,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "26/11/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 26 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "cartomante",
@@ -811,8 +811,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "cartomantedosfamosos",
@@ -842,8 +842,8 @@
       "_platform": "Wordpress",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "cartoon",
@@ -873,8 +873,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "casa da limpeza",
@@ -905,7 +905,7 @@
       "_php_ver": "-",
       "_wp_ver": "-",
       "_plugins": "-",
-      "_php_fpm": ""
+      "_php_fpm": "✗"
     },
     {
       "username": "casadosfiltros",
@@ -935,8 +935,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.5.5",
-      "_plugins": "2024-06-27 00:00:00",
-      "_php_fpm": ""
+      "_plugins": "⚠ 2024 desat.",
+      "_php_fpm": "✗"
     },
     {
       "username": "catalogowhatsapp",
@@ -966,8 +966,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "cgarcia",
@@ -997,8 +997,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "2025-11-05 00:00:00",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 2025 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "chaplin",
@@ -1028,8 +1028,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "ciao3",
@@ -1059,8 +1059,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.5.5",
-      "_plugins": "2024-06-27 00:00:00",
-      "_php_fpm": ""
+      "_plugins": "⚠ 2024 desat.",
+      "_php_fpm": "✗"
     },
     {
       "username": "claudiogabriele",
@@ -1090,8 +1090,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "2025-10-08 00:00:00",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 2025 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "cna",
@@ -1121,8 +1121,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "companhianacionaldealcool",
@@ -1153,7 +1153,7 @@
       "_php_ver": "-",
       "_wp_ver": "-",
       "_plugins": "-",
-      "_php_fpm": "-"
+      "_php_fpm": "✓"
     },
     {
       "username": "construtorars",
@@ -1183,8 +1183,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "copacabana",
@@ -1214,8 +1214,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "copaiba",
@@ -1245,8 +1245,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.8.2",
-      "_plugins": "2025-09-01 00:00:00",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 2025 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "craquele",
@@ -1276,8 +1276,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "26/11/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 26 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "ctccbauru",
@@ -1307,8 +1307,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.2",
-      "_plugins": "2025-08-29 00:00:00",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 2025 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "dacol",
@@ -1339,7 +1339,7 @@
       "_php_ver": "8.1",
       "_wp_ver": "-",
       "_plugins": "-",
-      "_php_fpm": "Ativo"
+      "_php_fpm": "✓"
     },
     {
       "username": "dallon",
@@ -1369,8 +1369,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.2",
-      "_plugins": "02/09/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 2 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "deleoni",
@@ -1400,8 +1400,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.5.5",
-      "_plugins": "2024-07-01 00:00:00",
-      "_php_fpm": ""
+      "_plugins": "⚠ 2024 desat.",
+      "_php_fpm": "✗"
     },
     {
       "username": "denise",
@@ -1431,8 +1431,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "2025-11-05 00:00:00",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 2025 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "dentistabauru",
@@ -1462,8 +1462,8 @@
       "_platform": "HTML",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desensuprematec",
@@ -1493,8 +1493,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.2",
-      "_plugins": "22/08/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 22 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "desentopejacambe",
@@ -1524,8 +1524,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopejajandrolandia",
@@ -1555,8 +1555,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopja",
@@ -1587,7 +1587,7 @@
       "_php_ver": "?",
       "_wp_ver": "?",
       "_plugins": "?",
-      "_php_fpm": "?"
+      "_php_fpm": "✓"
     },
     {
       "username": "desentopjaapucarana",
@@ -1617,8 +1617,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjaaraguri",
@@ -1648,8 +1648,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjaararacua",
@@ -1679,8 +1679,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjaaraucaria",
@@ -1710,8 +1710,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjaassis",
@@ -1741,8 +1741,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjaassischateaubriand",
@@ -1772,8 +1772,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjaastorga",
@@ -1803,8 +1803,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjabauru",
@@ -1834,8 +1834,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjabotucatu",
@@ -1865,8 +1865,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjacampolargo",
@@ -1896,8 +1896,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjacampomourao",
@@ -1927,8 +1927,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjacarambei",
@@ -1958,8 +1958,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjacastro",
@@ -1989,8 +1989,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjacianorte",
@@ -2020,8 +2020,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjaemcampogrande",
@@ -2051,8 +2051,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjaemcampomourao",
@@ -2082,8 +2082,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjaemcascavel",
@@ -2113,8 +2113,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjaemfoz",
@@ -2144,8 +2144,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjaempontagrossa",
@@ -2175,8 +2175,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjagarca",
@@ -2206,8 +2206,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjaguarapuava",
@@ -2237,8 +2237,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjaimbituba",
@@ -2268,8 +2268,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjairati",
@@ -2299,8 +2299,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjajarapongas",
@@ -2330,8 +2330,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjajoinville",
@@ -2361,8 +2361,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjamandaguacu",
@@ -2392,8 +2392,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjamarechalcandido",
@@ -2423,8 +2423,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjamarilia",
@@ -2454,8 +2454,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjamaringa",
@@ -2485,8 +2485,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjamatelandia",
@@ -2516,8 +2516,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjamedianeira",
@@ -2547,8 +2547,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjanovaesperanca",
@@ -2578,8 +2578,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjaourinhos",
@@ -2609,8 +2609,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjapaicandu",
@@ -2640,8 +2640,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjapalatina",
@@ -2671,8 +2671,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjapalmeiras",
@@ -2702,8 +2702,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjaparanavaI",
@@ -2733,8 +2733,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjaprudentopolis",
@@ -2764,8 +2764,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjaribeiraopreto",
@@ -2795,8 +2795,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjariopreto",
@@ -2826,8 +2826,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjasantateresinha",
@@ -2857,8 +2857,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjasaocarlos",
@@ -2888,8 +2888,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjasertaozinho",
@@ -2919,8 +2919,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjatoledo",
@@ -2950,8 +2950,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjauberlandia",
@@ -2981,8 +2981,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "desentopjaumuarama",
@@ -3012,8 +3012,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "dezotti",
@@ -3043,8 +3043,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.5.5",
-      "_plugins": "2024-07-01 00:00:00",
-      "_php_fpm": ""
+      "_plugins": "⚠ 2024 desat.",
+      "_php_fpm": "✗"
     },
     {
       "username": "divulgar",
@@ -3074,8 +3074,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.5.5",
-      "_plugins": "2024-07-01 00:00:00",
-      "_php_fpm": ""
+      "_plugins": "⚠ 2024 desat.",
+      "_php_fpm": "✗"
     },
     {
       "username": "domus",
@@ -3105,8 +3105,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.5.5",
-      "_plugins": "2024-07-02 00:00:00",
-      "_php_fpm": ""
+      "_plugins": "⚠ 2024 desat.",
+      "_php_fpm": "✗"
     },
     {
       "username": "drpaulobernardi",
@@ -3136,8 +3136,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.5.5",
-      "_plugins": "2024-07-02 00:00:00",
-      "_php_fpm": ""
+      "_plugins": "⚠ 2024 desat.",
+      "_php_fpm": "✗"
     },
     {
       "username": "drpaulopittelli",
@@ -3167,8 +3167,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "elementscosmetic",
@@ -3198,8 +3198,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "enerluz",
@@ -3229,8 +3229,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "engetmix",
@@ -3260,8 +3260,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.2",
-      "_plugins": "2025-09-05 00:00:00",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 2025 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "epedido",
@@ -3291,8 +3291,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "epolcar",
@@ -3322,8 +3322,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "2025-11-25 00:00:00",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 2025 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "epold",
@@ -3353,8 +3353,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.5.5",
-      "_plugins": "04/07/24",
-      "_php_fpm": ""
+      "_plugins": "⚠ 4 desat.",
+      "_php_fpm": "✗"
     },
     {
       "username": "escolatide",
@@ -3384,8 +3384,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "esfihalibanesabauru",
@@ -3415,8 +3415,8 @@
       "_platform": "Python",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "esgotec",
@@ -3446,8 +3446,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "esgotecbauru",
@@ -3477,8 +3477,8 @@
       "_platform": "Lara",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "espacotear",
@@ -3508,8 +3508,8 @@
       "_platform": "Tray",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "esqelegante",
@@ -3539,8 +3539,8 @@
       "_platform": "HTML",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "esquadrao",
@@ -3570,8 +3570,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "esquina",
@@ -3602,7 +3602,7 @@
       "_php_ver": "7.4",
       "_wp_ver": "-",
       "_plugins": "-",
-      "_php_fpm": "Desativado"
+      "_php_fpm": "✓"
     },
     {
       "username": "estorillanches",
@@ -3632,8 +3632,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "estorillanchesbauru",
@@ -3663,8 +3663,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "everestlondrinac",
@@ -3694,8 +3694,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "evtparana",
@@ -3725,8 +3725,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "exatos",
@@ -3756,8 +3756,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.4.3",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "excelite",
@@ -3788,7 +3788,7 @@
       "_php_ver": "7.4",
       "_wp_ver": "-",
       "_plugins": "-",
-      "_php_fpm": "Ativo"
+      "_php_fpm": "✓"
     },
     {
       "username": "fertorq",
@@ -3818,8 +3818,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.3",
-      "_plugins": "2025-11-25 00:00:00",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 2025 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "fnob",
@@ -3850,7 +3850,7 @@
       "_php_ver": "-",
       "_wp_ver": "-",
       "_plugins": "-",
-      "_php_fpm": "-"
+      "_php_fpm": "✓"
     },
     {
       "username": "forteprotecoes",
@@ -3880,8 +3880,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.2",
-      "_plugins": "22/08/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 22 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "gaboardi",
@@ -3911,8 +3911,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "gemmini",
@@ -3942,8 +3942,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "26/11/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 26 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "gmginox",
@@ -3973,8 +3973,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "26/11/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 26 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "grabs",
@@ -4004,8 +4004,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.4.3",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "grazie",
@@ -4035,8 +4035,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.4.3",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "greenville",
@@ -4066,8 +4066,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "grupompr",
@@ -4097,8 +4097,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.3",
-      "_plugins": "09/10/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 9 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "homensdeguerra",
@@ -4128,8 +4128,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "idalinaisencoes",
@@ -4159,8 +4159,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.5.2",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "idxhost",
@@ -4190,8 +4190,8 @@
       "_platform": "IndexOF",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "index",
@@ -4221,8 +4221,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.8.2",
-      "_plugins": "06/10/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 6 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "indexhost",
@@ -4252,8 +4252,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "integra",
@@ -4283,8 +4283,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.4.3",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "jaffacosmeticos",
@@ -4314,8 +4314,8 @@
       "_platform": "Loja Integrada",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "jaquelenilanches",
@@ -4345,8 +4345,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "jmpinheiro",
@@ -4376,8 +4376,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.4.3",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "jmpisos",
@@ -4407,8 +4407,8 @@
       "_platform": "HTML",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.2",
-      "_plugins": "05/09/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 5 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "jolie café",
@@ -4438,8 +4438,8 @@
       "_platform": "Loja Integrada",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "jsa",
@@ -4469,8 +4469,8 @@
       "_platform": "HTML",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "jvrflorestal",
@@ -4500,8 +4500,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "kikakau",
@@ -4531,8 +4531,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.5.2",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "lemca",
@@ -4562,8 +4562,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.2",
-      "_plugins": "01/09/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 1 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "lepro",
@@ -4594,7 +4594,7 @@
       "_php_ver": "7.4",
       "_wp_ver": "-",
       "_plugins": "-",
-      "_php_fpm": "Desativado"
+      "_php_fpm": "✓"
     },
     {
       "username": "leprocosmeticos",
@@ -4624,8 +4624,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "06/10/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 6 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "leprocosmetics",
@@ -4656,7 +4656,7 @@
       "_php_ver": "8.3",
       "_wp_ver": "-",
       "_plugins": "-",
-      "_php_fpm": "Ativo"
+      "_php_fpm": "✓"
     },
     {
       "username": "leprocosmetics2",
@@ -4687,7 +4687,7 @@
       "_php_ver": "7.4",
       "_wp_ver": "-",
       "_plugins": "-",
-      "_php_fpm": "Desativado"
+      "_php_fpm": "✓"
     },
     {
       "username": "leproes",
@@ -4717,8 +4717,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "leprousa",
@@ -4749,7 +4749,7 @@
       "_php_ver": "8.3",
       "_wp_ver": "-",
       "_plugins": "-",
-      "_php_fpm": "Ativo"
+      "_php_fpm": "✓"
     },
     {
       "username": "libanesabauru",
@@ -4779,8 +4779,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "limpeza",
@@ -4810,8 +4810,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "llkrental",
@@ -4841,8 +4841,8 @@
       "_platform": "HTML",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "Loja Virtual Indexnet",
@@ -4872,8 +4872,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "lojacoala",
@@ -4904,7 +4904,7 @@
       "_php_ver": "-",
       "_wp_ver": "-",
       "_plugins": "-",
-      "_php_fpm": "-"
+      "_php_fpm": "✓"
     },
     {
       "username": "lokan",
@@ -4934,8 +4934,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.2",
-      "_plugins": "01/09/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 1 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "lokma",
@@ -4965,8 +4965,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.8.3",
-      "_plugins": "26/11/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 26 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "looping",
@@ -4996,8 +4996,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.4.3",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "LP Indexnet",
@@ -5027,8 +5027,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "LP VipPlanos",
@@ -5058,8 +5058,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "maelaura",
@@ -5089,8 +5089,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "maquinadegelorio",
@@ -5120,8 +5120,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "maquinasdegelo",
@@ -5151,8 +5151,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "master",
@@ -5182,8 +5182,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.2",
-      "_plugins": "02/09/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 2 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "memorial",
@@ -5213,8 +5213,8 @@
       "_platform": "PHP",
       "_php_ver": "5.4 - 5.6",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "memorialfor",
@@ -5244,8 +5244,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "mestrealimentos",
@@ -5275,8 +5275,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.4.3",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "mgu",
@@ -5306,8 +5306,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.2",
-      "_plugins": "02/09/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 2 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "mkm",
@@ -5337,8 +5337,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.4.3",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "mousta",
@@ -5368,8 +5368,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "mrconstrutora",
@@ -5399,8 +5399,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "mrincorporadora",
@@ -5430,8 +5430,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.2",
-      "_plugins": "06/10/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 6 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "msexaustec",
@@ -5461,8 +5461,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "06/10/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 6 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "musa",
@@ -5492,8 +5492,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.4.3",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "nativi",
@@ -5523,8 +5523,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "26/11/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 26 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "neo",
@@ -5554,8 +5554,8 @@
       "_platform": "HTML",
       "_php_ver": "7.4",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "nivelbox",
@@ -5585,8 +5585,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "obadias",
@@ -5616,8 +5616,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "26/11/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 26 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "oftcor",
@@ -5647,8 +5647,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.9",
-      "_plugins": "2025-12-04 00:00:00",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 2025 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "ogmcaps",
@@ -5679,7 +5679,7 @@
       "_php_ver": "8.3",
       "_wp_ver": "-",
       "_plugins": "-",
-      "_php_fpm": ""
+      "_php_fpm": "✗"
     },
     {
       "username": "oliveiraaquecedo",
@@ -5709,8 +5709,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.9",
-      "_plugins": "2025-12-04 00:00:00",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 2025 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "ortodiagnosis",
@@ -5741,7 +5741,7 @@
       "_php_ver": "8.3",
       "_wp_ver": "-",
       "_plugins": "-",
-      "_php_fpm": ""
+      "_php_fpm": "✗"
     },
     {
       "username": "packforyou",
@@ -5771,8 +5771,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.2",
-      "_plugins": "02/09/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 2 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "packtoyou",
@@ -5802,8 +5802,8 @@
       "_platform": "IndexOF",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "padariacopa",
@@ -5833,8 +5833,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.4.3",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "paulobernardi",
@@ -5864,8 +5864,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "pedagio",
@@ -5895,8 +5895,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.4.3",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "pedidosonline",
@@ -5926,8 +5926,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "perfilledlemca",
@@ -5958,7 +5958,7 @@
       "_php_ver": "8.1",
       "_wp_ver": "-",
       "_plugins": "-",
-      "_php_fpm": "Ativo"
+      "_php_fpm": "✓"
     },
     {
       "username": "phoenixosasco",
@@ -5988,8 +5988,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.2",
-      "_plugins": "01/09/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 1 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "pontobela",
@@ -6019,8 +6019,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.3",
-      "_plugins": "26/11/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 26 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "prontovet",
@@ -6050,8 +6050,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "2023-11-17 00:00:00",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 2023 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "purificadoresrio",
@@ -6081,8 +6081,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "rafaelahernandez",
@@ -6112,8 +6112,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.3",
-      "_plugins": "Atualizar",
-      "_php_fpm": "Ativo"
+      "_plugins": "✓ Ok",
+      "_php_fpm": "✓"
     },
     {
       "username": "Rede Memorial Fortaleza",
@@ -6143,8 +6143,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.3",
-      "_plugins": "2025-10-17 00:00:00",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 2025 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "rosamarinha",
@@ -6174,8 +6174,8 @@
       "_platform": "Tray",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "rotaspaulistas",
@@ -6205,8 +6205,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.9",
-      "_plugins": "2025-12-04 00:00:00",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 2025 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "santakarmem",
@@ -6236,8 +6236,8 @@
       "_platform": "Loja Integrada",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "sdr engenharia",
@@ -6267,8 +6267,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.0",
       "_wp_ver": "6.5.2",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "sdrengenharia",
@@ -6298,8 +6298,8 @@
       "_platform": "Wordpress",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "seebbauru",
@@ -6329,8 +6329,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.2",
-      "_plugins": "02/09/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 2 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "semlimites",
@@ -6360,8 +6360,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "sercon",
@@ -6391,8 +6391,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.4.3",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "shomertech",
@@ -6423,7 +6423,7 @@
       "_php_ver": "8.3",
       "_wp_ver": "-",
       "_plugins": "-",
-      "_php_fpm": ""
+      "_php_fpm": "✗"
     },
     {
       "username": "silka",
@@ -6453,8 +6453,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "silvioikoma",
@@ -6484,8 +6484,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.3",
-      "_plugins": "26/11/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 26 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "siteparaclinica",
@@ -6515,8 +6515,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.4.3",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "smartsip",
@@ -6546,8 +6546,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "solucao",
@@ -6577,8 +6577,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "sosfiltrosdeagua",
@@ -6608,8 +6608,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "spettin555",
@@ -6639,8 +6639,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "suprematec",
@@ -6670,8 +6670,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "tecnologiaorgan",
@@ -6702,7 +6702,7 @@
       "_php_ver": "7.4",
       "_wp_ver": "-",
       "_plugins": "-",
-      "_php_fpm": "Desativado"
+      "_php_fpm": "✓"
     },
     {
       "username": "telenergia",
@@ -6732,8 +6732,8 @@
       "_platform": "Wordpress",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "templo",
@@ -6763,8 +6763,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "temploespiritual",
@@ -6794,8 +6794,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "termall",
@@ -6825,8 +6825,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "totalsolo",
@@ -6856,8 +6856,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.3",
-      "_plugins": "Atualizar",
-      "_php_fpm": "Ativo"
+      "_plugins": "✓ Ok",
+      "_php_fpm": "✓"
     },
     {
       "username": "toutlissie",
@@ -6887,8 +6887,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "tragial",
@@ -6918,8 +6918,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "2025-11-25 00:00:00",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 2025 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "transfast",
@@ -6949,8 +6949,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.9",
-      "_plugins": "2025-12-04 00:00:00",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 2025 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "transfastbrasil",
@@ -6980,8 +6980,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "TV OK Brasil",
@@ -7011,8 +7011,8 @@
       "_platform": "wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "2025-10-15 00:00:00",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 2025 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "tvok",
@@ -7042,8 +7042,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "uaiemporio",
@@ -7073,8 +7073,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "urnasdeleoni",
@@ -7104,8 +7104,8 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.4.3",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "vargas",
@@ -7135,8 +7135,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "vargasengenhariabauru",
@@ -7166,8 +7166,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "vemflors",
@@ -7197,8 +7197,8 @@
       "_platform": "HTML",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "viana",
@@ -7228,8 +7228,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.3",
-      "_plugins": "2025-10-13 00:00:00",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 2025 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "vinagreen",
@@ -7259,8 +7259,8 @@
       "_platform": "Tray",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "vipplanos",
@@ -7290,8 +7290,8 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "06/10/2025",
-      "_php_fpm": "Ativo"
+      "_plugins": "⚠ 6 desat.",
+      "_php_fpm": "✓"
     },
     {
       "username": "wquadros",
@@ -7321,8 +7321,8 @@
       "_platform": "",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     },
     {
       "username": "zaya",
@@ -7352,8 +7352,8 @@
       "_platform": "Shopify",
       "_php_ver": "",
       "_wp_ver": "",
-      "_plugins": "",
-      "_php_fpm": ""
+      "_plugins": "—",
+      "_php_fpm": "✗"
     }
   ]
 }
