@@ -7527,6 +7527,31 @@
       "_wp_ver": "",
       "_plugins": "—",
       "_php_fpm": "✗"
+    },
+    {
+      "username": "baurudemolicao",
+      "domain": "baurudemolicao.com.br",
+      "servidor": "Hostgator",
+      "_servidor": "Hostgator",
+      "github": false,
+      "cloudflare": "",
+      "suspended": false,
+      "traffic": "",
+      "plugins": "",
+      "wp_ver": "",
+      "php_ver": "",
+      "php_fpm": "",
+      "platform": "",
+      "_platform": "",
+      "_plugins": "",
+      "_wp_ver": "",
+      "_php_ver": "",
+      "_php_fpm": "",
+      "_responsavel": "",
+      "_status_gh": "Pendente",
+      "_status_cf": "Pendente",
+      "_prioridade": "",
+      "_obs": ""
     }
   ]
 }
