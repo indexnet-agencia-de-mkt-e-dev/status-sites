@@ -662,14 +662,14 @@ function toggleFld(span, field, idx) {
 }
 
 /* ── Delete row ── */
-function deleteRow(idx) {
+async function deleteRow(idx) {
   const c = DATA.clients[idx];
   if (!confirm(`Remover "${c.username}" (${c.domain})?`)) return;
   DATA.clients.splice(idx, 1);
-  markDirty();
   renderTable(DATA.clients);
   filterRows();
-  toast('Linha removida — clique Salvar para confirmar.', 'info');
+  toast('Salvando...', 'info');
+  await saveData();
 }
 
 /* ── Add domain modal ── */
