@@ -428,7 +428,7 @@
       "username": "baurudemolicao",
       "domain": "baurudemolicao.com.br",
       "servidor": "Hostgator ",
-      "suspended": false,
+      "suspended": true,
       "disk": "",
       "backup": "",
       "platform": "Wordpress ",
