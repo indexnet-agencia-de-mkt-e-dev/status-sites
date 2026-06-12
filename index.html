@@ -95,6 +95,9 @@ td.num-col{color:var(--text3);font-size:.75rem;width:36px}
 tr.done td:first-child{box-shadow:inset 3px 0 0 var(--green)}
 tr.partial td:first-child{box-shadow:inset 3px 0 0 var(--amber)}
 tr.none td:first-child{box-shadow:inset 3px 0 0 #e5e7eb}
+tr.suspended td{opacity:.65;background:#fff5f5!important}
+tr.suspended td:first-child{box-shadow:inset 3px 0 0 var(--red)!important}
+.badge-susp{background:#fef2f2;color:#dc2626;border:1px solid #fecaca;display:inline-flex;align-items:center;gap:2px;padding:2px 6px;border-radius:12px;font-size:.63rem;font-weight:700;margin-left:5px;vertical-align:middle}
 
 /* ── BADGES ── */
 .badge{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:20px;font-size:.7rem;font-weight:600;white-space:nowrap}
@@ -216,6 +219,11 @@ table.show-cols .col-extra{display:table-cell}
     <option value="">Status: todos</option>
     <option>Pendente</option><option>Em andamento</option><option>Concluído</option>
   </select>
+  <select class="fil" id="fil-susp" onchange="filterRows()">
+    <option value="">Suspenso: todos</option>
+    <option value="no">Só ativos</option>
+    <option value="yes">Só suspensos</option>
+  </select>
   <span class="count-badge" id="count-badge"></span>
   <button class="btn-cols" id="btn-cols" onclick="toggleCols()">▾ Plataforma / PHP / WP</button>
 </div>
@@ -325,15 +333,17 @@ function renderTable(clients) {
   clients.forEach((c, i) => {
     const ghOk = c.github === true;
     const cfOk = (c.cloudflare||'').startsWith('Ativ');
+    const isSusp = c.suspended === true;
     const tr = document.createElement('tr');
-    tr.className = ghOk && cfOk ? 'done' : ghOk || cfOk ? 'partial' : 'none';
+    const baseClass = ghOk && cfOk ? 'done' : ghOk || cfOk ? 'partial' : 'none';
+    tr.className = isSusp ? 'suspended ' + baseClass : baseClass;
     tr.dataset.idx = i;
     const stgh = c._status_gh || 'Pendente';
     const stcf = c._status_cf || 'Pendente';
     const resp = c._responsavel || '';
     tr.innerHTML = `
       <td class="num-col">${i+1}</td>
-      <td><strong style="color:var(--navy)">${esc(c.username)}</strong></td>
+      <td><strong style="color:var(--navy)">${esc(c.username)}</strong>${isSusp?'<span class="badge badge-susp">⚠ Suspenso</span>':''}</td>
       <td><a href="https://${c.domain}" target="_blank">${esc(c.domain)}</a></td>
       <td><span class="srv ${srvCls(c.servidor)}">${esc(c.servidor||'?')}</span></td>
       <td><span class="badge ${ghOk?'badge-gh-ok':'badge-gh-no'}">${ghOk?'✓':'✗'} GitHub</span></td>
@@ -495,6 +505,9 @@ function filterRows() {
     if (resp === 'none' && c._responsavel) ok = false;
     if (resp && resp !== 'none' && c._responsavel !== resp) ok = false;
     if (st && c._status_gh !== st && c._status_cf !== st) ok = false;
+    const susp = document.getElementById('fil-susp').value;
+    if (susp === 'yes' && !c.suspended) ok = false;
+    if (susp === 'no' && c.suspended) ok = false;
     tr.style.display = ok ? '' : 'none';
     if (ok) shown++;
   });
