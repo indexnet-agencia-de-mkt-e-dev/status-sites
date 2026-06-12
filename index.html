@@ -127,6 +127,16 @@ td.chk-col{width:46px;text-align:center;padding:9px 4px}
 select.srv-sel{padding:2px 6px;border-radius:5px;font-size:.68rem;font-weight:600;letter-spacing:.2px;font-family:inherit;border:1px solid transparent;max-width:100px;cursor:default}
 select.srv-sel:disabled{-webkit-appearance:none;appearance:none}
 select.srv-sel:not(:disabled){cursor:pointer;border-color:var(--border)}
+select.plat-sel{padding:2px 6px;border-radius:5px;font-size:.68rem;font-weight:600;font-family:inherit;border:1px solid transparent;max-width:110px;cursor:default;background:#f1f5f9;color:#475569}
+select.plat-sel:disabled{-webkit-appearance:none;appearance:none}
+select.plat-sel:not(:disabled){cursor:pointer;border-color:var(--border)}
+.plat-wordpress{background:#dcfce7;color:#15803d}
+.plat-tray{background:#dbeafe;color:#1d4ed8}
+.plat-shopify{background:#dcfce7;color:#166534}
+.plat-html{background:#fef9c3;color:#92400e}
+.plat-php{background:#ede9fe;color:#6d28d9}
+.plat-loja-integrada{background:#ffedd5;color:#c2410c}
+.plat-outro{background:#f1f5f9;color:#475569}
 
 /* ── DELETE / ADD ── */
 .del-col{display:none!important;width:32px;text-align:center;padding:4px!important}
@@ -229,7 +239,8 @@ table.show-cols .col-extra{display:table-cell}
   </select>
   <select class="fil" id="fil-plat" onchange="filterRows()">
     <option value="">Plataforma: todas</option>
-    <option>WordPress</option><option>HTML</option><option>Tray</option><option>Outro</option>
+    <option>WordPress</option><option>Tray</option><option>Shopify</option>
+    <option>HTML</option><option>PHP</option><option>Loja Integrada</option><option>Outro</option>
   </select>
   <select class="fil" id="fil-gh" onchange="filterRows()">
     <option value="">GitHub: todos</option>
@@ -265,16 +276,16 @@ table.show-cols .col-extra{display:table-cell}
         <th class="num-col">#</th>
         <th>Cliente</th>
         <th>Domínio</th>
+        <th class="chk-col" title="Suspenso no servidor">Susp.</th>
         <th>Servidor</th>
         <th>Plataforma</th>
         <th class="chk-col" title="GitHub">GH</th>
         <th class="chk-col" title="Cloudflare">CF</th>
         <th class="chk-col" title="Tráfego">Tráf.</th>
-        <th>Plugins</th>
         <th>WP</th>
         <th>PHP</th>
         <th class="chk-col" title="PHP-FPM ativo">FPM</th>
-        <th class="chk-col" title="Suspenso no servidor">Susp.</th>
+        <th class="chk-col" title="Plugins atualizados">Plug.</th>
         <th class="chk-col" title="PageSpeed Insights">⚡</th>
         <th class="del-col"></th>
         <th class="col-extra">Responsável</th>
@@ -402,11 +413,14 @@ function renderTable(clients) {
     const traff   = !!(c.traffic && String(c.traffic).trim() !== '' && String(c.traffic).toLowerCase() !== 'none' && String(c.traffic) !== '0' && String(c.traffic).toLowerCase() !== 'false');
     const fpmVal  = String(c._php_fpm||c.php_fpm||'').toLowerCase().trim();
     const fpmOk   = fpmVal && fpmVal !== 'none' && fpmVal !== 'false' && fpmVal !== '0' && fpmVal !== 'não' && fpmVal !== 'nao';
+    const plgVal  = String(c._plugins||c.plugins||'').toLowerCase().trim();
+    const plgOk   = plgVal === 'ativo' || plgVal === '0' || (plgVal && plgVal !== 'none' && plgVal !== 'false' && parseInt(plgVal) === 0);
     const speedUrl = `https://pagespeed.web.dev/analysis?url=https://${c.domain}`;
     tr.innerHTML = `
       <td class="num-col">${i+1}</td>
       <td><strong style="color:var(--navy)">${esc(c.username)}</strong></td>
       <td><a href="https://${c.domain}" target="_blank">${esc(c.domain)}</a></td>
+      <td class="chk-col"><span class="ck ck-toggle ${isSusp?'ck-no':'ck-ok'}" style="${isSusp?'background:#fef2f2;color:#dc2626':''}" onclick="toggleFld(this,'suspended',${i})">${isSusp?'⚠':'✓'}</span></td>
       <td class="editable" data-field="_servidor">
         <select class="srv-sel srv ${srvCls(srv)}" data-field="_servidor" onchange="markDirty();this.className='srv-sel srv '+srvCls(this.value)" disabled>
           <option value="" ${!srv||srv==='?'?'selected':''}>?</option>
@@ -416,15 +430,25 @@ function renderTable(clients) {
           <option ${srv==='Outro'?'selected':''}>Outro</option>
         </select>
       </td>
-      <td class="editable" data-field="_platform" style="font-size:.78rem">${esc(platform)}</td>
-      <td class="chk-col"><span class="ck ${ghOk?'ck-ok':'ck-no'}">${ghOk?'✓':'✗'}</span></td>
-      <td class="chk-col"><span class="ck ${cfOk?'ck-ok':'ck-no'}">${cfOk?'✓':'✗'}</span></td>
+      <td class="editable" data-field="_platform">
+        <select class="plat-sel plat-${(platform||'outro').toLowerCase().replace(/\s+/g,'-')}" data-field="_platform" onchange="markDirty();this.className='plat-sel plat-'+(this.value||'outro').toLowerCase().replace(/\\s+/g,'-')" disabled>
+          <option value="" ${!platform?'selected':''}>—</option>
+          <option ${platform==='WordPress'?'selected':''}>WordPress</option>
+          <option ${platform==='Tray'?'selected':''}>Tray</option>
+          <option ${platform==='Shopify'?'selected':''}>Shopify</option>
+          <option ${platform==='HTML'?'selected':''}>HTML</option>
+          <option ${platform==='PHP'?'selected':''}>PHP</option>
+          <option ${platform==='Loja Integrada'?'selected':''}>Loja Integrada</option>
+          <option ${platform==='Outro'?'selected':''}>Outro</option>
+        </select>
+      </td>
+      <td class="chk-col"><span class="ck ck-toggle ${ghOk?'ck-ok':'ck-no'}" onclick="toggleFld(this,'github',${i})">${ghOk?'✓':'✗'}</span></td>
+      <td class="chk-col"><span class="ck ck-toggle ${cfOk?'ck-ok':'ck-no'}" onclick="toggleFld(this,'cloudflare',${i})">${cfOk?'✓':'✗'}</span></td>
       <td class="chk-col"><span class="ck ck-toggle ${traff?'ck-ok':'ck-no'}" onclick="toggleFld(this,'traffic',${i})">${traff?'✓':'✗'}</span></td>
-      <td class="editable" data-field="_plugins">${pluginsBadge(c._plugins||c.plugins||'')}</td>
       <td class="editable" data-field="_wp_ver"><code style="font-size:.75rem">${esc(wpVer)}</code></td>
       <td class="editable" data-field="_php_ver"><code style="font-size:.75rem">${esc(phpVer)}</code></td>
       <td class="chk-col"><span class="ck ck-toggle ${fpmOk?'ck-ok':'ck-no'}" onclick="toggleFld(this,'_php_fpm',${i})">${fpmOk?'✓':'✗'}</span></td>
-      <td class="chk-col"><span class="ck ck-toggle ${isSusp?'ck-no':'ck-ok'}" style="${isSusp?'background:#fef2f2;color:#dc2626':''}" onclick="toggleFld(this,'suspended',${i})">${isSusp?'⚠':'✓'}</span></td>
+      <td class="chk-col"><span class="ck ck-toggle ${plgOk?'ck-ok':'ck-no'}" onclick="toggleFld(this,'_plugins',${i})">${plgOk?'✓':'✗'}</span></td>
       <td class="chk-col"><a href="${speedUrl}" target="_blank" class="speed-link" title="Abrir PageSpeed Insights">⚡</a></td>
       <td class="editable col-extra" data-field="_responsavel">
         <select class="resp-sel" data-field="_responsavel" onchange="markDirty()" disabled>
@@ -602,9 +626,8 @@ function filterRows() {
     if (susp === 'no' && c.suspended) ok = false;
     const plat = document.getElementById('fil-plat').value;
     if (plat) {
-      const p = (c._platform||c.platform||'').toLowerCase();
-      if (plat === 'Outro') { if (['wordpress','html','tray'].some(x => p.includes(x))) ok = false; }
-      else if (!p.includes(plat.toLowerCase())) ok = false;
+      const p = (c._platform||c.platform||'').trim();
+      if (!p || p !== plat) ok = false;
     }
     tr.style.display = ok ? '' : 'none';
     if (ok) shown++;
@@ -625,6 +648,12 @@ function toggleFld(span, field, idx) {
     const tr = span.closest('tr');
     if (nowSusp) tr.classList.add('suspended');
     else tr.classList.remove('suspended');
+  } else if (field === 'github') {
+    span.textContent = isOn ? '✗' : '✓';
+    DATA.clients[idx].github = !isOn;
+  } else if (field === 'cloudflare') {
+    span.textContent = isOn ? '✗' : '✓';
+    DATA.clients[idx].cloudflare = isOn ? '' : 'Ativo (manual)';
   } else {
     span.textContent = isOn ? '✗' : '✓';
     DATA.clients[idx][field] = isOn ? '' : 'Ativo';
