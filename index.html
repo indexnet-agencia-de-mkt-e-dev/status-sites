@@ -355,6 +355,7 @@ async function loadData() {
 }
 
 function renderAll() {
+  DATA.clients.sort((a,b) => (a.domain||'').localeCompare(b.domain||'', 'pt-BR'));
   renderProgress(DATA.stats);
   renderCards(DATA.stats);
   renderTable(DATA.clients);
