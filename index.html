@@ -124,12 +124,10 @@ td.chk-col{width:46px;text-align:center;padding:9px 4px}
 .srv-hg{background:#fef9c3;color:#92400e}
 .srv-ab{background:var(--purple-bg);color:#6d28d9}
 .srv-out{background:#f1f5f9;color:#64748b}
-select.srv-sel{padding:2px 6px;border-radius:5px;font-size:.68rem;font-weight:600;letter-spacing:.2px;font-family:inherit;border:1px solid transparent;max-width:100px;cursor:default}
-select.srv-sel:disabled{-webkit-appearance:none;appearance:none}
-select.srv-sel:not(:disabled){cursor:pointer;border-color:var(--border)}
-select.plat-sel{padding:2px 6px;border-radius:5px;font-size:.68rem;font-weight:600;font-family:inherit;border:1px solid transparent;max-width:110px;cursor:default;background:#f1f5f9;color:#475569}
-select.plat-sel:disabled{-webkit-appearance:none;appearance:none}
-select.plat-sel:not(:disabled){cursor:pointer;border-color:var(--border)}
+select.srv-sel{padding:2px 6px;border-radius:5px;font-size:.68rem;font-weight:600;letter-spacing:.2px;font-family:inherit;border:1px solid transparent;max-width:100px;cursor:pointer;-webkit-appearance:none;appearance:none}
+body.editing select.srv-sel{-webkit-appearance:revert;appearance:revert;border-color:var(--border)}
+select.plat-sel{padding:2px 6px;border-radius:5px;font-size:.68rem;font-weight:600;font-family:inherit;border:1px solid transparent;max-width:110px;cursor:pointer;background:#f1f5f9;color:#475569;-webkit-appearance:none;appearance:none}
+body.editing select.plat-sel{-webkit-appearance:revert;appearance:revert;border-color:var(--border)}
 .plat-wordpress{background:#dcfce7;color:#15803d}
 .plat-tray{background:#dbeafe;color:#1d4ed8}
 .plat-shopify{background:#dcfce7;color:#166534}
@@ -347,6 +345,7 @@ async function loadData() {
     if (!r.ok) throw new Error('HTTP ' + r.status);
     DATA = await r.json();
     renderAll();
+    if (localStorage.getItem('gh_token')) enterEditMode();
   } catch(e) { toast('Erro ao carregar: ' + e.message, 'err'); }
   document.getElementById('loader').style.display = 'none';
 }
@@ -389,6 +388,28 @@ function renderCards(s) {
 function stCls(v) { return v==='Concluído'?'st-done':v==='Em andamento'?'st-prog':'st-pend'; }
 function srvCls(v) { return v==='Hostgator'?'srv-hg':v==='Hostinger'?'srv-hi':v==='Ambos'?'srv-ab':'srv-out'; }
 
+/* ── Auto edit-mode for selects ── */
+function autoEditSel(sel, idx, field) {
+  if (!editMode) {
+    if (!localStorage.getItem('gh_token')) {
+      toast('Clique em Editar e insira seu token GitHub primeiro.', 'err');
+      sel.value = DATA.clients[idx][field] || DATA.clients[idx][field.replace('_','')] || '';
+      return false;
+    }
+    enterEditMode();
+  }
+  DATA.clients[idx][field] = sel.value;
+  return true;
+}
+
+/* ── Auto-save (debounced 1.5s) ── */
+let _saveTimer = null;
+function autoSave() {
+  markDirty();
+  clearTimeout(_saveTimer);
+  _saveTimer = setTimeout(() => { if (dirty) saveData(); }, 1500);
+}
+
 
 /* ── Table render ── */
 function renderTable(clients) {
@@ -419,10 +440,10 @@ function renderTable(clients) {
     tr.innerHTML = `
       <td class="num-col">${i+1}</td>
       <td><strong style="color:var(--navy)">${esc(c.username)}</strong></td>
-      <td><a href="https://${c.domain}" target="_blank">${esc(c.domain)}</a></td>
+      <td><a href="https://${c.domain}" target="_blank" style="color:inherit;text-decoration:none;font-size:.78rem">${esc(c.domain)}</a></td>
       <td class="chk-col"><span class="ck ck-toggle ${isSusp?'ck-no':'ck-ok'}" style="${isSusp?'background:#fef2f2;color:#dc2626':''}" onclick="toggleFld(this,'suspended',${i})">${isSusp?'⚠':'✓'}</span></td>
       <td class="editable" data-field="_servidor">
-        <select class="srv-sel srv ${srvCls(srv)}" data-field="_servidor" onchange="markDirty();this.className='srv-sel srv '+srvCls(this.value)" disabled>
+        <select class="srv-sel srv ${srvCls(srv)}" data-field="_servidor" onchange="if(!autoEditSel(this,${i},'_servidor'))return;autoSave();this.className='srv-sel srv '+srvCls(this.value)">
           <option value="" ${!srv||srv==='?'?'selected':''}>?</option>
           <option ${srv==='Hostinger'?'selected':''}>Hostinger</option>
           <option ${srv==='Hostgator'?'selected':''}>Hostgator</option>
@@ -431,7 +452,7 @@ function renderTable(clients) {
         </select>
       </td>
       <td class="editable" data-field="_platform">
-        <select class="plat-sel plat-${(platform||'outro').toLowerCase().replace(/\s+/g,'-')}" data-field="_platform" onchange="markDirty();this.className='plat-sel plat-'+(this.value||'outro').toLowerCase().replace(/\\s+/g,'-')" disabled>
+        <select class="plat-sel plat-${(platform||'outro').toLowerCase().replace(/\s+/g,'-')}" data-field="_platform" onchange="if(!autoEditSel(this,${i},'_platform'))return;autoSave();this.className='plat-sel plat-'+(this.value||'outro').toLowerCase().replace(/\\s+/g,'-')">
           <option value="" ${!platform?'selected':''}>—</option>
           <option ${platform==='WordPress'?'selected':''}>WordPress</option>
           <option ${platform==='Tray'?'selected':''}>Tray</option>
@@ -664,7 +685,7 @@ function toggleFld(span, field, idx) {
     span.textContent = isOn ? '✗' : '✓';
     DATA.clients[idx][field] = isOn ? '' : 'Ativo';
   }
-  markDirty();
+  autoSave();
 }
 
 /* ── Delete row ── */
