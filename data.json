@@ -161,11 +161,11 @@
       "_status_cf": "Pendente",
       "_prioridade": "",
       "_obs": "",
-      "_servidor": "Hostgator",
+      "_servidor": "",
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.9",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2025 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2025 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -197,7 +197,7 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.5.5",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 26 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 26 desat.",
       "_php_fpm": "✗"
     },
     {
@@ -293,7 +293,7 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.5.5",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2025 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2025 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -357,7 +357,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 26 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 26 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -517,7 +517,7 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.5.5",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 27 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 27 desat.",
       "_php_fpm": "✗"
     },
     {
@@ -549,7 +549,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.2",
       "_wp_ver": "6.8.2",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 6 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 6 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -581,7 +581,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.3",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2025 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2025 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -677,7 +677,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.3",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 26 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 26 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -709,7 +709,7 @@
       "_platform": "Wordpress",
       "_php_ver": "7.3",
       "_wp_ver": "6.5.5",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2024 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2024 desat.",
       "_php_fpm": "✗"
     },
     {
@@ -773,7 +773,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 26 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 26 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -933,7 +933,7 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.5.5",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2024 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2024 desat.",
       "_php_fpm": "✗"
     },
     {
@@ -997,7 +997,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2025 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2025 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -1061,7 +1061,7 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.5.5",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2024 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2024 desat.",
       "_php_fpm": "✗"
     },
     {
@@ -1093,7 +1093,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2025 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2025 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -1253,7 +1253,7 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.8.2",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2025 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2025 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -1285,7 +1285,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 26 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 26 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -1317,7 +1317,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.2",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2025 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2025 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -1381,7 +1381,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.2",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -1413,7 +1413,7 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.5.5",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2024 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2024 desat.",
       "_php_fpm": "✗"
     },
     {
@@ -1445,7 +1445,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2025 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2025 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -1509,7 +1509,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.2",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 22 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 22 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -3109,7 +3109,7 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.5.5",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2024 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2024 desat.",
       "_php_fpm": "✗"
     },
     {
@@ -3141,7 +3141,7 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.5.5",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2024 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2024 desat.",
       "_php_fpm": "✗"
     },
     {
@@ -3173,7 +3173,7 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.5.5",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2024 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2024 desat.",
       "_php_fpm": "✗"
     },
     {
@@ -3205,7 +3205,7 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.5.5",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2024 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2024 desat.",
       "_php_fpm": "✗"
     },
     {
@@ -3333,7 +3333,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.2",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2025 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2025 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -3397,7 +3397,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2025 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2025 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -3429,7 +3429,7 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.5.5",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 4 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 4 desat.",
       "_php_fpm": "✗"
     },
     {
@@ -3909,7 +3909,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.3",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2025 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2025 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -3973,7 +3973,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.2",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 22 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 22 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -4037,7 +4037,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 26 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 26 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -4069,7 +4069,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 26 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 26 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -4197,7 +4197,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.3",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 9 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 9 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -4325,7 +4325,7 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.8.2",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 6 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 6 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -4517,7 +4517,7 @@
       "_platform": "HTML",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.2",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 5 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 5 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -4677,7 +4677,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.2",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 1 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 1 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -4741,7 +4741,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 6 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 6 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -5061,7 +5061,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.2",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 1 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 1 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -5093,7 +5093,7 @@
       "_platform": "Wordpress",
       "_php_ver": "7.4",
       "_wp_ver": "6.8.3",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 26 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 26 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -5317,7 +5317,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.2",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -5445,7 +5445,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.2",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -5573,7 +5573,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.2",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 6 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 6 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -5605,7 +5605,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 6 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 6 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -5669,7 +5669,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 26 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 26 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -5765,7 +5765,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 26 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 26 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -5797,7 +5797,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.9",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2025 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2025 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -5861,7 +5861,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.9",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2025 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2025 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -5925,7 +5925,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.2",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -6149,7 +6149,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.2",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 1 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 1 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -6181,7 +6181,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.3",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 26 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 26 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -6213,7 +6213,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2023 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2023 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -6309,7 +6309,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.3",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2025 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2025 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -6373,7 +6373,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.9",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2025 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2025 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -6501,7 +6501,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.2",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -6661,7 +6661,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.3",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 26 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 26 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -7109,7 +7109,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2025 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2025 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -7141,7 +7141,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.9",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2025 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2025 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -7205,7 +7205,7 @@
       "_platform": "wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2025 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2025 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -7429,7 +7429,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.1",
       "_wp_ver": "6.8.3",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 2025 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 2025 desat.",
       "_php_fpm": "✓"
     },
     {
@@ -7493,7 +7493,7 @@
       "_platform": "Wordpress",
       "_php_ver": "8.3",
       "_wp_ver": "6.8.3",
-      "_plugins": "⚠ ⚠ ⚠ ⚠ 6 desat.",
+      "_plugins": "⚠ ⚠ ⚠ 6 desat.",
       "_php_fpm": "✓"
     },
     {
