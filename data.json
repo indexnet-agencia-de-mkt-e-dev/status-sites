@@ -4002,7 +4002,7 @@
       "_prioridade": "",
       "_obs": "",
       "_servidor": "Hostgator",
-      "_platform": "",
+      "_platform": "Shopify",
       "_php_ver": "8.3",
       "_wp_ver": "-",
       "_plugins": "-",
@@ -5703,31 +5703,6 @@
       "_wp_ver": "",
       "_plugins": "",
       "_php_fpm": ""
-    },
-    {
-      "username": "lojacoala",
-      "domain": "lojacoala.com.br",
-      "servidor": "Outro",
-      "_servidor": "Outro",
-      "github": false,
-      "cloudflare": "",
-      "suspended": false,
-      "traffic": "",
-      "plugins": "",
-      "wp_ver": "",
-      "php_ver": "",
-      "php_fpm": "",
-      "platform": "",
-      "_platform": "Tray",
-      "_plugins": "",
-      "_wp_ver": "",
-      "_php_ver": "",
-      "_php_fpm": "",
-      "_responsavel": "",
-      "_status_gh": "Pendente",
-      "_status_cf": "Pendente",
-      "_prioridade": "",
-      "_obs": ""
     }
   ]
 }
