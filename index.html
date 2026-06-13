@@ -326,10 +326,10 @@ table.show-cols .col-extra{display:table-cell}
 <div id="toast"></div>
 
 <script>
-const ORG  = 'indexnet-agencia-de-mkt-e-dev';
-const REPO = 'status-sites';
-const RAW  = `https://raw.githubusercontent.com/${ORG}/${REPO}/data/data.json`;
-const API  = `https://api.github.com/repos/${ORG}/${REPO}/contents/data.json`;
+const GIST_ID    = '__GIST_ID__';
+const GIST_OWNER = '__GIST_OWNER__';
+const RAW        = `https://gist.githubusercontent.com/${GIST_OWNER}/${GIST_ID}/raw/data.json`;
+const API_GIST   = `https://api.github.com/gists/${GIST_ID}`;
 
 let DATA = null, editMode = false, dirty = false;
 
@@ -409,7 +409,7 @@ function autoEditSel(sel, idx, field) {
   return true;
 }
 
-/* ── Auto-save imediato com retry em conflito de SHA ── */
+/* ── Auto-save via Gist PATCH — sem SHA conflict ── */
 let _saving = false;
 let _savePending = false;
 async function autoSave() {
@@ -419,27 +419,22 @@ async function autoSave() {
   const token = localStorage.getItem('gh_token');
   if (!token) { _saving = false; return; }
   collectEdits();
-  for (let attempt = 0; attempt < 3; attempt++) {
-    try {
-      const getR = await fetch(API + '?ref=data&_=' + Date.now(), { headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' }, cache: 'no-store' });
-      if (!getR.ok) throw new Error('SHA fetch ' + getR.status);
-      const meta = await getR.json();
-      const content = btoa(unescape(encodeURIComponent(JSON.stringify(DATA, null, 2))));
-      const putR = await fetch(API, {
-        method: 'PUT',
-        headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: 'dashboard auto-save', content, sha: meta.sha, branch: 'data' })
-      });
-      if (putR.ok) { dirty = false; toast('✓', 'ok'); break; }
-      if (putR.status === 422 && attempt < 2) continue; // SHA conflict — retry
-      const e = await putR.json().catch(() => ({}));
-      const hint = putR.status===403 ? ' (sem permissão — verifique o token)' : putR.status===401 ? ' (token inválido)' : '';
-      toast(`Erro ${putR.status}${hint}: ${e.message||''}`, 'err');
-      break;
-    } catch(e) {
-      if (attempt < 2) continue;
-      toast('Erro ao salvar: ' + e.message, 'err');
+  try {
+    const r = await fetch(API_GIST, {
+      method: 'PATCH',
+      headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ files: { 'data.json': { content: JSON.stringify(DATA, null, 2) } } })
+    });
+    if (r.ok) {
+      dirty = false;
+      toast('✓', 'ok');
+    } else {
+      const e = await r.json().catch(() => ({}));
+      const hint = r.status===403 ? ' (sem permissão — token precisa de escopo gist)' : r.status===401 ? ' (token inválido)' : r.status===404 ? ' (gist não encontrado — rode o script)' : '';
+      toast(`Erro ${r.status}${hint}: ${e.message||''}`, 'err');
     }
+  } catch(e) {
+    toast('Erro ao salvar: ' + e.message, 'err');
   }
   _saving = false;
   if (_savePending) { _savePending = false; autoSave(); }
