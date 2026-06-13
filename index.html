@@ -626,17 +626,17 @@ async function saveData() {
   document.getElementById('saving-ind').style.display = 'flex';
   document.querySelector('.btn-save').disabled = true;
   try {
-    const getR = await fetch(API, { headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' } });
-    if (!getR.ok) throw new Error('Falha ao buscar SHA: ' + getR.status);
-    const meta = await getR.json();
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify(DATA, null, 2))));
-    const putR = await fetch(API, {
-      method: 'PUT',
+    const r = await fetch(API_GIST, {
+      method: 'PATCH',
       headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: 'update manual ' + new Date().toLocaleString('pt-BR'), content, sha: meta.sha, branch: 'data' })
+      body: JSON.stringify({ files: { 'data.json': { content: JSON.stringify(DATA, null, 2) } } })
     });
-    if (putR.ok) { toast('Salvo com sucesso! ✓', 'ok'); dirty = false; cancelEdit(); }
-    else { const e = await putR.json(); toast('Erro ao salvar: ' + (e.message||putR.status), 'err'); }
+    if (r.ok) { toast('Salvo com sucesso! ✓', 'ok'); dirty = false; cancelEdit(); }
+    else {
+      const e = await r.json().catch(() => ({}));
+      const hint = r.status===403 ? ' (token precisa de escopo gist)' : r.status===401 ? ' (token inválido)' : '';
+      toast(`Erro ${r.status}${hint}: ${e.message||''}`, 'err');
+    }
   } catch(e) { toast('Erro: ' + e.message, 'err'); }
   document.getElementById('saving-ind').style.display = 'none';
   document.querySelector('.btn-save').disabled = false;
