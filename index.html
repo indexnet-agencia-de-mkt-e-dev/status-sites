@@ -237,7 +237,10 @@ table.show-cols .col-extra{display:table-cell}
   <div class="ctrl-search"><span class="ico">🔍</span><input type="text" id="search" placeholder="Buscar cliente ou domínio..." oninput="filterRows()"></div>
   <select class="fil" id="fil-srv" onchange="filterRows()">
     <option value="">Todos os servidores</option>
-    <option>Hostinger</option><option>Hostgator</option><option>Ambos</option>
+    <option>Hostinger</option>
+    <option>Hostgator Dedicado</option>
+    <option>Hostgator Turbo</option>
+    <option>Hostgator P</option>
   </select>
   <select class="fil" id="fil-plat" onchange="filterRows()">
     <option value="">Plataforma: todas</option>
@@ -257,7 +260,7 @@ table.show-cols .col-extra{display:table-cell}
   </select>
   <select class="fil" id="fil-resp" onchange="filterRows()">
     <option value="">Responsável: todos</option>
-    <option>Dev 1</option><option>Dev 2</option><option value="none">Não atribuído</option>
+    <option>Franciane</option><option>Pedro</option><option value="none">Não atribuído</option>
   </select>
   <select class="fil" id="fil-status" onchange="filterRows()">
     <option value="">Status: todos</option>
@@ -312,7 +315,11 @@ table.show-cols .col-extra{display:table-cell}
       <input id="add-domain" placeholder="Domínio (ex: cliente.com.br)" style="padding:9px 11px;border:1px solid var(--border);border-radius:7px;font-size:.82rem;font-family:inherit" onkeydown="if(event.key==='Enter')confirmAdd()">
       <select id="add-servidor" style="padding:9px 11px;border:1px solid var(--border);border-radius:7px;font-size:.82rem;font-family:inherit;background:#fff">
         <option value="">— Servidor</option>
-        <option>Hostinger</option><option>Hostgator</option><option>Ambos</option><option>Outro</option>
+        <option>Hostinger</option>
+        <option>Hostgator Dedicado</option>
+        <option>Hostgator Turbo</option>
+        <option>Hostgator P</option>
+        <option>Outro</option>
       </select>
     </div>
     <div style="display:flex;gap:8px;margin-top:20px;justify-content:flex-end">
@@ -393,7 +400,7 @@ function renderCards(s) {
 
 /* ── Status helpers ── */
 function stCls(v) { return v==='Concluído'?'st-done':v==='Em andamento'?'st-prog':'st-pend'; }
-function srvCls(v) { return v==='Hostgator'?'srv-hg':v==='Hostinger'?'srv-hi':v==='Ambos'?'srv-ab':'srv-out'; }
+function srvCls(v) { return v==='Hostinger'?'srv-hi':(v||'').startsWith('Hostgator')?'srv-hg':'srv-out'; }
 
 /* ── Auto edit-mode for selects ── */
 function autoEditSel(sel, idx, field) {
@@ -481,8 +488,9 @@ function renderTable(clients) {
         <select class="srv-sel srv ${srvCls(srv)}" data-field="_servidor" onchange="if(!autoEditSel(this,${i},'_servidor'))return;autoSave();this.className='srv-sel srv '+srvCls(this.value)">
           <option value="" ${!srv||srv==='?'?'selected':''}>?</option>
           <option ${srv==='Hostinger'?'selected':''}>Hostinger</option>
-          <option ${srv==='Hostgator'?'selected':''}>Hostgator</option>
-          <option ${srv==='Ambos'?'selected':''}>Ambos</option>
+          <option ${srv==='Hostgator Dedicado'?'selected':''}>Hostgator Dedicado</option>
+          <option ${srv==='Hostgator Turbo'?'selected':''}>Hostgator Turbo</option>
+          <option ${srv==='Hostgator P'?'selected':''}>Hostgator P</option>
           <option ${srv==='Outro'?'selected':''}>Outro</option>
         </select>
       </td>
@@ -510,8 +518,8 @@ function renderTable(clients) {
       <td class="editable col-extra" data-field="_responsavel">
         <select class="resp-sel" data-field="_responsavel" onchange="markDirty()" disabled>
           <option value="" ${!resp?'selected':''}>— Ninguém</option>
-          <option ${resp==='Dev 1'?'selected':''}>Dev 1</option>
-          <option ${resp==='Dev 2'?'selected':''}>Dev 2</option>
+          <option ${resp==='Franciane'?'selected':''}>Franciane</option>
+          <option ${resp==='Pedro'?'selected':''}>Pedro</option>
         </select>
       </td>
       <td class="editable col-extra" data-field="_status_gh">
@@ -670,7 +678,7 @@ function filterRows() {
     const c = DATA.clients[idx];
     let ok = true;
     if (q && !tr.innerText.toLowerCase().includes(q)) ok = false;
-    if (srv && c.servidor !== srv) ok = false;
+    if (srv && (c._servidor||c.servidor) !== srv) ok = false;
     if (gh === 'true' && c.github !== true) ok = false;
     if (gh === 'false' && c.github === true) ok = false;
     if (cf === 'ok'   && !(c.cloudflare||'').toLowerCase().startsWith('ativ')) ok = false;
