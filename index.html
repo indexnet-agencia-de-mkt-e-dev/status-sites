@@ -156,6 +156,7 @@ body.editing .st-sel{-webkit-appearance:revert;appearance:revert}
 .st-pend{background:#fef9c3;color:#92400e;border-color:#fde68a}
 .st-prog{background:var(--blue-bg);color:#1d4ed8;border-color:#bfdbfe}
 .st-done{background:var(--green-bg);color:#15803d;border-color:#bbf7d0}
+.st-upd{background:var(--purple-bg);color:#6d28d9;border-color:#ddd6fe}
 .resp-sel{padding:4px 8px;border:1px solid var(--border);border-radius:6px;font-size:.75rem;font-family:inherit;background:var(--bg);width:100%}
 /* ── PRIORIDADE ── */
 .prio-sel{padding:4px 8px;border-radius:6px;font-size:.75rem;font-weight:600;font-family:inherit;border:1px solid;cursor:pointer;width:100%;-webkit-appearance:none;appearance:none}
@@ -164,6 +165,29 @@ body.editing .prio-sel{-webkit-appearance:revert;appearance:revert}
 .prio-media{background:#fffbeb;color:#d97706;border-color:#fde68a}
 .prio-baixa{background:var(--green-bg);color:#15803d;border-color:#bbf7d0}
 .prio-none{background:#f1f5f9;color:#94a3b8;border-color:#e2e8f0}
+/* ── USO ── */
+.uso-sel{padding:2px 6px;border-radius:5px;font-size:.68rem;font-weight:600;font-family:inherit;border:1px solid transparent;max-width:120px;cursor:pointer;-webkit-appearance:none;appearance:none}
+body.editing .uso-sel{-webkit-appearance:revert;appearance:revert;border-color:var(--border)}
+.uso-site{background:#dbeafe;color:#1d4ed8}
+.uso-email{background:var(--purple-bg);color:#6d28d9}
+.uso-ambos{background:var(--green-bg);color:#15803d}
+.uso-const{background:#fff7ed;color:#c2410c}
+.uso-redir{background:#f1f5f9;color:#475569}
+.uso-none{background:transparent;color:var(--text3)}
+/* ── ALERTAS ── */
+#alerts-wrap{padding:0 28px 10px;display:none}
+#alerts-wrap.has-alerts{display:block}
+.alert-bar{background:#fff;border-radius:10px;border:1px solid var(--border);box-shadow:var(--shadow);overflow:hidden}
+.alert-hdr{padding:9px 16px;background:#1e293b;color:#e2e8f0;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+.alert-hdr h3{font-size:.8rem;font-weight:600;flex:1}
+.alert-badge{background:#dc2626;color:#fff;border-radius:99px;padding:2px 8px;font-size:.7rem;font-weight:700}
+.alerts-body{padding:10px 16px;display:flex;gap:8px;flex-wrap:wrap}
+.alert-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:7px;font-size:.75rem;font-weight:600;cursor:pointer;border:1px solid;transition:opacity .15s}
+.alert-chip:hover{opacity:.8}
+/* ── DATE INPUT ── */
+input.date-inp{padding:3px 6px;border:1px solid transparent;border-radius:5px;font-size:.75rem;font-family:inherit;background:transparent;width:110px;color:var(--text)}
+body.editing input.date-inp{border-color:var(--border);background:#fff}
+input.date-inp:focus{outline:2px solid var(--blue);border-color:transparent}
 
 /* Edit mode */
 td.editable{transition:background .15s}
@@ -223,6 +247,7 @@ input[type=checkbox].row-chk,input[type=checkbox]#chk-all{width:15px;height:15px
     <button class="btn-edit" onclick="startEdit()">✏️ Editar</button>
     <button class="btn-save" onclick="saveData()">💾 Salvar alterações</button>
     <button class="btn-cancel" onclick="cancelEdit()">✕ Cancelar</button>
+    <button onclick="exportCSV()" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2);padding:7px 12px;border-radius:7px;font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit" title="Exportar como CSV">⬇ CSV</button>
     <button class="btn-refresh" onclick="loadData()">↻</button>
     <button class="btn-logout" onclick="logout()">🔓 Sair</button>
   </div>
@@ -249,6 +274,17 @@ input[type=checkbox].row-chk,input[type=checkbox]#chk-all{width:15px;height:15px
 </div>
 
 <div id="cards"></div>
+
+<div id="alerts-wrap">
+  <div class="alert-bar">
+    <div class="alert-hdr" onclick="toggleAlerts()">
+      <h3>⚠ Alertas</h3>
+      <span class="alert-badge" id="alert-total">0</span>
+      <span id="alert-arrow" style="font-size:.75rem;color:#64748b">▾</span>
+    </div>
+    <div class="alerts-body" id="alerts-body"></div>
+  </div>
+</div>
 
 <div id="controls">
   <div class="ctrl-search"><span class="ico">🔍</span><input type="text" id="search" placeholder="Buscar cliente ou domínio..." oninput="filterRows()"></div>
@@ -337,6 +373,8 @@ input[type=checkbox].row-chk,input[type=checkbox]#chk-all{width:15px;height:15px
         <th class="chk-col" title="Plugins atualizados">Plug.</th>
         <th class="chk-col" title="PageSpeed Insights">⚡</th>
         <th class="del-col"></th>
+        <th class="col-extra">Uso</th>
+        <th class="col-extra">Data exec.</th>
         <th class="col-extra">Responsável</th>
         <th class="col-extra">Status GH</th>
         <th class="col-extra">Status CF</th>
@@ -410,6 +448,7 @@ function renderAll() {
   renderProgress(DATA.stats);
   renderCards(DATA.stats);
   renderTable(DATA.clients);
+  renderAlerts(DATA.clients);
   const d = DATA.updated_at;
   document.getElementById('updated-at').textContent = 'Atualizado ' + d;
   document.getElementById('footer').textContent = `Indexnet · ${DATA.clients.length} clientes · Atualizado ${d}`;
@@ -441,8 +480,9 @@ function renderCards(s) {
 }
 
 /* ── Status helpers ── */
-function stCls(v) { return v==='Concluído'?'st-done':v==='Em andamento'?'st-prog':'st-pend'; }
+function stCls(v) { return v==='Concluído'?'st-done':v==='Em andamento'?'st-prog':v==='Atualizar'?'st-upd':'st-pend'; }
 function prioCls(v) { return v==='Alta'?'prio-alta':v==='Média'?'prio-media':v==='Baixa'?'prio-baixa':'prio-none'; }
+function usoCls(v) { return v==='Só email'?'uso-email':v==='Site principal'||v==='Site + Email'?'uso-site uso-ambos':v==='Em construção'?'uso-const':v==='Redirecionamento'?'uso-redir':'uso-none'; }
 function srvCls(v) { return v==='Hostinger'?'srv-hi':(v||'').startsWith('Hostgator')?'srv-hg':'srv-out'; }
 
 /* ── Auto edit-mode for selects ── */
@@ -561,8 +601,21 @@ function renderTable(clients) {
       <td class="chk-col"><span class="ck ck-toggle ${fpmOk?'ck-ok':'ck-no'}" onclick="toggleFld(this,'_php_fpm',${i})">${fpmOk?'✓':'✗'}</span></td>
       <td class="chk-col"><span class="ck ck-toggle ${plgOk?'ck-ok':'ck-no'}" onclick="toggleFld(this,'_plugins',${i})">${plgOk?'✓':'✗'}</span></td>
       <td class="chk-col"><a href="${speedUrl}" target="_blank" class="speed-link" title="Abrir PageSpeed Insights">⚡</a></td>
+      <td class="editable col-extra" data-field="_uso">
+        <select class="uso-sel ${usoCls(c._uso||'')}" data-field="_uso" onchange="if(!autoEditSel(this,${i},'_uso'))return;autoSave();this.className='uso-sel '+usoCls(this.value)">
+          <option value="" ${!(c._uso)?'selected':''}>—</option>
+          <option ${c._uso==='Site principal'?'selected':''}>Site principal</option>
+          <option ${c._uso==='Só email'?'selected':''}>Só email</option>
+          <option ${c._uso==='Site + Email'?'selected':''}>Site + Email</option>
+          <option ${c._uso==='Em construção'?'selected':''}>Em construção</option>
+          <option ${c._uso==='Redirecionamento'?'selected':''}>Redirecionamento</option>
+        </select>
+      </td>
+      <td class="editable col-extra" data-field="_data_exec">
+        <input type="date" class="date-inp" data-field="_data_exec" value="${esc(c._data_exec||'')}" onchange="if(!autoEditSel(this,${i},'_data_exec'))return;autoSave()" oninput="if(!editMode&&localStorage.getItem('gh_token'))enterEditMode()">
+      </td>
       <td class="editable col-extra" data-field="_responsavel">
-        <select class="resp-sel" data-field="_responsavel" onchange="markDirty()" disabled>
+        <select class="resp-sel" data-field="_responsavel" onchange="if(!autoEditSel(this,${i},'_responsavel'))return;autoSave()" >
           <option value="" ${!resp?'selected':''}>— Ninguém</option>
           <option ${resp==='Franciane'?'selected':''}>Franciane</option>
           <option ${resp==='Pedro'?'selected':''}>Pedro</option>
@@ -572,6 +625,7 @@ function renderTable(clients) {
         <select class="st-sel ${stCls(stgh)}" data-field="_status_gh" onchange="if(!autoEditSel(this,${i},'_status_gh'))return;autoSave();this.className='st-sel '+stCls(this.value)">
           <option ${stgh==='Pendente'?'selected':''}>Pendente</option>
           <option ${stgh==='Em andamento'?'selected':''}>Em andamento</option>
+          <option ${stgh==='Atualizar'?'selected':''}>Atualizar</option>
           <option ${stgh==='Concluído'?'selected':''}>Concluído</option>
         </select>
       </td>
@@ -579,6 +633,7 @@ function renderTable(clients) {
         <select class="st-sel ${stCls(stcf)}" data-field="_status_cf" onchange="if(!autoEditSel(this,${i},'_status_cf'))return;autoSave();this.className='st-sel '+stCls(this.value)">
           <option ${stcf==='Pendente'?'selected':''}>Pendente</option>
           <option ${stcf==='Em andamento'?'selected':''}>Em andamento</option>
+          <option ${stcf==='Atualizar'?'selected':''}>Atualizar</option>
           <option ${stcf==='Concluído'?'selected':''}>Concluído</option>
         </select>
       </td>
@@ -712,6 +767,8 @@ function collectEdits() {
       const f = td.dataset.field;
       const sel = td.querySelector('select');
       if (sel) { c[f] = sel.value; return; }
+      const inp = td.querySelector('input');
+      if (inp) { c[f] = inp.value; return; }
       c[f] = td.innerText.trim();
     });
   });
@@ -826,6 +883,91 @@ function confirmAdd() {
   if (editMode) enterEditMode();
   filterRows();
   toast(`"${u}" adicionado — clique Salvar para confirmar.`, 'ok');
+}
+
+/* ── Alertas ── */
+let alertsOpen = true;
+function toggleAlerts() {
+  alertsOpen = !alertsOpen;
+  document.getElementById('alerts-body').style.display = alertsOpen ? 'flex' : 'none';
+  document.getElementById('alert-arrow').textContent = alertsOpen ? '▴' : '▾';
+}
+function renderAlerts(clients) {
+  const now = new Date();
+  const parseDate = s => {
+    if (!s || s==='None'||s===''||s==='False') return null;
+    const p = s.split('/');
+    if (p.length!==3) return null;
+    const d = new Date(parseInt(p[2]), parseInt(p[1])-1, parseInt(p[0]));
+    return isNaN(d.getTime()) ? null : d;
+  };
+  const daysSince = d => Math.floor((now - d) / 86400000);
+  const chips = [];
+  const stale90 = clients.filter(c => { const d=parseDate(c.backup); return d && daysSince(d)>90; });
+  const stale60 = clients.filter(c => { const d=parseDate(c.backup); return d && daysSince(d)>60 && daysSince(d)<=90; });
+  const stale30 = clients.filter(c => { const d=parseDate(c.backup); return d && daysSince(d)>30 && daysSince(d)<=60; });
+  const noBackup = clients.filter(c => !parseDate(c.backup) && c.github===true);
+  const susp = clients.filter(c => c.suspended===true);
+  const execNext7 = clients.filter(c => {
+    if (!c._data_exec) return false;
+    const d = new Date(c._data_exec);
+    if (isNaN(d.getTime())) return false;
+    const diff = (d - now) / 86400000;
+    return diff >= 0 && diff <= 7;
+  });
+  if (execNext7.length) chips.push({bg:'#ede9fe',color:'#6d28d9',border:'#ddd6fe',txt:`${execNext7.length} exec. nos próximos 7 dias`,filter:'exec7'});
+  if (stale90.length) chips.push({bg:'#fef2f2',color:'#dc2626',border:'#fecaca',txt:`${stale90.length} sem atualização +90 dias`,filter:'stale90'});
+  if (stale60.length) chips.push({bg:'#fff7ed',color:'#c2410c',border:'#fed7aa',txt:`${stale60.length} sem atualização 60-90 dias`,filter:'stale60'});
+  if (stale30.length) chips.push({bg:'#fffbeb',color:'#d97706',border:'#fde68a',txt:`${stale30.length} sem atualização 30-60 dias`,filter:'stale30'});
+  if (noBackup.length) chips.push({bg:'#f1f5f9',color:'#475569',border:'#e2e8f0',txt:`${noBackup.length} com GitHub mas sem data de backup`,filter:'nobackup'});
+  if (susp.length) chips.push({bg:'#fef2f2',color:'#dc2626',border:'#fecaca',txt:`${susp.length} suspenso${susp.length>1?'s':''}`,filter:'susp'});
+  const body = document.getElementById('alerts-body');
+  const wrap = document.getElementById('alerts-wrap');
+  const badge = document.getElementById('alert-total');
+  if (!chips.length) { wrap.classList.remove('has-alerts'); return; }
+  wrap.classList.add('has-alerts');
+  badge.textContent = chips.length;
+  body.innerHTML = chips.map(ch =>
+    `<span class="alert-chip" style="background:${ch.bg};color:${ch.color};border-color:${ch.border}" onclick="applyAlertFilter('${ch.filter}')">${ch.txt}</span>`
+  ).join('');
+}
+function applyAlertFilter(f) {
+  const now = new Date();
+  const parseDate = s => { if(!s||s==='None')return null; const p=s.split('/'); if(p.length!==3)return null; const d=new Date(parseInt(p[2]),parseInt(p[1])-1,parseInt(p[0])); return isNaN(d.getTime())?null:d; };
+  const daysSince = d => Math.floor((now-d)/86400000);
+  document.querySelectorAll('#tbody tr').forEach(tr => {
+    const idx = parseInt(tr.dataset.idx);
+    const c = DATA.clients[idx];
+    if (!c) return;
+    const d = parseDate(c.backup);
+    let show = false;
+    if (f==='stale90') show = d && daysSince(d)>90;
+    else if (f==='stale60') show = d && daysSince(d)>60 && daysSince(d)<=90;
+    else if (f==='stale30') show = d && daysSince(d)>30 && daysSince(d)<=60;
+    else if (f==='nobackup') show = !d && c.github===true;
+    else if (f==='susp') show = c.suspended===true;
+    else if (f==='exec7') { if(c._data_exec){const ex=new Date(c._data_exec);const diff=(ex-now)/86400000;show=!isNaN(ex.getTime())&&diff>=0&&diff<=7;} }
+    tr.style.display = show ? '' : 'none';
+  });
+  const shown = document.querySelectorAll('#tbody tr:not([style*="display: none"])').length;
+  updateCount(shown, DATA.clients.length);
+  toast('Filtro aplicado. Clique ↻ ou busque para limpar.','info');
+}
+
+/* ── Exportar CSV ── */
+function exportCSV() {
+  if (!DATA) return;
+  const cols = ['username','domain','servidor','_servidor','platform','_platform','_uso','github','cloudflare','backup','suspended','_status_gh','_status_cf','_prioridade','_data_exec','_responsavel','_obs'];
+  const headers = ['Username','Domínio','Servidor','Servidor (manual)','Plataforma','Plataforma (manual)','Uso','GitHub','Cloudflare','Último backup','Suspenso','Status GH','Status CF','Prioridade','Data execução','Responsável','Observações'];
+  const esc2 = v => '"' + String(v||'').replace(/"/g,'""') + '"';
+  const rows = [headers.map(esc2).join(',')];
+  DATA.clients.forEach(c => rows.push(cols.map(k => esc2(c[k]!==undefined?c[k]:'')).join(',')));
+  const blob = new Blob(['﻿'+rows.join('\r\n')], {type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `indexnet-sites-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  toast('CSV exportado!','ok');
 }
 
 /* ── Bulk selection ── */
