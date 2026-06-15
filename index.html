@@ -151,11 +151,19 @@ body.editing .ck-toggle:hover{transform:scale(1.2)}
 body.editing #btn-add{display:inline-flex}
 
 /* ── STATUS DROPDOWNS ── */
-.st-sel{padding:4px 8px;border-radius:6px;font-size:.75rem;font-weight:600;font-family:inherit;border:1px solid;cursor:pointer;width:100%}
+.st-sel{padding:4px 8px;border-radius:6px;font-size:.75rem;font-weight:600;font-family:inherit;border:1px solid;cursor:pointer;width:100%;-webkit-appearance:none;appearance:none}
+body.editing .st-sel{-webkit-appearance:revert;appearance:revert}
 .st-pend{background:#fef9c3;color:#92400e;border-color:#fde68a}
 .st-prog{background:var(--blue-bg);color:#1d4ed8;border-color:#bfdbfe}
 .st-done{background:var(--green-bg);color:#15803d;border-color:#bbf7d0}
 .resp-sel{padding:4px 8px;border:1px solid var(--border);border-radius:6px;font-size:.75rem;font-family:inherit;background:var(--bg);width:100%}
+/* ── PRIORIDADE ── */
+.prio-sel{padding:4px 8px;border-radius:6px;font-size:.75rem;font-weight:600;font-family:inherit;border:1px solid;cursor:pointer;width:100%;-webkit-appearance:none;appearance:none}
+body.editing .prio-sel{-webkit-appearance:revert;appearance:revert}
+.prio-alta{background:#fef2f2;color:#dc2626;border-color:#fecaca}
+.prio-media{background:#fffbeb;color:#d97706;border-color:#fde68a}
+.prio-baixa{background:var(--green-bg);color:#15803d;border-color:#bbf7d0}
+.prio-none{background:#f1f5f9;color:#94a3b8;border-color:#e2e8f0}
 
 /* Edit mode */
 td.editable{transition:background .15s}
@@ -434,6 +442,7 @@ function renderCards(s) {
 
 /* ── Status helpers ── */
 function stCls(v) { return v==='Concluído'?'st-done':v==='Em andamento'?'st-prog':'st-pend'; }
+function prioCls(v) { return v==='Alta'?'prio-alta':v==='Média'?'prio-media':v==='Baixa'?'prio-baixa':'prio-none'; }
 function srvCls(v) { return v==='Hostinger'?'srv-hi':(v||'').startsWith('Hostgator')?'srv-hg':'srv-out'; }
 
 /* ── Auto edit-mode for selects ── */
@@ -560,20 +569,27 @@ function renderTable(clients) {
         </select>
       </td>
       <td class="editable col-extra" data-field="_status_gh">
-        <select class="st-sel ${stCls(stgh)}" data-field="_status_gh" onchange="markDirty();this.className='st-sel '+stCls(this.value)" disabled>
+        <select class="st-sel ${stCls(stgh)}" data-field="_status_gh" onchange="if(!autoEditSel(this,${i},'_status_gh'))return;autoSave();this.className='st-sel '+stCls(this.value)">
           <option ${stgh==='Pendente'?'selected':''}>Pendente</option>
           <option ${stgh==='Em andamento'?'selected':''}>Em andamento</option>
           <option ${stgh==='Concluído'?'selected':''}>Concluído</option>
         </select>
       </td>
       <td class="editable col-extra" data-field="_status_cf">
-        <select class="st-sel ${stCls(stcf)}" data-field="_status_cf" onchange="markDirty();this.className='st-sel '+stCls(this.value)" disabled>
+        <select class="st-sel ${stCls(stcf)}" data-field="_status_cf" onchange="if(!autoEditSel(this,${i},'_status_cf'))return;autoSave();this.className='st-sel '+stCls(this.value)">
           <option ${stcf==='Pendente'?'selected':''}>Pendente</option>
           <option ${stcf==='Em andamento'?'selected':''}>Em andamento</option>
           <option ${stcf==='Concluído'?'selected':''}>Concluído</option>
         </select>
       </td>
-      <td class="editable col-extra" data-field="_prioridade" style="text-align:center">${esc(c._prioridade||'')}</td>
+      <td class="editable col-extra" data-field="_prioridade">
+        <select class="prio-sel ${prioCls(c._prioridade||'')}" data-field="_prioridade" onchange="if(!autoEditSel(this,${i},'_prioridade'))return;autoSave();this.className='prio-sel '+prioCls(this.value)">
+          <option value="" ${!(c._prioridade)?'selected':''}>—</option>
+          <option ${c._prioridade==='Alta'?'selected':''}>Alta</option>
+          <option ${c._prioridade==='Média'?'selected':''}>Média</option>
+          <option ${c._prioridade==='Baixa'?'selected':''}>Baixa</option>
+        </select>
+      </td>
       <td class="editable col-extra obs-col" data-field="_obs">${esc(c._obs||c.obs||'')}</td>
       <td class="del-col"><button class="del-btn" onclick="deleteRow(${i})" title="Remover linha">✕</button></td>`;
     tbody.appendChild(tr);
