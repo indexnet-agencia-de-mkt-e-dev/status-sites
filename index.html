@@ -245,7 +245,7 @@ table.show-cols .col-extra{display:table-cell}
   <select class="fil" id="fil-plat" onchange="filterRows()">
     <option value="">Plataforma: todas</option>
     <option>WordPress</option><option>Tray</option><option>Shopify</option>
-    <option>HTML</option><option>PHP</option><option>Loja Integrada</option><option>Outro</option>
+    <option>HTML</option><option>PHP</option><option>Loja Integrada</option><option>Agile</option><option>Outro</option>
   </select>
   <select class="fil" id="fil-gh" onchange="filterRows()">
     <option value="">GitHub: todos</option>
@@ -286,6 +286,7 @@ table.show-cols .col-extra{display:table-cell}
         <th>Servidor</th>
         <th>Plataforma</th>
         <th class="chk-col" title="GitHub">GH</th>
+        <th title="Data do último push no repositório GitHub">Bkp</th>
         <th class="chk-col" title="Cloudflare">CF</th>
         <th class="chk-col" title="DNS pendente de apontamento para Cloudflare">Pend.</th>
         <th class="chk-col" title="Tráfego">Tráf.</th>
@@ -503,10 +504,12 @@ function renderTable(clients) {
           <option ${platform==='HTML'?'selected':''}>HTML</option>
           <option ${platform==='PHP'?'selected':''}>PHP</option>
           <option ${platform==='Loja Integrada'?'selected':''}>Loja Integrada</option>
+          <option ${platform==='Agile'?'selected':''}>Agile</option>
           <option ${platform==='Outro'?'selected':''}>Outro</option>
         </select>
       </td>
       <td class="chk-col"><span class="ck ck-toggle ${ghOk?'ck-ok':'ck-no'}" onclick="toggleFld(this,'github',${i})">${ghOk?'✓':'✗'}</span></td>
+      <td style="font-size:.7rem;color:var(--text2);white-space:nowrap">${esc(c.backup||'')}</td>
       <td class="chk-col"><span class="ck ck-toggle ${cfOk?'ck-ok':'ck-no'}" onclick="toggleFld(this,'cloudflare',${i})">${cfOk?'✓':'✗'}</span></td>
       <td class="chk-col">${cfPend?`<span class="ck" style="background:#fef9c3;color:#92400e;font-size:.7rem" title="${esc(c.cloudflare)}">⚠</span>`:''}</td>
       <td class="chk-col"><span class="ck ck-toggle ${traff?'ck-ok':'ck-no'}" onclick="toggleFld(this,'traffic',${i})">${traff?'✓':'✗'}</span></td>
