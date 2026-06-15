@@ -186,6 +186,15 @@ table.show-cols .col-extra{display:table-cell}
 /* ── LOADING ── */
 #loader{position:fixed;inset:0;background:rgba(15,23,42,.6);display:flex;align-items:center;justify-content:center;z-index:9998;flex-direction:column;gap:12px;color:#e2e8f0;font-size:.85rem}
 .loader-ring{width:40px;height:40px;border:3px solid rgba(255,255,255,.2);border-top-color:#60a5fa;border-radius:50%;animation:spin .7s linear infinite}
+
+/* ── BULK BAR ── */
+#bulk-bar{display:none;background:#1e293b;color:#e2e8f0;padding:9px 28px;align-items:center;gap:8px;flex-wrap:wrap;border-bottom:1px solid #334155;position:sticky;top:64px;z-index:95}
+#bulk-bar.active{display:flex}
+.bulk-count{font-size:.8rem;font-weight:600;color:#94a3b8;white-space:nowrap;min-width:80px}
+.bulk-sep{width:1px;height:20px;background:#334155;flex-shrink:0}
+.bulk-sel{padding:5px 9px;border:1px solid #475569;border-radius:6px;font-size:.75rem;font-family:inherit;background:#0f172a;color:#e2e8f0;cursor:pointer}
+th.cb-col,td.cb-col{width:34px;text-align:center;padding:9px 4px!important}
+input[type=checkbox].row-chk,input[type=checkbox]#chk-all{width:15px;height:15px;cursor:pointer;accent-color:var(--blue)}
 </style>
 </head>
 <body>
@@ -275,10 +284,34 @@ table.show-cols .col-extra{display:table-cell}
   <button class="btn-cols" id="btn-cols" onclick="toggleCols()">▾ Gestão</button>
 </div>
 
+<div id="bulk-bar">
+  <span class="bulk-count" id="bulk-count">0 selecionados</span>
+  <div class="bulk-sep"></div>
+  <button onclick="selectAllVisible()" style="background:rgba(255,255,255,.08);color:#e2e8f0;border:1px solid #475569;padding:5px 11px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;font-family:inherit">Selecionar todos filtrados</button>
+  <button onclick="deselectAll()" style="background:rgba(255,255,255,.08);color:#94a3b8;border:1px solid #475569;padding:5px 11px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;font-family:inherit">Desmarcar tudo</button>
+  <div class="bulk-sep"></div>
+  <select id="bulk-srv" class="bulk-sel">
+    <option value="">— Servidor</option>
+    <option>Hostinger</option>
+    <option>Hostgator Dedicado</option>
+    <option>Hostgator Turbo</option>
+    <option>Hostgator P</option>
+  </select>
+  <select id="bulk-plat" class="bulk-sel">
+    <option value="">— Plataforma</option>
+    <option>WordPress</option><option>Tray</option><option>Shopify</option>
+    <option>HTML</option><option>PHP</option><option>Loja Integrada</option><option>Agile</option><option>Outro</option>
+  </select>
+  <button onclick="applyBulk()" style="background:var(--blue);color:#fff;border:none;padding:5px 14px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;font-family:inherit">✓ Aplicar</button>
+  <div class="bulk-sep"></div>
+  <button onclick="deleteSelected()" style="background:rgba(220,38,38,.15);color:#fca5a5;border:1px solid rgba(220,38,38,.3);padding:5px 12px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;font-family:inherit">✕ Excluir selecionados</button>
+</div>
+
 <div class="tbl-wrap">
   <table id="tbl">
     <thead>
       <tr>
+        <th class="cb-col"><input type="checkbox" id="chk-all" onchange="toggleAllVisible(this.checked)" title="Selecionar todos visíveis"></th>
         <th class="num-col">#</th>
         <th>Cliente</th>
         <th>Domínio</th>
@@ -481,6 +514,7 @@ function renderTable(clients) {
     const plgOk   = plgVal === 'ativo' || plgVal === '0' || (plgVal && plgVal !== 'none' && plgVal !== 'false' && parseInt(plgVal) === 0);
     const speedUrl = `https://pagespeed.web.dev/analysis?url=https://${c.domain}`;
     tr.innerHTML = `
+      <td class="cb-col"><input type="checkbox" class="row-chk" data-idx="${i}" onchange="onRowCheck(this)" ${selected.has(i)?'checked':''}></td>
       <td class="num-col">${i+1}</td>
       <td><strong style="color:var(--navy)">${esc(c.username)}</strong></td>
       <td><a href="https://${c.domain}" target="_blank" style="color:inherit;text-decoration:none;font-size:.78rem">${esc(c.domain)}</a></td>
@@ -776,6 +810,90 @@ function confirmAdd() {
   if (editMode) enterEditMode();
   filterRows();
   toast(`"${u}" adicionado — clique Salvar para confirmar.`, 'ok');
+}
+
+/* ── Bulk selection ── */
+let selected = new Set();
+
+function onRowCheck(chk) {
+  const idx = parseInt(chk.dataset.idx);
+  if (chk.checked) selected.add(idx); else selected.delete(idx);
+  updateBulkBar();
+}
+
+function toggleAllVisible(checked) {
+  document.querySelectorAll('#tbody tr').forEach(tr => {
+    if (tr.style.display === 'none') return;
+    const chk = tr.querySelector('.row-chk');
+    if (!chk) return;
+    chk.checked = checked;
+    const idx = parseInt(chk.dataset.idx);
+    if (checked) selected.add(idx); else selected.delete(idx);
+  });
+  updateBulkBar();
+}
+
+function selectAllVisible() {
+  document.querySelectorAll('#tbody tr').forEach(tr => {
+    if (tr.style.display === 'none') return;
+    const chk = tr.querySelector('.row-chk');
+    if (!chk) return;
+    chk.checked = true;
+    selected.add(parseInt(chk.dataset.idx));
+  });
+  updateBulkBar();
+}
+
+function deselectAll() {
+  selected.clear();
+  document.querySelectorAll('.row-chk').forEach(chk => chk.checked = false);
+  const all = document.getElementById('chk-all');
+  if (all) all.checked = false;
+  updateBulkBar();
+}
+
+function updateBulkBar() {
+  const bar = document.getElementById('bulk-bar');
+  const count = document.getElementById('bulk-count');
+  if (selected.size > 0) {
+    bar.classList.add('active');
+    count.textContent = `${selected.size} selecionado${selected.size > 1 ? 's' : ''}`;
+  } else {
+    bar.classList.remove('active');
+    document.getElementById('bulk-srv').value = '';
+    document.getElementById('bulk-plat').value = '';
+  }
+}
+
+async function applyBulk() {
+  if (selected.size === 0) return;
+  const srv  = document.getElementById('bulk-srv').value;
+  const plat = document.getElementById('bulk-plat').value;
+  if (!srv && !plat) { toast('Selecione servidor ou plataforma para aplicar.', 'err'); return; }
+  if (!localStorage.getItem('gh_token')) { toast('Insira seu token GitHub primeiro.', 'err'); return; }
+  if (!editMode) enterEditMode();
+  selected.forEach(idx => {
+    const c = DATA.clients[idx];
+    if (!c) return;
+    if (srv)  c._servidor = srv;
+    if (plat) c._platform = plat;
+  });
+  const n = selected.size;
+  renderTable(DATA.clients);
+  if (editMode) enterEditMode();
+  filterRows();
+  toast(`${n} cliente${n>1?'s':''} atualizados — clique Salvar para confirmar.`, 'ok');
+}
+
+async function deleteSelected() {
+  if (selected.size === 0) return;
+  if (!confirm(`Remover ${selected.size} cliente(s) selecionado(s)?`)) return;
+  const toDelete = Array.from(selected).sort((a, b) => b - a);
+  toDelete.forEach(idx => DATA.clients.splice(idx, 1));
+  selected.clear();
+  renderTable(DATA.clients);
+  filterRows();
+  toast(`${toDelete.length} cliente(s) removido(s) — clique Salvar para confirmar.`, 'ok');
 }
 
 /* ── Safety ── */
