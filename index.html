@@ -227,6 +227,29 @@ table.show-cols .col-extra{display:table-cell}
 .bulk-sel{padding:5px 9px;border:1px solid #475569;border-radius:6px;font-size:.75rem;font-family:inherit;background:#0f172a;color:#e2e8f0;cursor:pointer}
 th.cb-col,td.cb-col{width:34px;text-align:center;padding:9px 4px!important}
 input[type=checkbox].row-chk,input[type=checkbox]#chk-all{width:15px;height:15px;cursor:pointer;accent-color:var(--blue)}
+
+/* ── STICKY THEAD ── */
+thead th{position:sticky;top:var(--thead-top,120px);z-index:80}
+/* ── BOTÃO VERIFICAR ── */
+.btn-verify{background:rgba(22,163,74,.2);color:#86efac;border:1px solid rgba(22,163,74,.3)}
+.btn-verify:hover{background:rgba(22,163,74,.35)}
+.btn-verify:disabled{opacity:.5;cursor:not-allowed;transform:none}
+/* ── CF TOKEN BAR ── */
+#cf-token-bar{background:#eff6ff;border-bottom:1px solid #bfdbfe;padding:10px 28px;display:none;align-items:center;gap:10px;flex-wrap:wrap}
+#cf-token-bar span{font-size:.8rem;font-weight:500;color:#1e40af}
+#cf-token-bar input{flex:1;max-width:380px;padding:7px 11px;border:1px solid #93c5fd;border-radius:6px;font-size:.8rem;background:#fff;font-family:monospace}
+#cf-token-bar .tip{font-size:.72rem;color:#1d4ed8;opacity:.8}
+/* ── VERIFY PROGRESS (canto inferior direito) ── */
+#verify-prog{display:none;position:fixed;bottom:70px;right:28px;background:#1e293b;color:#e2e8f0;border-radius:12px;padding:16px 20px;box-shadow:var(--shadow-md);z-index:9999;min-width:260px}
+#verify-prog h4{font-size:.8rem;font-weight:600;margin-bottom:10px;color:#94a3b8}
+.vp-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.vp-row:last-child{margin-bottom:0}
+.vp-lbl{width:80px;font-size:.73rem;color:#94a3b8}
+.vp-bar{flex:1;height:5px;background:#334155;border-radius:3px;overflow:hidden}
+.vp-fill{height:100%;border-radius:3px;transition:width .15s}
+.vp-fill-gh{background:linear-gradient(90deg,#2563eb,#3b82f6)}
+.vp-fill-cf{background:linear-gradient(90deg,#16a34a,#22c55e)}
+.vp-pct{font-size:.7rem;width:32px;text-align:right;color:#e2e8f0}
 </style>
 </head>
 <body>
@@ -249,6 +272,8 @@ input[type=checkbox].row-chk,input[type=checkbox]#chk-all{width:15px;height:15px
     <button class="btn-cancel" onclick="cancelEdit()">✕ Cancelar</button>
     <button onclick="exportCSV()" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2);padding:7px 12px;border-radius:7px;font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit" title="Exportar como CSV">⬇ CSV</button>
     <button class="btn-refresh" onclick="loadData()">↻</button>
+    <button id="btn-verify" class="btn-verify" onclick="runVerification()" title="Verificar GitHub e Cloudflare de todos os clientes">🔄 Verificar CF/GH</button>
+    <button onclick="toggleCfTokenBar()" style="background:rgba(255,255,255,.08);color:#93c5fd;border:1px solid rgba(96,165,250,.3);padding:7px 10px;border-radius:7px;font-size:.78rem;cursor:pointer;font-family:inherit;font-weight:600" title="Configurar token Cloudflare (opcional)">☁️ CF Token</button>
     <button class="btn-logout" onclick="logout()">🔓 Sair</button>
   </div>
 </header>
@@ -258,6 +283,20 @@ input[type=checkbox].row-chk,input[type=checkbox]#chk-all{width:15px;height:15px
   <input type="password" id="token-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
   <button onclick="saveToken()" style="background:var(--green);color:#fff;padding:7px 14px;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-family:inherit;font-size:.78rem">Confirmar</button>
   <span class="tip">Salvo apenas no seu browser · necessário para editar</span>
+</div>
+
+<div id="cf-token-bar">
+  <span>☁️ Token Cloudflare:</span>
+  <input type="password" id="cf-token-input" placeholder="Token Zone:Read (opcional — sem ele usa DNS)">
+  <button onclick="saveCfToken()" style="background:var(--blue);color:#fff;padding:7px 14px;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-family:inherit;font-size:.78rem">Confirmar</button>
+  <button onclick="clearCfToken()" id="btn-cf-clear" style="background:#374151;color:#fff;padding:7px 14px;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-family:inherit;font-size:.78rem;display:none">✕ Remover</button>
+  <span class="tip">Token Cloudflare Zone:Read · salvo no browser · sem ele a verificação usa DNS público</span>
+</div>
+
+<div id="verify-prog">
+  <h4 id="verify-status">Verificando...</h4>
+  <div class="vp-row"><span class="vp-lbl">GitHub</span><div class="vp-bar"><div class="vp-fill vp-fill-gh" id="vp-gh" style="width:0%"></div></div><span class="vp-pct" id="vp-gh-pct">0%</span></div>
+  <div class="vp-row"><span class="vp-lbl">Cloudflare</span><div class="vp-bar"><div class="vp-fill vp-fill-cf" id="vp-cf" style="width:0%"></div></div><span class="vp-pct" id="vp-cf-pct">0%</span></div>
 </div>
 
 <div id="progress-band">
@@ -452,6 +491,7 @@ function renderAll() {
   const d = DATA.updated_at;
   document.getElementById('updated-at').textContent = 'Atualizado ' + d;
   document.getElementById('footer').textContent = `Indexnet · ${DATA.clients.length} clientes · Atualizado ${d}`;
+  updateStickyOffsets();
 }
 
 /* ── Progress bars ── */
@@ -1083,6 +1123,193 @@ async function deleteSelected() {
 /* ── Safety ── */
 window.addEventListener('beforeunload', e => { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
 if (localStorage.getItem('gh_token')) document.querySelector('.btn-logout').style.display = 'inline-flex';
+
+/* ── Sticky thead offset ── */
+function updateStickyOffsets() {
+  const hdr  = document.querySelector('header');
+  const ctrl = document.getElementById('controls');
+  if (!hdr || !ctrl) return;
+  const top = hdr.offsetHeight + ctrl.offsetHeight;
+  document.documentElement.style.setProperty('--thead-top', top + 'px');
+}
+window.addEventListener('resize', updateStickyOffsets);
+
+/* ── CF Token management ── */
+function toggleCfTokenBar() {
+  const bar = document.getElementById('cf-token-bar');
+  const visible = bar.style.display === 'flex';
+  bar.style.display = visible ? 'none' : 'flex';
+  if (!visible) {
+    const stored = localStorage.getItem('cf_token');
+    document.getElementById('btn-cf-clear').style.display = stored ? 'inline-flex' : 'none';
+    if (!stored) document.getElementById('cf-token-input').focus();
+  }
+}
+
+function saveCfToken() {
+  const v = document.getElementById('cf-token-input').value.trim();
+  if (!v) { toast('Token vazio.', 'err'); return; }
+  localStorage.setItem('cf_token', v);
+  document.getElementById('cf-token-bar').style.display = 'none';
+  document.getElementById('cf-token-input').value = '';
+  toast('Token Cloudflare salvo!', 'ok');
+}
+
+function clearCfToken() {
+  localStorage.removeItem('cf_token');
+  document.getElementById('cf-token-input').value = '';
+  document.getElementById('btn-cf-clear').style.display = 'none';
+  document.getElementById('cf-token-bar').style.display = 'none';
+  toast('Token Cloudflare removido.', 'info');
+}
+
+/* ── Verificação automática de GH + CF ── */
+function _normVer(s) {
+  return s.toLowerCase().replace(/[-_\s]/g, '');
+}
+
+async function checkCFviaDNS(domain) {
+  try {
+    const r = await fetch('https://dns.google/resolve?name=' + encodeURIComponent(domain) + '&type=NS', {cache: 'no-store'});
+    if (!r.ok) return 'erro DNS';
+    const d = await r.json();
+    if (d.Status === 3) return 'Domínio não existe';
+    const ans = d.Answer || [];
+    if (ans.some(a => (a.data || '').toLowerCase().includes('cloudflare'))) return 'Ativo (NS Cloudflare)';
+    return 'Não usa Cloudflare';
+  } catch(e) { return 'erro DNS'; }
+}
+
+async function checkCFzone(domain, cfToken) {
+  if (!domain) return '';
+  if (cfToken) {
+    try {
+      const r = await fetch(
+        'https://api.cloudflare.com/client/v4/zones?name=' + encodeURIComponent(domain),
+        { headers: { Authorization: 'Bearer ' + cfToken, 'Content-Type': 'application/json' }, cache: 'no-store' }
+      );
+      if (r.ok) {
+        const d = await r.json();
+        const zones = d.result || [];
+        if (zones.length) return zones[0].status === 'active' ? 'Ativo' : zones[0].status;
+        return 'não cadastrado';
+      }
+      if (r.status === 401 || r.status === 403) toast('Token Cloudflare inválido — usando DNS.', 'err');
+    } catch(e) { /* fallback */ }
+  }
+  return checkCFviaDNS(domain);
+}
+
+async function runVerification() {
+  const ghToken = localStorage.getItem('gh_token');
+  if (!ghToken) {
+    toast('Configure o token GitHub primeiro (botão Editar).', 'err');
+    document.getElementById('token-bar').style.display = 'flex';
+    document.getElementById('token-input').focus();
+    return;
+  }
+  if (!DATA) { toast('Dados não carregados ainda.', 'err'); return; }
+
+  const cfToken = localStorage.getItem('cf_token');
+  const btn = document.getElementById('btn-verify');
+  btn.disabled = true;
+  btn.textContent = '⏳ Verificando...';
+
+  const prog = document.getElementById('verify-prog');
+  prog.style.display = 'block';
+  const setStatus = msg => { document.getElementById('verify-status').textContent = msg; };
+  const setGH = pct => { document.getElementById('vp-gh').style.width = pct + '%'; document.getElementById('vp-gh-pct').textContent = pct + '%'; };
+  const setCF = pct => { document.getElementById('vp-cf').style.width = pct + '%'; document.getElementById('vp-cf-pct').textContent = pct + '%'; };
+
+  try {
+    const total = DATA.clients.length;
+
+    /* 1 — buscar todos os repos da org */
+    setStatus('Buscando repos GitHub...');
+    const repos = new Set();
+    const pushedAt = {};
+    let page = 1;
+    while (true) {
+      const r = await fetch(
+        'https://api.github.com/orgs/indexnet-agencia-de-mkt-e-dev/repos?per_page=100&page=' + page + '&type=all',
+        { headers: { Authorization: 'Bearer ' + ghToken, Accept: 'application/vnd.github+json' }, cache: 'no-store' }
+      );
+      if (!r.ok) { toast('GitHub: erro ' + r.status + (r.status===401?' (token inválido)':r.status===403?' (sem permissão)':''), 'err'); break; }
+      const data = await r.json();
+      if (!data.length) break;
+      data.forEach(repo => {
+        const nL = repo.name.toLowerCase();
+        const nN = _normVer(repo.name);
+        repos.add(repo.name); repos.add(nL); repos.add(nN);
+        const raw = repo.pushed_at || repo.updated_at || '';
+        if (raw) {
+          const dt = new Date(raw);
+          const fmt = String(dt.getDate()).padStart(2,'0') + '/' + String(dt.getMonth()+1).padStart(2,'0') + '/' + dt.getFullYear();
+          pushedAt[nL] = fmt; pushedAt[nN] = fmt;
+        }
+      });
+      page++;
+    }
+    setGH(10);
+
+    /* 2 — checar cada cliente em batches paralelos */
+    setStatus('Verificando clientes...');
+    const BATCH = 5;
+    let ghDone = 0, cfDone = 0;
+    for (let i = 0; i < total; i += BATCH) {
+      await Promise.all(DATA.clients.slice(i, i + BATCH).map(async (c, bi) => {
+        const idx = i + bi;
+
+        /* GitHub */
+        const u  = (c.username || '').toLowerCase();
+        const un = _normVer(u);
+        let match = repos.has(u) || repos.has(c.username || '') || repos.has(un);
+        if (!match && un.length >= 4) {
+          for (const rn of repos) {
+            const rnn = _normVer(rn);
+            if (rnn.startsWith(un) || (un.length >= 5 && rnn.includes(un))) { match = true; break; }
+          }
+        }
+        DATA.clients[idx].github = match;
+        if (match) { const bkp = pushedAt[u] || pushedAt[un] || ''; if (bkp) DATA.clients[idx].backup = bkp; }
+        ghDone++;
+        setGH(10 + Math.round(ghDone / total * 90));
+
+        /* Cloudflare */
+        const cfResult = await checkCFzone(c.domain, cfToken);
+        if (cfResult !== '') DATA.clients[idx].cloudflare = cfResult;
+        cfDone++;
+        setCF(Math.round(cfDone / total * 100));
+      }));
+    }
+
+    /* 3 — recalcular stats */
+    const ghSim = DATA.clients.filter(c => c.github === true).length;
+    const cfAt  = DATA.clients.filter(c => (c.cloudflare || '').toLowerCase().startsWith('ativ')).length;
+    DATA.stats = { total, github_sim: ghSim, github_nao: total - ghSim, cf_ativo: cfAt, cf_nao: total - cfAt };
+    const now = new Date();
+    DATA.updated_at = String(now.getDate()).padStart(2,'0') + '/' + String(now.getMonth()+1).padStart(2,'0') + '/' + now.getFullYear()
+      + ' ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+    renderAll();
+
+    /* 4 — salvar no Gist */
+    setStatus('Salvando no Gist...');
+    const sr = await fetch(API_GIST, {
+      method: 'PATCH',
+      headers: { Authorization: 'Bearer ' + ghToken, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ files: { 'data.json': { content: JSON.stringify(DATA, null, 2) } } })
+    });
+    if (sr.ok) toast('Verificação completa e salva! ✓', 'ok');
+    else toast('Verificado, mas erro ao salvar: ' + sr.status, 'err');
+
+  } catch(e) {
+    toast('Erro na verificação: ' + e.message, 'err');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🔄 Verificar CF/GH';
+    setTimeout(() => { prog.style.display = 'none'; setGH(0); setCF(0); }, 4000);
+  }
+}
 
 loadData();
 </script>
