@@ -407,10 +407,7 @@ input[type=checkbox].row-chk,input[type=checkbox]#chk-all{width:15px;height:15px
         <th class="chk-col" title="Plugins atualizados">Plug.</th>
         <th class="chk-col" title="PageSpeed Insights">⚡</th>
         <th class="del-col"></th>
-        <th class="col-extra">Data exec.</th>
         <th class="col-extra">Status GH</th>
-        <th class="col-extra">Status CF</th>
-        <th class="col-extra">Prioridade</th>
         <th class="col-extra obs-col">Observações</th>
       </tr>
     </thead>
@@ -641,9 +638,6 @@ function renderTable(clients) {
       <td class="chk-col"><span class="ck ck-toggle ${fpmOk?'ck-ok':'ck-no'}" onclick="toggleFld(this,'_php_fpm',${i})">${fpmOk?'✓':'✗'}</span></td>
       <td class="chk-col"><span class="ck ck-toggle ${plgOk?'ck-ok':'ck-no'}" onclick="toggleFld(this,'_plugins',${i})">${plgOk?'✓':'✗'}</span></td>
       <td class="chk-col"><a href="${speedUrl}" target="_blank" class="speed-link" title="Abrir PageSpeed Insights">⚡</a></td>
-      <td class="editable col-extra" data-field="_data_exec">
-        <input type="date" class="date-inp" data-field="_data_exec" value="${esc(c._data_exec||'')}" onchange="if(!autoEditSel(this,${i},'_data_exec'))return;autoSave()" oninput="if(!editMode&&localStorage.getItem('gh_token'))enterEditMode()">
-      </td>
       <td class="editable col-extra" data-field="_status_gh">
         <select class="st-sel ${stClsGH(stgh)}" data-field="_status_gh" onchange="if(!autoEditSel(this,${i},'_status_gh'))return;autoSave();this.className='st-sel '+stClsGH(this.value)">
           <option value="" ${!stgh||stgh==='Pendente'?'selected':''}>—</option>
@@ -651,22 +645,6 @@ function renderTable(clients) {
           <option ${stgh==='Projeto enviado'?'selected':''}>Projeto enviado</option>
           <option ${stgh==='Projeto concluído'?'selected':''}>Projeto concluído</option>
           <option ${stgh==='Atualizar'?'selected':''}>Atualizar</option>
-        </select>
-      </td>
-      <td class="editable col-extra" data-field="_status_cf">
-        <select class="st-sel ${stCls(stcf)}" data-field="_status_cf" onchange="if(!autoEditSel(this,${i},'_status_cf'))return;autoSave();this.className='st-sel '+stCls(this.value)">
-          <option ${stcf==='Pendente'?'selected':''}>Pendente</option>
-          <option ${stcf==='Em andamento'?'selected':''}>Em andamento</option>
-          <option ${stcf==='Atualizar'?'selected':''}>Atualizar</option>
-          <option ${stcf==='Concluído'?'selected':''}>Concluído</option>
-        </select>
-      </td>
-      <td class="editable col-extra" data-field="_prioridade">
-        <select class="prio-sel ${prioCls(c._prioridade||'')}" data-field="_prioridade" onchange="if(!autoEditSel(this,${i},'_prioridade'))return;autoSave();this.className='prio-sel '+prioCls(this.value)">
-          <option value="" ${!(c._prioridade)?'selected':''}>—</option>
-          <option ${c._prioridade==='Alta'?'selected':''}>Alta</option>
-          <option ${c._prioridade==='Média'?'selected':''}>Média</option>
-          <option ${c._prioridade==='Baixa'?'selected':''}>Baixa</option>
         </select>
       </td>
       <td class="editable col-extra obs-col" data-field="_obs">${esc(c._obs||c.obs||'')}</td>
