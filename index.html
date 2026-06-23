@@ -1170,7 +1170,7 @@ function clearCfToken() {
 
 /* ── Verificação automática de GH + CF ── */
 function _normVer(s) {
-  return s.toLowerCase().replace(/[-_\s]/g, '');
+  return s.toLowerCase().replace(/[-_\s.]/g, '');
 }
 
 async function checkCFviaDNS(domain) {
@@ -1269,10 +1269,10 @@ async function runVerification() {
         const u  = (c.username || '').toLowerCase();
         const un = _normVer(u);
         let match = repos.has(u) || repos.has(c.username || '') || repos.has(un);
-        if (!match && un.length >= 4) {
+        if (!match && un.length >= 3) {
           for (const rn of repos) {
             const rnn = _normVer(rn);
-            if (rnn.startsWith(un) || (un.length >= 5 && rnn.includes(un))) { match = true; break; }
+            if (rnn.startsWith(un) || (un.length >= 4 && rnn.includes(un))) { match = true; break; }
           }
         }
         DATA.clients[idx].github = match;
