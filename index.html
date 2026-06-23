@@ -153,10 +153,11 @@ body.editing #btn-add{display:inline-flex}
 /* ── STATUS DROPDOWNS ── */
 .st-sel{padding:4px 8px;border-radius:6px;font-size:.75rem;font-weight:600;font-family:inherit;border:1px solid;cursor:pointer;width:100%;-webkit-appearance:none;appearance:none}
 body.editing .st-sel{-webkit-appearance:revert;appearance:revert}
-.st-pend{background:#fef9c3;color:#92400e;border-color:#fde68a}
-.st-prog{background:var(--blue-bg);color:#1d4ed8;border-color:#bfdbfe}
-.st-done{background:var(--green-bg);color:#15803d;border-color:#bbf7d0}
-.st-upd{background:var(--purple-bg);color:#6d28d9;border-color:#ddd6fe}
+.st-pend{background:#f1f5f9;color:#64748b;border-color:#e2e8f0}
+.st-criado{background:var(--blue-bg);color:#1d4ed8;border-color:#bfdbfe}
+.st-deploy{background:#dcfce7;color:#15803d;border-color:#86efac}
+.st-done{background:var(--green-bg);color:#166534;border-color:#bbf7d0}
+.st-upd{background:#fff7ed;color:#c2410c;border-color:#fed7aa}
 .resp-sel{padding:4px 8px;border:1px solid var(--border);border-radius:6px;font-size:.75rem;font-family:inherit;background:var(--bg);width:100%}
 /* ── PRIORIDADE ── */
 .prio-sel{padding:4px 8px;border-radius:6px;font-size:.75rem;font-weight:600;font-family:inherit;border:1px solid;cursor:pointer;width:100%;-webkit-appearance:none;appearance:none}
@@ -348,13 +349,9 @@ input[type=checkbox].row-chk,input[type=checkbox]#chk-all{width:15px;height:15px
     <option value="no">✗ Sem CF</option>
     <option value="pend">⚠ Pend. apontamento</option>
   </select>
-  <select class="fil" id="fil-resp" onchange="filterRows()">
-    <option value="">Responsável: todos</option>
-    <option>Franciane</option><option>Pedro</option><option value="none">Não atribuído</option>
-  </select>
   <select class="fil" id="fil-status" onchange="filterRows()">
-    <option value="">Status: todos</option>
-    <option>Pendente</option><option>Em andamento</option><option>Concluído</option>
+    <option value="">Status GH: todos</option>
+    <option>Criado</option><option>Deploy ok</option><option>Projeto concluído</option><option>Atualizar</option>
   </select>
   <select class="fil" id="fil-susp" onchange="filterRows()">
     <option value="">Suspenso: todos</option>
@@ -410,9 +407,7 @@ input[type=checkbox].row-chk,input[type=checkbox]#chk-all{width:15px;height:15px
         <th class="chk-col" title="Plugins atualizados">Plug.</th>
         <th class="chk-col" title="PageSpeed Insights">⚡</th>
         <th class="del-col"></th>
-        <th class="col-extra">Uso</th>
         <th class="col-extra">Data exec.</th>
-        <th class="col-extra">Responsável</th>
         <th class="col-extra">Status GH</th>
         <th class="col-extra">Status CF</th>
         <th class="col-extra">Prioridade</th>
@@ -518,7 +513,14 @@ function renderCards(s) {
 }
 
 /* ── Status helpers ── */
-function stCls(v) { return v==='Concluído'?'st-done':v==='Em andamento'?'st-prog':v==='Atualizar'?'st-upd':'st-pend'; }
+function stClsGH(v) {
+  if (v==='Criado') return 'st-criado';
+  if (v==='Deploy ok') return 'st-deploy';
+  if (v==='Projeto concluído') return 'st-done';
+  if (v==='Atualizar') return 'st-upd';
+  return 'st-pend';
+}
+function stCls(v) { return v==='Concluído'?'st-done':v==='Em andamento'?'st-criado':v==='Atualizar'?'st-upd':'st-pend'; }
 function prioCls(v) { return v==='Alta'?'prio-alta':v==='Média'?'prio-media':v==='Baixa'?'prio-baixa':'prio-none'; }
 function usoCls(v) { return v==='Só email'?'uso-email':v==='Site principal'||v==='Site + Email'?'uso-site uso-ambos':v==='Em construção'?'uso-const':v==='Redirecionamento'?'uso-redir':'uso-none'; }
 function srvCls(v) { return v==='Hostinger'?'srv-hi':(v||'').startsWith('Hostgator')?'srv-hg':'srv-out'; }
@@ -639,32 +641,16 @@ function renderTable(clients) {
       <td class="chk-col"><span class="ck ck-toggle ${fpmOk?'ck-ok':'ck-no'}" onclick="toggleFld(this,'_php_fpm',${i})">${fpmOk?'✓':'✗'}</span></td>
       <td class="chk-col"><span class="ck ck-toggle ${plgOk?'ck-ok':'ck-no'}" onclick="toggleFld(this,'_plugins',${i})">${plgOk?'✓':'✗'}</span></td>
       <td class="chk-col"><a href="${speedUrl}" target="_blank" class="speed-link" title="Abrir PageSpeed Insights">⚡</a></td>
-      <td class="editable col-extra" data-field="_uso">
-        <select class="uso-sel ${usoCls(c._uso||'')}" data-field="_uso" onchange="if(!autoEditSel(this,${i},'_uso'))return;autoSave();this.className='uso-sel '+usoCls(this.value)">
-          <option value="" ${!(c._uso)?'selected':''}>—</option>
-          <option ${c._uso==='Site principal'?'selected':''}>Site principal</option>
-          <option ${c._uso==='Só email'?'selected':''}>Só email</option>
-          <option ${c._uso==='Site + Email'?'selected':''}>Site + Email</option>
-          <option ${c._uso==='Em construção'?'selected':''}>Em construção</option>
-          <option ${c._uso==='Redirecionamento'?'selected':''}>Redirecionamento</option>
-        </select>
-      </td>
       <td class="editable col-extra" data-field="_data_exec">
         <input type="date" class="date-inp" data-field="_data_exec" value="${esc(c._data_exec||'')}" onchange="if(!autoEditSel(this,${i},'_data_exec'))return;autoSave()" oninput="if(!editMode&&localStorage.getItem('gh_token'))enterEditMode()">
       </td>
-      <td class="editable col-extra" data-field="_responsavel">
-        <select class="resp-sel" data-field="_responsavel" onchange="if(!autoEditSel(this,${i},'_responsavel'))return;autoSave()" >
-          <option value="" ${!resp?'selected':''}>— Ninguém</option>
-          <option ${resp==='Franciane'?'selected':''}>Franciane</option>
-          <option ${resp==='Pedro'?'selected':''}>Pedro</option>
-        </select>
-      </td>
       <td class="editable col-extra" data-field="_status_gh">
-        <select class="st-sel ${stCls(stgh)}" data-field="_status_gh" onchange="if(!autoEditSel(this,${i},'_status_gh'))return;autoSave();this.className='st-sel '+stCls(this.value)">
-          <option ${stgh==='Pendente'?'selected':''}>Pendente</option>
-          <option ${stgh==='Em andamento'?'selected':''}>Em andamento</option>
+        <select class="st-sel ${stClsGH(stgh)}" data-field="_status_gh" onchange="if(!autoEditSel(this,${i},'_status_gh'))return;autoSave();this.className='st-sel '+stClsGH(this.value)">
+          <option value="" ${!stgh||stgh==='Pendente'?'selected':''}>—</option>
+          <option ${stgh==='Criado'?'selected':''}>Criado</option>
+          <option ${stgh==='Deploy ok'?'selected':''}>Deploy ok</option>
+          <option ${stgh==='Projeto concluído'?'selected':''}>Projeto concluído</option>
           <option ${stgh==='Atualizar'?'selected':''}>Atualizar</option>
-          <option ${stgh==='Concluído'?'selected':''}>Concluído</option>
         </select>
       </td>
       <td class="editable col-extra" data-field="_status_cf">
@@ -818,7 +804,6 @@ function filterRows() {
   const srv  = document.getElementById('fil-srv').value;
   const gh   = document.getElementById('fil-gh').value;
   const cf   = document.getElementById('fil-cf').value;
-  const resp = document.getElementById('fil-resp').value;
   const st   = document.getElementById('fil-status').value;
   let shown = 0;
   document.querySelectorAll('#tbody tr').forEach(tr => {
@@ -832,9 +817,7 @@ function filterRows() {
     if (cf === 'ok'   && !(c.cloudflare||'').toLowerCase().startsWith('ativ')) ok = false;
     if (cf === 'no'   &&  (c.cloudflare||'').toLowerCase().startsWith('ativ')) ok = false;
     if (cf === 'pend') { const r=(c.cloudflare||'').toLowerCase(); if(r!=='pending'&&r!=='moved'&&!r.includes('inválid')&&!r.includes('invalid')) ok=false; }
-    if (resp === 'none' && c._responsavel) ok = false;
-    if (resp && resp !== 'none' && c._responsavel !== resp) ok = false;
-    if (st && c._status_gh !== st && c._status_cf !== st) ok = false;
+    if (st && c._status_gh !== st) ok = false;
     const susp = document.getElementById('fil-susp').value;
     if (susp === 'yes' && !c.suspended) ok = false;
     if (susp === 'no' && c.suspended) ok = false;
@@ -913,7 +896,7 @@ function confirmAdd() {
     github:false, cloudflare:'', suspended:false, traffic:'',
     plugins:'', wp_ver:'', php_ver:'', php_fpm:'', platform:'',
     _platform:'', _plugins:'', _wp_ver:'', _php_ver:'', _php_fpm:'',
-    _responsavel:'', _status_gh:'Pendente', _status_cf:'Pendente',
+    _responsavel:'', _status_gh:'', _status_cf:'Pendente',
     _prioridade:'', _obs:''
   });
   markDirty();
