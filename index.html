@@ -155,7 +155,7 @@ body.editing #btn-add{display:inline-flex}
 body.editing .st-sel{-webkit-appearance:revert;appearance:revert}
 .st-pend{background:#f1f5f9;color:#64748b;border-color:#e2e8f0}
 .st-criado{background:var(--blue-bg);color:#1d4ed8;border-color:#bfdbfe}
-.st-deploy{background:#dcfce7;color:#15803d;border-color:#86efac}
+.st-enviado{background:#dcfce7;color:#15803d;border-color:#86efac}
 .st-done{background:var(--green-bg);color:#166534;border-color:#bbf7d0}
 .st-upd{background:#fff7ed;color:#c2410c;border-color:#fed7aa}
 .resp-sel{padding:4px 8px;border:1px solid var(--border);border-radius:6px;font-size:.75rem;font-family:inherit;background:var(--bg);width:100%}
@@ -351,7 +351,7 @@ input[type=checkbox].row-chk,input[type=checkbox]#chk-all{width:15px;height:15px
   </select>
   <select class="fil" id="fil-status" onchange="filterRows()">
     <option value="">Status GH: todos</option>
-    <option>Criado</option><option>Deploy ok</option><option>Projeto concluído</option><option>Atualizar</option>
+    <option>Criado</option><option>Projeto enviado</option><option>Projeto concluído</option><option>Atualizar</option>
   </select>
   <select class="fil" id="fil-susp" onchange="filterRows()">
     <option value="">Suspenso: todos</option>
@@ -515,7 +515,7 @@ function renderCards(s) {
 /* ── Status helpers ── */
 function stClsGH(v) {
   if (v==='Criado') return 'st-criado';
-  if (v==='Deploy ok') return 'st-deploy';
+  if (v==='Projeto enviado') return 'st-enviado';
   if (v==='Projeto concluído') return 'st-done';
   if (v==='Atualizar') return 'st-upd';
   return 'st-pend';
@@ -648,7 +648,7 @@ function renderTable(clients) {
         <select class="st-sel ${stClsGH(stgh)}" data-field="_status_gh" onchange="if(!autoEditSel(this,${i},'_status_gh'))return;autoSave();this.className='st-sel '+stClsGH(this.value)">
           <option value="" ${!stgh||stgh==='Pendente'?'selected':''}>—</option>
           <option ${stgh==='Criado'?'selected':''}>Criado</option>
-          <option ${stgh==='Deploy ok'?'selected':''}>Deploy ok</option>
+          <option ${stgh==='Projeto enviado'?'selected':''}>Projeto enviado</option>
           <option ${stgh==='Projeto concluído'?'selected':''}>Projeto concluído</option>
           <option ${stgh==='Atualizar'?'selected':''}>Atualizar</option>
         </select>
