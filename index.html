@@ -206,12 +206,6 @@ a:hover{text-decoration:underline}
 
 footer{text-align:center;padding:24px;color:var(--text3);font-size:.72rem;border-top:1px solid var(--border);background:var(--surface)}
 
-/* ── COLUNAS EXTRAS (ocultas por padrão) ── */
-.col-extra{display:none}
-table.show-cols .col-extra{display:table-cell}
-.btn-cols{background:rgba(99,102,241,.12);color:#6366f1;border:1px solid rgba(99,102,241,.25);padding:6px 12px;border-radius:7px;font-size:.75rem;font-weight:600;cursor:pointer;white-space:nowrap;font-family:inherit}
-.btn-cols:hover{background:rgba(99,102,241,.2)}
-
 /* ── EMPTY STATE ── */
 #empty{display:none;text-align:center;padding:60px 24px;color:var(--text3)}
 #empty .ico{font-size:2.5rem;margin-bottom:12px}
@@ -351,7 +345,7 @@ input[type=checkbox].row-chk,input[type=checkbox]#chk-all{width:15px;height:15px
   </select>
   <select class="fil" id="fil-status" onchange="filterRows()">
     <option value="">Status GH: todos</option>
-    <option>Criado</option><option>Projeto enviado</option><option>Projeto concluído</option><option>Atualizar</option>
+    <option>Criado</option><option>Enviado</option><option>Concluído</option><option>Atualizar</option>
   </select>
   <select class="fil" id="fil-susp" onchange="filterRows()">
     <option value="">Suspenso: todos</option>
@@ -359,7 +353,6 @@ input[type=checkbox].row-chk,input[type=checkbox]#chk-all{width:15px;height:15px
     <option value="yes">Só suspensos</option>
   </select>
   <span class="count-badge" id="count-badge"></span>
-  <button class="btn-cols" id="btn-cols" onclick="toggleCols()">▾ Gestão</button>
 </div>
 
 <div id="bulk-bar">
@@ -397,6 +390,7 @@ input[type=checkbox].row-chk,input[type=checkbox]#chk-all{width:15px;height:15px
         <th>Servidor</th>
         <th>Plataforma</th>
         <th class="chk-col" title="GitHub">GH</th>
+        <th title="Status do repositório GitHub">Status GH</th>
         <th title="Data do último push no repositório GitHub">Bkp</th>
         <th class="chk-col" title="Cloudflare">CF</th>
         <th class="chk-col" title="DNS pendente de apontamento para Cloudflare">Pend.</th>
@@ -407,8 +401,6 @@ input[type=checkbox].row-chk,input[type=checkbox]#chk-all{width:15px;height:15px
         <th class="chk-col" title="Plugins atualizados">Plug.</th>
         <th class="chk-col" title="PageSpeed Insights">⚡</th>
         <th class="del-col"></th>
-        <th class="col-extra">Status GH</th>
-        <th class="col-extra obs-col">Observações</th>
       </tr>
     </thead>
     <tbody id="tbody"></tbody>
@@ -512,8 +504,8 @@ function renderCards(s) {
 /* ── Status helpers ── */
 function stClsGH(v) {
   if (v==='Criado') return 'st-criado';
-  if (v==='Projeto enviado') return 'st-enviado';
-  if (v==='Projeto concluído') return 'st-done';
+  if (v==='Enviado') return 'st-enviado';
+  if (v==='Concluído') return 'st-done';
   if (v==='Atualizar') return 'st-upd';
   return 'st-pend';
 }
@@ -629,6 +621,15 @@ function renderTable(clients) {
         </select>
       </td>
       <td class="chk-col"><span class="ck ck-toggle ${ghOk?'ck-ok':'ck-no'}" onclick="toggleFld(this,'github',${i})">${ghOk?'✓':'✗'}</span></td>
+      <td class="editable" data-field="_status_gh" style="min-width:110px">
+        <select class="st-sel ${stClsGH(stgh)}" data-field="_status_gh" onchange="if(!autoEditSel(this,${i},'_status_gh'))return;autoSave();this.className='st-sel '+stClsGH(this.value)">
+          <option value="" ${!stgh||stgh==='Pendente'?'selected':''}>—</option>
+          <option ${stgh==='Criado'?'selected':''}>Criado</option>
+          <option ${stgh==='Enviado'?'selected':''}>Enviado</option>
+          <option ${stgh==='Concluído'?'selected':''}>Concluído</option>
+          <option ${stgh==='Atualizar'?'selected':''}>Atualizar</option>
+        </select>
+      </td>
       <td style="font-size:.7rem;color:var(--text2);white-space:nowrap">${esc(c.backup||'')}</td>
       <td class="chk-col"><span class="ck ck-toggle ${cfOk?'ck-ok':'ck-no'}" onclick="toggleFld(this,'cloudflare',${i})">${cfOk?'✓':'✗'}</span></td>
       <td class="chk-col"><span class="ck ck-toggle ${cfPend?'':'ck-no'}" style="${cfPend?'background:#fef9c3;color:#92400e;font-size:.7rem':''}" onclick="togglePend(this,${i})" title="${cfPend?esc(c.cloudflare):'DNS não pendente'}">${cfPend?'⚠':''}</span></td>
@@ -638,16 +639,6 @@ function renderTable(clients) {
       <td class="chk-col"><span class="ck ck-toggle ${fpmOk?'ck-ok':'ck-no'}" onclick="toggleFld(this,'_php_fpm',${i})">${fpmOk?'✓':'✗'}</span></td>
       <td class="chk-col"><span class="ck ck-toggle ${plgOk?'ck-ok':'ck-no'}" onclick="toggleFld(this,'_plugins',${i})">${plgOk?'✓':'✗'}</span></td>
       <td class="chk-col"><a href="${speedUrl}" target="_blank" class="speed-link" title="Abrir PageSpeed Insights">⚡</a></td>
-      <td class="editable col-extra" data-field="_status_gh">
-        <select class="st-sel ${stClsGH(stgh)}" data-field="_status_gh" onchange="if(!autoEditSel(this,${i},'_status_gh'))return;autoSave();this.className='st-sel '+stClsGH(this.value)">
-          <option value="" ${!stgh||stgh==='Pendente'?'selected':''}>—</option>
-          <option ${stgh==='Criado'?'selected':''}>Criado</option>
-          <option ${stgh==='Projeto enviado'?'selected':''}>Projeto enviado</option>
-          <option ${stgh==='Projeto concluído'?'selected':''}>Projeto concluído</option>
-          <option ${stgh==='Atualizar'?'selected':''}>Atualizar</option>
-        </select>
-      </td>
-      <td class="editable col-extra obs-col" data-field="_obs">${esc(c._obs||c.obs||'')}</td>
       <td class="del-col"><button class="del-btn" onclick="deleteRow(${i})" title="Remover linha">✕</button></td>`;
     tbody.appendChild(tr);
     visible++;
@@ -655,12 +646,7 @@ function renderTable(clients) {
   updateCount(visible, clients.length);
 }
 
-function toggleCols() {
-  const tbl = document.getElementById('tbl');
-  const btn = document.getElementById('btn-cols');
-  const on = tbl.classList.toggle('show-cols');
-  btn.textContent = on ? '▴ Ocultar gestão' : '▾ Gestão';
-}
+
 
 function pluginsBadge(v) {
   const s = String(v||'').trim();
