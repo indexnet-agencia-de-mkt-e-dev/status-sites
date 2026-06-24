@@ -384,14 +384,14 @@ input[type=checkbox].row-chk,input[type=checkbox]#chk-all{width:15px;height:15px
       <tr>
         <th class="cb-col"><input type="checkbox" id="chk-all" onchange="toggleAllVisible(this.checked)" title="Selecionar todos visíveis"></th>
         <th class="num-col">#</th>
-        <th>Cliente</th>
-        <th>Domínio</th>
+        <th data-sort="username" onclick="setSort('username')" style="cursor:pointer;user-select:none">Cliente<span class="sa" style="opacity:.35"> ↑</span></th>
+        <th data-sort="domain" onclick="setSort('domain')" style="cursor:pointer;user-select:none">Domínio<span class="sa" style="opacity:.35"> ↕</span></th>
         <th class="chk-col" title="Suspenso no servidor">Susp.</th>
-        <th>Servidor</th>
+        <th data-sort="servidor" onclick="setSort('servidor')" style="cursor:pointer;user-select:none">Servidor<span class="sa" style="opacity:.35"> ↕</span></th>
         <th>Plataforma</th>
         <th class="chk-col" title="GitHub">GH</th>
-        <th title="Status do repositório GitHub">Status GH</th>
-        <th title="Data do último push no repositório GitHub">Bkp</th>
+        <th data-sort="_status_gh" onclick="setSort('_status_gh')" style="cursor:pointer;user-select:none" title="Status do repositório GitHub">Status GH<span class="sa" style="opacity:.35"> ↕</span></th>
+        <th data-sort="backup" onclick="setSort('backup')" style="cursor:pointer;user-select:none" title="Data do último push no repositório GitHub">Bkp<span class="sa" style="opacity:.35"> ↕</span></th>
         <th class="chk-col" title="Cloudflare">CF</th>
         <th class="chk-col" title="DNS pendente de apontamento para Cloudflare">Pend.</th>
         <th class="chk-col" title="Tráfego">Tráf.</th>
@@ -464,8 +464,43 @@ async function loadData() {
   document.getElementById('loader').style.display = 'none';
 }
 
+let sortCol = 'username', sortDir = 1;
+
+function applySort() {
+  DATA.clients.sort((a, b) => {
+    let va, vb;
+    if (sortCol === 'backup') {
+      const toN = s => { if (!s) return 0; const p = s.split('/'); return p.length===3?parseInt(p[2]+p[1]+p[0]):0; };
+      return (toN(a.backup) - toN(b.backup)) * sortDir;
+    }
+    const getV = c => {
+      if (sortCol==='username')   return (c.username||'').toLowerCase();
+      if (sortCol==='domain')     return (c.domain||'').toLowerCase();
+      if (sortCol==='servidor')   return (c._servidor||c.servidor||'').toLowerCase();
+      if (sortCol==='_status_gh') return (c._status_gh||'').toLowerCase();
+      if (sortCol==='cloudflare') return String(c.cloudflare===true||String(c.cloudflare||'').toLowerCase().startsWith('ativ')?'0':'1');
+      return String(c[sortCol]||'').toLowerCase();
+    };
+    va = getV(a); vb = getV(b);
+    return va < vb ? -sortDir : va > vb ? sortDir : 0;
+  });
+}
+
+function setSort(col) {
+  if (sortCol === col) sortDir = -sortDir; else { sortCol = col; sortDir = 1; }
+  applySort();
+  renderTable(DATA.clients);
+  filterRows();
+  document.querySelectorAll('th[data-sort]').forEach(th => {
+    const arr = th.querySelector('.sa');
+    if (!arr) return;
+    arr.textContent = th.dataset.sort===sortCol ? (sortDir===1?' ↑':' ↓') : ' ↕';
+    arr.style.opacity = th.dataset.sort===sortCol ? '1' : '0.35';
+  });
+}
+
 function renderAll() {
-  DATA.clients.sort((a,b) => (a.domain||'').localeCompare(b.domain||'', 'pt-BR'));
+  applySort();
   renderProgress(DATA.stats);
   renderCards(DATA.stats);
   renderTable(DATA.clients);
