@@ -1188,6 +1188,93 @@ async function checkCFzone(domain, cfToken) {
   return checkCFviaDNS(domain);
 }
 
+function normDomain(d) {
+  return (d || '').trim().toLowerCase().replace(/^www\\./, '');
+}
+
+async function fetchAllCFzones(cfToken) {
+  const zones = [];
+  let page = 1;
+  while (true) {
+    const r = await fetch(
+      'https://api.cloudflare.com/client/v4/zones?per_page=50&page=' + page,
+      { headers: { Authorization: 'Bearer ' + cfToken, 'Content-Type': 'application/json' }, cache: 'no-store' }
+    );
+    if (!r.ok) return null;
+    const d = await r.json();
+    const batch = d.result || [];
+    if (!batch.length) break;
+    zones.push(...batch);
+    const totalPages = (d.result_info && d.result_info.total_pages) || 1;
+    if (page >= totalPages) break;
+    page++;
+  }
+  return zones;
+}
+
+function usernameForCFzone(domain, existing) {
+  const d = normDomain(domain);
+  const candidates = [
+    domain.split('.')[0].toLowerCase(),
+    d.replace(/\\./g, ''),
+    'cf_' + d.replace(/\\./g, '_'),
+  ];
+  for (const c of candidates) {
+    if (c && !existing.has(c)) return c;
+  }
+  let n = 2, base = 'cf_' + d.replace(/\\./g, '_');
+  while (existing.has(base + '_' + n)) n++;
+  return base + '_' + n;
+}
+
+function syncCFzonesToList(zones) {
+  const existingDomains = new Set(DATA.clients.map(c => normDomain(c.domain)).filter(Boolean));
+  const existingUsers = new Set(DATA.clients.map(c => (c.username || '').toLowerCase()));
+  let added = 0;
+  for (const zone of zones.sort((a, b) => (a.name || '').localeCompare(b.name || ''))) {
+    const name = (zone.name || '').trim();
+    if (!name) continue;
+    const d = normDomain(name);
+    if (existingDomains.has(d)) continue;
+    const username = usernameForCFzone(name, existingUsers);
+    const status = zone.status === 'active' ? 'Ativo' : (zone.status || '');
+    DATA.clients.push({
+      username, domain: name, servidor: '', suspended: false, github: false,
+      cloudflare: status, backup: '', platform: '', traffic: '', obs: 'Adicionado via Cloudflare',
+      _responsavel: '', _status_gh: 'Pendente', _status_cf: 'Pendente', _prioridade: '',
+      _obs: '', _uso: '', _data_exec: '', _servidor: '', _platform: '',
+      _php_ver: '', _wp_ver: '', _plugins: '', _php_fpm: '', _duplicado: false,
+    });
+    existingDomains.add(d);
+    existingUsers.add(username.toLowerCase());
+    added++;
+  }
+  return added;
+}
+
+function resolveCFduplicates() {
+  const byDomain = {};
+  DATA.clients.forEach((c, idx) => {
+    const d = normDomain(c.domain);
+    if (!d) return;
+    if (!byDomain[d]) byDomain[d] = [];
+    byDomain[d].push({ idx, c });
+  });
+  Object.values(byDomain).forEach(group => {
+    if (group.length <= 1) return;
+    const active = group.filter(g => (g.c.cloudflare || '').toLowerCase().startsWith('ativ'));
+    if (active.length <= 1) return;
+    active.sort((a, b) => {
+      const sa = a.c.suspended ? 1 : 0, sb = b.c.suspended ? 1 : 0;
+      if (sa !== sb) return sa - sb;
+      return (a.c.username || '').localeCompare(b.c.username || '');
+    });
+    for (let i = 1; i < active.length; i++) {
+      DATA.clients[active[i].idx].cloudflare = '';
+    }
+  });
+}
+
 async function runVerification() {
   const ghToken = localStorage.getItem('gh_token');
   if (!ghToken) {
@@ -1210,8 +1297,6 @@ async function runVerification() {
   const setCF = pct => { document.getElementById('vp-cf').style.width = pct + '%'; document.getElementById('vp-cf-pct').textContent = pct + '%'; };
 
   try {
-    const total = DATA.clients.length;
-
     /* 1 — buscar todos os repos da org */
     setStatus('Buscando repos GitHub...');
     const repos = new Set();
@@ -1240,11 +1325,22 @@ async function runVerification() {
     }
     setGH(10);
 
+    /* 1b — sincronizar zonas Cloudflare faltantes */
+    if (cfToken) {
+      setStatus('Sincronizando zonas Cloudflare...');
+      const allZones = await fetchAllCFzones(cfToken);
+      if (allZones) {
+        const nAdded = syncCFzonesToList(allZones);
+        if (nAdded) toast(nAdded + ' zona(s) Cloudflare adicionada(s) à lista', 'ok');
+      }
+    }
+
     /* 2 — checar cada cliente em batches paralelos */
     setStatus('Verificando clientes...');
     const BATCH = 5;
     let ghDone = 0, cfDone = 0;
-    for (let i = 0; i < total; i += BATCH) {
+    const totalNow = DATA.clients.length;
+    for (let i = 0; i < totalNow; i += BATCH) {
       await Promise.all(DATA.clients.slice(i, i + BATCH).map(async (c, bi) => {
         const idx = i + bi;
 
@@ -1261,17 +1357,20 @@ async function runVerification() {
         DATA.clients[idx].github = match;
         if (match) { const bkp = pushedAt[u] || pushedAt[un] || ''; if (bkp) DATA.clients[idx].backup = bkp; }
         ghDone++;
-        setGH(10 + Math.round(ghDone / total * 90));
+        setGH(10 + Math.round(ghDone / totalNow * 90));
 
         /* Cloudflare */
         const cfResult = await checkCFzone(c.domain, cfToken);
         if (cfResult !== '') DATA.clients[idx].cloudflare = cfResult;
         cfDone++;
-        setCF(Math.round(cfDone / total * 100));
+        setCF(Math.round(cfDone / totalNow * 100));
       }));
     }
 
+    resolveCFduplicates();
+
     /* 3 — recalcular stats */
+    const total = DATA.clients.length;
     const ghSim = DATA.clients.filter(c => c.github === true).length;
     const cfAt  = DATA.clients.filter(c => (c.cloudflare || '').toLowerCase().startsWith('ativ')).length;
     DATA.stats = { total, github_sim: ghSim, github_nao: total - ghSim, cf_ativo: cfAt, cf_nao: total - cfAt };
