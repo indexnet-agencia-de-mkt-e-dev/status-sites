@@ -585,6 +585,7 @@ function renderTable(clients) {
     const wpVer   = c._wp_ver  || c.wp_ver  || '';
     const phpVer  = c._php_ver || c.php_ver || '';
     const srv     = c._servidor || c.servidor || '';
+    const isDup   = c._duplicado === true;
     const traff   = !!(c.traffic && String(c.traffic).trim() !== '' && String(c.traffic).toLowerCase() !== 'none' && String(c.traffic) !== '0' && String(c.traffic).toLowerCase() !== 'false');
     const fpmVal  = String(c._php_fpm||c.php_fpm||'').toLowerCase().trim();
     const fpmOk   = fpmVal && fpmVal !== 'none' && fpmVal !== 'false' && fpmVal !== '0' && fpmVal !== 'não' && fpmVal !== 'nao';
@@ -594,7 +595,7 @@ function renderTable(clients) {
     tr.innerHTML = `
       <td class="cb-col"><input type="checkbox" class="row-chk" data-idx="${i}" onchange="onRowCheck(this)" ${selected.has(i)?'checked':''}></td>
       <td class="num-col">${i+1}</td>
-      <td><strong style="color:var(--navy)">${esc(c.username)}</strong></td>
+      <td><strong style="color:var(--navy)">${esc(c.username)}</strong>${isDup?' <span title="Domínio duplicado" style="background:#fee2e2;color:#dc2626;border-radius:3px;padding:0 3px;font-size:.65rem;font-weight:600;vertical-align:middle">dup</span>':''}</td>
       <td><a href="https://${c.domain}" target="_blank" style="color:inherit;text-decoration:none;font-size:.78rem">${esc(c.domain)}</a></td>
       <td class="chk-col"><span class="ck ck-toggle ${isSusp?'ck-no':'ck-ok'}" style="${isSusp?'background:#fef2f2;color:#dc2626':''}" onclick="toggleFld(this,'suspended',${i})">${isSusp?'⚠':'✓'}</span></td>
       <td class="editable" data-field="_servidor">
