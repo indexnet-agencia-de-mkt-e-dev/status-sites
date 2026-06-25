@@ -1169,7 +1169,7 @@ async function checkCFviaDNS(domain) {
 }
 
 async function checkCFzone(domain, cfToken) {
-  if (!domain) return '';
+  if (!domain) return { status: '', clientCf: false };
   if (cfToken) {
     try {
       const r = await fetch(
@@ -1179,13 +1179,31 @@ async function checkCFzone(domain, cfToken) {
       if (r.ok) {
         const d = await r.json();
         const zones = d.result || [];
-        if (zones.length) return zones[0].status === 'active' ? 'Ativo' : zones[0].status;
-        return 'não cadastrado';
+        if (zones.length) {
+          const st = zones[0].status === 'active' ? 'Ativo' : zones[0].status;
+          return { status: st, clientCf: false };
+        }
+        const dns = await checkCFviaDNS(domain);
+        if (dns === 'Ativo (NS Cloudflare)') return { status: 'não cadastrado', clientCf: true };
+        return { status: dns || 'não cadastrado', clientCf: false };
       }
       if (r.status === 401 || r.status === 403) toast('Token Cloudflare inválido — usando DNS.', 'err');
     } catch(e) { /* fallback */ }
   }
-  return checkCFviaDNS(domain);
+  const dns = await checkCFviaDNS(domain);
+  return { status: dns, clientCf: dns === 'Ativo (NS Cloudflare)' };
+}
+
+const CF_CLIENT_OBS = 'Cloudflare do cliente';
+
+function setObsNote(c, add) {
+  const note = CF_CLIENT_OBS;
+  let cur = (c.obs || '').trim();
+  if (add) {
+    if (!cur.includes(note)) c.obs = cur ? cur + ' | ' + note : note;
+  } else {
+    c.obs = cur.split('|').map(s => s.trim()).filter(s => s && s !== note).join(' | ');
+  }
 }
 
 function normDomain(d) {
@@ -1360,8 +1378,9 @@ async function runVerification() {
         setGH(10 + Math.round(ghDone / totalNow * 90));
 
         /* Cloudflare */
-        const cfResult = await checkCFzone(c.domain, cfToken);
-        if (cfResult !== '') DATA.clients[idx].cloudflare = cfResult;
+        const cf = await checkCFzone(c.domain, cfToken);
+        if (cf.status !== '') DATA.clients[idx].cloudflare = cf.status;
+        setObsNote(DATA.clients[idx], !!cf.clientCf);
         cfDone++;
         setCF(Math.round(cfDone / totalNow * 100));
       }));
