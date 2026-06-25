@@ -92,7 +92,8 @@ td.obs-col{white-space:normal;min-width:160px;max-width:240px}
 .cf-obs-sel{font-size:.72rem;padding:3px 6px;border-radius:5px;border:1px solid var(--border);font-family:inherit;max-width:155px;background:#fff;cursor:pointer}
 .cf-obs-cliente{background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe}
 .cf-obs-pend{background:#fffbeb;color:#92400e;border-color:#fde68a}
-.cf-obs-added{background:#f0fdf4;color:#166534;border-color:#bbf7d0}
+.cf-obs-ok{background:#f0fdf4;color:#166534;border-color:#bbf7d0}
+.cf-obs-added{background:#ecfdf5;color:#047857;border-color:#a7f3d0}
 td.num-col{color:var(--text3);font-size:.75rem;width:36px}
 
 /* Row status stripe */
@@ -565,6 +566,7 @@ function prioCls(v) { return v==='Alta'?'prio-alta':v==='Média'?'prio-media':v=
 function usoCls(v) { return v==='Só email'?'uso-email':v==='Site principal'||v==='Site + Email'?'uso-site uso-ambos':v==='Em construção'?'uso-const':v==='Redirecionamento'?'uso-redir':'uso-none'; }
 function srvCls(v) { return v==='Hostinger'?'srv-hi':(v||'').startsWith('Hostgator')?'srv-hg':'srv-out'; }
 function cfObsCls(v) {
+  if (v==='CF ok') return 'cf-obs-ok';
   if (v==='CF do cliente') return 'cf-obs-cliente';
   if (v==='Sem apontamento DNS') return 'cf-obs-pend';
   if (v==='Adicionado via Cloudflare') return 'cf-obs-added';
@@ -714,6 +716,7 @@ function renderTable(clients) {
       <td class="editable obs-col" data-field="_cf_obs" style="min-width:130px">
         <select class="cf-obs-sel ${cfObsCls(cfObs)}" data-field="_cf_obs" onchange="if(!autoEditSel(this,${i},'_cf_obs'))return;autoSave();this.className='cf-obs-sel '+cfObsCls(this.value)">
           <option value="" ${!cfObs?'selected':''}>—</option>
+          <option ${cfObs==='CF ok'?'selected':''}>CF ok</option>
           <option ${cfObs==='CF do cliente'?'selected':''}>CF do cliente</option>
           <option ${cfObs==='Sem apontamento DNS'?'selected':''}>Sem apontamento DNS</option>
           <option ${cfObs==='Adicionado via Cloudflare'?'selected':''}>Adicionado via Cloudflare</option>
@@ -1254,12 +1257,14 @@ async function checkCFzone(domain, cfToken) {
 
 const CF_OBS_CLIENT  = 'CF do cliente';
 const CF_OBS_PENDING = 'Sem apontamento DNS';
+const CF_OBS_OK      = 'CF ok';
 
-function applyAutoCfObs(c, clientCf, pendingCf) {
+function applyAutoCfObs(c, clientCf, pendingCf, status) {
   const cur = (c._cf_obs || c.cf_obs || '').trim();
-  const auto = [CF_OBS_CLIENT, CF_OBS_PENDING];
+  const auto = [CF_OBS_CLIENT, CF_OBS_PENDING, CF_OBS_OK];
   if (clientCf) c._cf_obs = CF_OBS_CLIENT;
   else if (pendingCf) c._cf_obs = CF_OBS_PENDING;
+  else if ((status || '').toLowerCase() === 'ativo') c._cf_obs = CF_OBS_OK;
   else if (auto.includes(cur)) c._cf_obs = '';
 }
 
@@ -1439,7 +1444,7 @@ async function runVerification() {
         /* Cloudflare */
         const cf = await checkCFzone(c.domain, cfToken);
         if (cf.status !== '') DATA.clients[idx].cloudflare = cf.status;
-        applyAutoCfObs(DATA.clients[idx], !!cf.clientCf, !!cf.pendingCf);
+        applyAutoCfObs(DATA.clients[idx], !!cf.clientCf, !!cf.pendingCf, cf.status);
         cfDone++;
         setCF(Math.round(cfDone / totalNow * 100));
       }));
