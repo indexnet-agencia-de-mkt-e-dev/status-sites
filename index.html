@@ -1169,7 +1169,7 @@ async function checkCFviaDNS(domain) {
 }
 
 async function checkCFzone(domain, cfToken) {
-  if (!domain) return { status: '', clientCf: false };
+  if (!domain) return { status: '', clientCf: false, pendingCf: false };
   if (cfToken) {
     try {
       const r = await fetch(
@@ -1181,23 +1181,24 @@ async function checkCFzone(domain, cfToken) {
         const zones = d.result || [];
         if (zones.length) {
           const st = zones[0].status === 'active' ? 'Ativo' : zones[0].status;
-          return { status: st, clientCf: false };
+          const pendingCf = zones[0].status !== 'active';
+          return { status: st, clientCf: false, pendingCf };
         }
         const dns = await checkCFviaDNS(domain);
-        if (dns === 'Ativo (NS Cloudflare)') return { status: 'não cadastrado', clientCf: true };
-        return { status: dns || 'não cadastrado', clientCf: false };
+        if (dns === 'Ativo (NS Cloudflare)') return { status: 'não cadastrado', clientCf: true, pendingCf: false };
+        return { status: dns || 'não cadastrado', clientCf: false, pendingCf: false };
       }
       if (r.status === 401 || r.status === 403) toast('Token Cloudflare inválido — usando DNS.', 'err');
     } catch(e) { /* fallback */ }
   }
   const dns = await checkCFviaDNS(domain);
-  return { status: dns, clientCf: dns === 'Ativo (NS Cloudflare)' };
+  return { status: dns, clientCf: dns === 'Ativo (NS Cloudflare)', pendingCf: false };
 }
 
 const CF_CLIENT_OBS = 'Cloudflare do cliente';
+const CF_PENDING_OBS = 'CF cadastrado, sem apontamento DNS';
 
-function setObsNote(c, add) {
-  const note = CF_CLIENT_OBS;
+function setObsNote(c, note, add) {
   let cur = (c.obs || '').trim();
   if (add) {
     if (!cur.includes(note)) c.obs = cur ? cur + ' | ' + note : note;
@@ -1380,7 +1381,8 @@ async function runVerification() {
         /* Cloudflare */
         const cf = await checkCFzone(c.domain, cfToken);
         if (cf.status !== '') DATA.clients[idx].cloudflare = cf.status;
-        setObsNote(DATA.clients[idx], !!cf.clientCf);
+        setObsNote(DATA.clients[idx], CF_CLIENT_OBS, !!cf.clientCf);
+        setObsNote(DATA.clients[idx], CF_PENDING_OBS, !!cf.pendingCf);
         cfDone++;
         setCF(Math.round(cfDone / totalNow * 100));
       }));
