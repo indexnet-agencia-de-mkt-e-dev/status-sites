@@ -89,6 +89,10 @@ tbody tr:hover td{background:#f8fafc}
 tbody tr:last-child td{border-bottom:none}
 td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:middle;white-space:nowrap;font-size:.82rem}
 td.obs-col{white-space:normal;min-width:160px;max-width:240px}
+.cf-obs-sel{font-size:.72rem;padding:3px 6px;border-radius:5px;border:1px solid var(--border);font-family:inherit;max-width:155px;background:#fff;cursor:pointer}
+.cf-obs-cliente{background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe}
+.cf-obs-pend{background:#fffbeb;color:#92400e;border-color:#fde68a}
+.cf-obs-added{background:#f0fdf4;color:#166534;border-color:#bbf7d0}
 td.num-col{color:var(--text3);font-size:.75rem;width:36px}
 
 /* Row status stripe */
@@ -341,7 +345,8 @@ input[type=checkbox].row-chk,input[type=checkbox]#chk-all{width:15px;height:15px
     <option value="">Cloudflare: todos</option>
     <option value="ok">✓ Ativo</option>
     <option value="no">✗ Sem CF</option>
-    <option value="pend">⚠ Pend. apontamento</option>
+    <option value="pend">⚠ Sem apontamento DNS</option>
+    <option value="cliente">☁ CF do cliente</option>
   </select>
   <select class="fil" id="fil-status" onchange="filterRows()">
     <option value="">Status GH: todos</option>
@@ -392,8 +397,9 @@ input[type=checkbox].row-chk,input[type=checkbox]#chk-all{width:15px;height:15px
         <th class="chk-col" title="GitHub">GH</th>
         <th data-sort="_status_gh" onclick="setSort('_status_gh')" style="cursor:pointer;user-select:none" title="Status do repositório GitHub">Status GH<span class="sa" style="opacity:.35"> ↕</span></th>
         <th data-sort="backup" onclick="setSort('backup')" style="cursor:pointer;user-select:none" title="Data do último push no repositório GitHub">Bkp<span class="sa" style="opacity:.35"> ↕</span></th>
-        <th class="chk-col" title="Cloudflare">CF</th>
+        <th class="chk-col" title="Cloudflare ativo na conta Indexnet">CF</th>
         <th class="chk-col" title="DNS pendente de apontamento para Cloudflare">Pend.</th>
+        <th title="Observação Cloudflare (manual)">CF Obs</th>
         <th class="chk-col" title="Tráfego">Tráf.</th>
         <th>WP</th>
         <th>PHP</th>
@@ -524,16 +530,26 @@ function renderProgress(s) {
 }
 
 /* ── Cards ── */
+function isCfAtivo(c) {
+  return (c.cloudflare || '').trim().toLowerCase() === 'ativo';
+}
+function cfObsDisp(c) {
+  return (c._cf_obs || c.cf_obs || '').trim();
+}
 function renderCards(s) {
   if (!s) return;
   const pgh = s.total ? Math.round(s.github_sim/s.total*100) : 0;
   const pcf = s.total ? Math.round(s.cf_ativo/s.total*100) : 0;
+  const cfCliente = s.cf_cliente || 0;
+  const cfSemDns = s.cf_sem_dns || 0;
   document.getElementById('cards').innerHTML = `
     <div class="card c-total"><div class="card-icon">👥</div><div class="card-num">${s.total}</div><div class="card-lbl">Total de clientes</div></div>
     <div class="card c-gh-ok"><div class="card-icon">🐙</div><div class="card-num">${s.github_sim}</div><div class="card-lbl">Com repo GitHub</div><div class="card-pct">${pgh}% do total</div></div>
     <div class="card c-gh-no"><div class="card-icon">📭</div><div class="card-num">${s.github_nao}</div><div class="card-lbl">Sem repo GitHub</div></div>
-    <div class="card c-cf-ok"><div class="card-icon">☁️</div><div class="card-num">${s.cf_ativo}</div><div class="card-lbl">Com Cloudflare</div><div class="card-pct">${pcf}% do total</div></div>
-    <div class="card c-cf-no"><div class="card-icon">🔌</div><div class="card-num">${s.cf_nao}</div><div class="card-lbl">Sem Cloudflare</div></div>`;
+    <div class="card c-cf-ok"><div class="card-icon">☁️</div><div class="card-num">${s.cf_ativo}</div><div class="card-lbl">CF Indexnet (ativo)</div><div class="card-pct">${pcf}% do total</div></div>
+    <div class="card c-cf-no"><div class="card-icon">🔌</div><div class="card-num">${s.cf_nao}</div><div class="card-lbl">Sem Cloudflare</div></div>
+    ${cfCliente ? `<div class="card" style="background:#eff6ff;border-color:#bfdbfe"><div class="card-icon">👤</div><div class="card-num">${cfCliente}</div><div class="card-lbl">CF do cliente</div></div>` : ''}
+    ${cfSemDns ? `<div class="card" style="background:#fffbeb;border-color:#fde68a"><div class="card-icon">⚠️</div><div class="card-num">${cfSemDns}</div><div class="card-lbl">Sem apontamento DNS</div></div>` : ''}`;
 }
 
 /* ── Status helpers ── */
@@ -548,6 +564,31 @@ function stCls(v) { return v==='Concluído'?'st-done':v==='Em andamento'?'st-cri
 function prioCls(v) { return v==='Alta'?'prio-alta':v==='Média'?'prio-media':v==='Baixa'?'prio-baixa':'prio-none'; }
 function usoCls(v) { return v==='Só email'?'uso-email':v==='Site principal'||v==='Site + Email'?'uso-site uso-ambos':v==='Em construção'?'uso-const':v==='Redirecionamento'?'uso-redir':'uso-none'; }
 function srvCls(v) { return v==='Hostinger'?'srv-hi':(v||'').startsWith('Hostgator')?'srv-hg':'srv-out'; }
+function cfObsCls(v) {
+  if (v==='CF do cliente') return 'cf-obs-cliente';
+  if (v==='Sem apontamento DNS') return 'cf-obs-pend';
+  if (v==='Adicionado via Cloudflare') return 'cf-obs-added';
+  return 'cf-obs-none';
+}
+function calcStats(clients) {
+  const total = clients.length;
+  const sets = { ativo:new Set(), nao:new Set(), cliente:new Set(), pend:new Set() };
+  clients.forEach(c => {
+    const d = (c.domain||'').toLowerCase().replace(/^www\\./,'');
+    if (!d) return;
+    const obs = cfObsDisp(c);
+    if (isCfAtivo(c)) sets.ativo.add(d);
+    else if (obs === 'CF do cliente') sets.cliente.add(d);
+    else if (obs === 'Sem apontamento DNS' || (c.cloudflare||'').toLowerCase()==='pending') sets.pend.add(d);
+    else sets.nao.add(d);
+  });
+  const ghSim = clients.filter(c => c.github === true).length;
+  return {
+    total, github_sim: ghSim, github_nao: total - ghSim,
+    cf_ativo: sets.ativo.size, cf_nao: sets.nao.size,
+    cf_cliente: sets.cliente.size, cf_sem_dns: sets.pend.size,
+  };
+}
 
 /* ── Auto edit-mode for selects ── */
 function autoEditSel(sel, idx, field) {
@@ -603,8 +644,9 @@ function renderTable(clients) {
   clients.forEach((c, i) => {
     const ghOk = c.github === true;
     const cfRaw = (c.cloudflare||'').toLowerCase();
-    const cfOk  = cfRaw.startsWith('ativ');
-    const cfPend = cfRaw === 'pending' || cfRaw === 'moved' || cfRaw.includes('inválid') || cfRaw.includes('invalid');
+    const cfOk  = isCfAtivo(c);
+    const cfObs = cfObsDisp(c);
+    const cfPend = cfRaw === 'pending' || cfRaw === 'moved' || cfRaw.includes('inválid') || cfRaw.includes('invalid') || cfObs === 'Sem apontamento DNS';
     const isSusp = c.suspended === true;
     const tr = document.createElement('tr');
     const baseClass = ghOk && cfOk ? 'done' : ghOk || cfOk ? 'partial' : 'none';
@@ -668,7 +710,15 @@ function renderTable(clients) {
       </td>
       <td style="font-size:.7rem;color:var(--text2);white-space:nowrap">${esc(c.backup||'')}</td>
       <td class="chk-col"><span class="ck ck-toggle ${cfOk?'ck-ok':'ck-no'}" onclick="toggleFld(this,'cloudflare',${i})">${cfOk?'✓':'✗'}</span></td>
-      <td class="chk-col"><span class="ck ck-toggle ${cfPend?'':'ck-no'}" style="${cfPend?'background:#fef9c3;color:#92400e;font-size:.7rem':''}" onclick="togglePend(this,${i})" title="${cfPend?esc(c.cloudflare):'DNS não pendente'}">${cfPend?'⚠':''}</span></td>
+      <td class="chk-col"><span class="ck ck-toggle ${cfPend?'':'ck-no'}" style="${cfPend?'background:#fef9c3;color:#92400e;font-size:.7rem':''}" onclick="togglePend(this,${i})" title="${cfPend?esc(c.cloudflare||cfObs):'DNS ok'}">${cfPend?'⚠':''}</span></td>
+      <td class="editable obs-col" data-field="_cf_obs" style="min-width:130px">
+        <select class="cf-obs-sel ${cfObsCls(cfObs)}" data-field="_cf_obs" onchange="if(!autoEditSel(this,${i},'_cf_obs'))return;autoSave();this.className='cf-obs-sel '+cfObsCls(this.value)">
+          <option value="" ${!cfObs?'selected':''}>—</option>
+          <option ${cfObs==='CF do cliente'?'selected':''}>CF do cliente</option>
+          <option ${cfObs==='Sem apontamento DNS'?'selected':''}>Sem apontamento DNS</option>
+          <option ${cfObs==='Adicionado via Cloudflare'?'selected':''}>Adicionado via Cloudflare</option>
+        </select>
+      </td>
       <td class="chk-col"><span class="ck ck-toggle ${traff?'ck-ok':'ck-no'}" onclick="toggleFld(this,'traffic',${i})">${traff?'✓':'✗'}</span></td>
       <td class="editable" data-field="_wp_ver"><code style="font-size:.75rem">${esc(wpVer)}</code></td>
       <td class="editable" data-field="_php_ver"><code style="font-size:.75rem">${esc(phpVer)}</code></td>
@@ -814,9 +864,14 @@ function filterRows() {
     if (srv && (c._servidor||c.servidor) !== srv) ok = false;
     if (gh === 'true' && c.github !== true) ok = false;
     if (gh === 'false' && c.github === true) ok = false;
-    if (cf === 'ok'   && !(c.cloudflare||'').toLowerCase().startsWith('ativ')) ok = false;
-    if (cf === 'no'   &&  (c.cloudflare||'').toLowerCase().startsWith('ativ')) ok = false;
-    if (cf === 'pend') { const r=(c.cloudflare||'').toLowerCase(); if(r!=='pending'&&r!=='moved'&&!r.includes('inválid')&&!r.includes('invalid')) ok=false; }
+    if (cf === 'ok'   && !isCfAtivo(c)) ok = false;
+    if (cf === 'no'   && isCfAtivo(c)) ok = false;
+    if (cf === 'pend') {
+      const obs = cfObsDisp(c);
+      const r = (c.cloudflare||'').toLowerCase();
+      if (obs !== 'Sem apontamento DNS' && r !== 'pending' && r !== 'moved' && !r.includes('inválid') && !r.includes('invalid')) ok = false;
+    }
+    if (cf === 'cliente' && cfObsDisp(c) !== 'CF do cliente') ok = false;
     if (st && c._status_gh !== st) ok = false;
     const susp = document.getElementById('fil-susp').value;
     if (susp === 'yes' && !c.suspended) ok = false;
@@ -856,7 +911,7 @@ function toggleFld(span, field, idx) {
     DATA.clients[idx].github = !isOn;
   } else if (field === 'cloudflare') {
     span.textContent = isOn ? '✗' : '✓';
-    DATA.clients[idx].cloudflare = isOn ? '' : 'Ativo (manual)';
+    DATA.clients[idx].cloudflare = isOn ? '' : 'Ativo';
 
   } else {
     span.textContent = isOn ? '✗' : '✓';
@@ -893,11 +948,11 @@ function confirmAdd() {
   if (!u || !d) { toast('Preencha username e domínio.', 'err'); return; }
   DATA.clients.push({
     username:u, domain:d, servidor:s, _servidor:s,
-    github:false, cloudflare:'', suspended:false, traffic:'',
+    github:false, cloudflare:'', cf_obs:'', suspended:false, traffic:'',
     plugins:'', wp_ver:'', php_ver:'', php_fpm:'', platform:'',
     _platform:'', _plugins:'', _wp_ver:'', _php_ver:'', _php_fpm:'',
     _responsavel:'', _status_gh:'', _status_cf:'Pendente',
-    _prioridade:'', _obs:''
+    _prioridade:'', _obs:'', _cf_obs:''
   });
   markDirty();
   closeModal();
@@ -917,13 +972,15 @@ function togglePend(span, idx) {
   const cfRaw = (c.cloudflare||'').toLowerCase();
   const isPend = cfRaw === 'pending' || cfRaw === 'moved' || cfRaw.includes('inválid') || cfRaw.includes('invalid');
   if (isPend) {
-    c.cloudflare = 'Ativo (manual)';
+    c.cloudflare = '';
+    c._cf_obs = '';
     span.textContent = '';
     span.style.cssText = '';
     span.className = 'ck ck-toggle ck-no';
     span.title = 'DNS não pendente';
   } else {
     c.cloudflare = 'pending';
+    c._cf_obs = 'Sem apontamento DNS';
     span.textContent = '⚠';
     span.style.cssText = 'background:#fef9c3;color:#92400e;font-size:.7rem';
     span.className = 'ck ck-toggle';
@@ -1004,8 +1061,8 @@ function applyAlertFilter(f) {
 /* ── Exportar CSV ── */
 function exportCSV() {
   if (!DATA) return;
-  const cols = ['username','domain','servidor','_servidor','platform','_platform','_uso','github','cloudflare','backup','suspended','_status_gh','_status_cf','_prioridade','_data_exec','_responsavel','_obs'];
-  const headers = ['Username','Domínio','Servidor','Servidor (manual)','Plataforma','Plataforma (manual)','Uso','GitHub','Cloudflare','Último backup','Suspenso','Status GH','Status CF','Prioridade','Data execução','Responsável','Observações'];
+  const cols = ['username','domain','servidor','_servidor','platform','_platform','_uso','github','cloudflare','cf_obs','_cf_obs','backup','suspended','_status_gh','_status_cf','_prioridade','_data_exec','_responsavel','_obs'];
+  const headers = ['Username','Domínio','Servidor','Servidor (manual)','Plataforma','Plataforma (manual)','Uso','GitHub','Cloudflare','CF Obs','CF Obs (manual)','Último backup','Suspenso','Status GH','Status CF','Prioridade','Data execução','Responsável','Observações'];
   const esc2 = v => '"' + String(v||'').replace(/"/g,'""') + '"';
   const rows = [headers.map(esc2).join(',')];
   DATA.clients.forEach(c => rows.push(cols.map(k => esc2(c[k]!==undefined?c[k]:'')).join(',')));
@@ -1195,16 +1252,15 @@ async function checkCFzone(domain, cfToken) {
   return { status: dns, clientCf: dns === 'Ativo (NS Cloudflare)', pendingCf: false };
 }
 
-const CF_CLIENT_OBS = 'Cloudflare do cliente';
-const CF_PENDING_OBS = 'CF cadastrado, sem apontamento DNS';
+const CF_OBS_CLIENT  = 'CF do cliente';
+const CF_OBS_PENDING = 'Sem apontamento DNS';
 
-function setObsNote(c, note, add) {
-  let cur = (c.obs || '').trim();
-  if (add) {
-    if (!cur.includes(note)) c.obs = cur ? cur + ' | ' + note : note;
-  } else {
-    c.obs = cur.split('|').map(s => s.trim()).filter(s => s && s !== note).join(' | ');
-  }
+function applyAutoCfObs(c, clientCf, pendingCf) {
+  const cur = (c._cf_obs || c.cf_obs || '').trim();
+  const auto = [CF_OBS_CLIENT, CF_OBS_PENDING];
+  if (clientCf) c._cf_obs = CF_OBS_CLIENT;
+  else if (pendingCf) c._cf_obs = CF_OBS_PENDING;
+  else if (auto.includes(cur)) c._cf_obs = '';
 }
 
 function normDomain(d) {
@@ -1259,7 +1315,9 @@ function syncCFzonesToList(zones) {
     const status = zone.status === 'active' ? 'Ativo' : (zone.status || '');
     DATA.clients.push({
       username, domain: name, servidor: '', suspended: false, github: false,
-      cloudflare: status, backup: '', platform: '', traffic: '', obs: 'Adicionado via Cloudflare',
+      cloudflare: status, backup: '', platform: '', traffic: '', obs: '',
+      cf_obs: 'Adicionado via Cloudflare',
+      _cf_obs: 'Adicionado via Cloudflare',
       _responsavel: '', _status_gh: 'Pendente', _status_cf: 'Pendente', _prioridade: '',
       _obs: '', _uso: '', _data_exec: '', _servidor: '', _platform: '',
       _php_ver: '', _wp_ver: '', _plugins: '', _php_fpm: '', _duplicado: false,
@@ -1381,8 +1439,7 @@ async function runVerification() {
         /* Cloudflare */
         const cf = await checkCFzone(c.domain, cfToken);
         if (cf.status !== '') DATA.clients[idx].cloudflare = cf.status;
-        setObsNote(DATA.clients[idx], CF_CLIENT_OBS, !!cf.clientCf);
-        setObsNote(DATA.clients[idx], CF_PENDING_OBS, !!cf.pendingCf);
+        applyAutoCfObs(DATA.clients[idx], !!cf.clientCf, !!cf.pendingCf);
         cfDone++;
         setCF(Math.round(cfDone / totalNow * 100));
       }));
@@ -1391,10 +1448,9 @@ async function runVerification() {
     resolveCFduplicates();
 
     /* 3 — recalcular stats */
+    DATA.stats = calcStats(DATA.clients);
     const total = DATA.clients.length;
-    const ghSim = DATA.clients.filter(c => c.github === true).length;
-    const cfAt  = DATA.clients.filter(c => (c.cloudflare || '').toLowerCase().startsWith('ativ')).length;
-    DATA.stats = { total, github_sim: ghSim, github_nao: total - ghSim, cf_ativo: cfAt, cf_nao: total - cfAt };
+    const ghSim = DATA.stats.github_sim;
     const now = new Date();
     DATA.updated_at = String(now.getDate()).padStart(2,'0') + '/' + String(now.getMonth()+1).padStart(2,'0') + '/' + now.getFullYear()
       + ' ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
