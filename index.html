@@ -1229,7 +1229,7 @@ async function checkCFviaDNS(domain) {
 }
 
 async function checkCFzone(domain, cfToken) {
-  if (!domain) return { status: '', clientCf: false, pendingCf: false };
+  if (!domain) return { status: '', clientCf: false, pendingCf: false, apiOk: false };
   if (cfToken) {
     try {
       const r = await fetch(
@@ -1242,18 +1242,22 @@ async function checkCFzone(domain, cfToken) {
         if (zones.length) {
           const st = zones[0].status === 'active' ? 'Ativo' : zones[0].status;
           const pendingCf = zones[0].status !== 'active';
-          return { status: st, clientCf: false, pendingCf };
+          return { status: st, clientCf: false, pendingCf, apiOk: true };
         }
+        // Não está na conta CF — checar DNS para saber se é CF do cliente
         const dns = await checkCFviaDNS(domain);
-        if (dns === 'Ativo (NS Cloudflare)') return { status: 'não cadastrado', clientCf: true, pendingCf: false };
-        return { status: dns || 'não cadastrado', clientCf: false, pendingCf: false };
+        if (dns === 'Ativo (NS Cloudflare)') return { status: 'não cadastrado', clientCf: true, pendingCf: false, apiOk: true };
+        return { status: dns || 'não cadastrado', clientCf: false, pendingCf: false, apiOk: true };
       }
-      if (r.status === 401 || r.status === 403) toast('Token Cloudflare inválido — usando DNS.', 'err');
-    } catch(e) { /* fallback */ }
+      if (r.status === 401 || r.status === 403) {
+        toast('Token Cloudflare inválido — atualize via ☁️ CF Token. Obs não alterada.', 'err');
+        return { status: '', clientCf: false, pendingCf: false, apiOk: false };
+      }
+    } catch(e) { /* fallback sem token */ }
   }
+  // Sem token: DNS apenas, não determina "CF do cliente" confiável
   const dns = await checkCFviaDNS(domain);
-  const isClient = dns === 'Ativo (NS Cloudflare)';
-  return { status: isClient ? 'não cadastrado' : (dns || ''), clientCf: isClient, pendingCf: false };
+  return { status: dns || '', clientCf: false, pendingCf: false, apiOk: false };
 }
 
 function buildCFzoneMap(zones) {
@@ -1270,24 +1274,26 @@ function buildCFzoneMap(zones) {
 }
 
 async function checkCFfromMap(domain, cfZoneMap) {
-  if (!domain) return { status: '', clientCf: false, pendingCf: false };
+  if (!domain) return { status: '', clientCf: false, pendingCf: false, apiOk: true };
   const d = normDomain(domain);
   if (cfZoneMap[d]) {
     const z = cfZoneMap[d];
-    return { status: z.status, clientCf: false, pendingCf: z.pendingCf };
+    return { status: z.status, clientCf: false, pendingCf: z.pendingCf, apiOk: true };
   }
+  // Não está na conta CF — checar DNS para saber se é CF do cliente
   const dns = await checkCFviaDNS(domain);
   if (dns === 'Ativo (NS Cloudflare)') {
-    return { status: 'não cadastrado', clientCf: true, pendingCf: false };
+    return { status: 'não cadastrado', clientCf: true, pendingCf: false, apiOk: true };
   }
-  return { status: dns || 'não cadastrado', clientCf: false, pendingCf: false };
+  return { status: dns || 'não cadastrado', clientCf: false, pendingCf: false, apiOk: true };
 }
 
 const CF_OBS_CLIENT  = 'CF do cliente';
 const CF_OBS_PENDING = 'Sem apontamento DNS';
 const CF_OBS_OK      = 'CF ok';
 
-function applyAutoCfObs(c, clientCf, pendingCf, status) {
+function applyAutoCfObs(c, clientCf, pendingCf, status, apiOk) {
+  if (!apiOk) return; // Token inválido ou sem API — não sobrescreve obs existente
   const cur = (c._cf_obs || c.cf_obs || '').trim();
   const auto = [CF_OBS_CLIENT, CF_OBS_PENDING, CF_OBS_OK];
   if (clientCf) c._cf_obs = CF_OBS_CLIENT;
@@ -1451,7 +1457,8 @@ async function runVerification() {
         const nAdded = syncCFzonesToList(allZones);
         if (nAdded) toast(nAdded + ' zona(s) Cloudflare adicionada(s) à lista', 'ok');
       } else {
-        toast('Token CF inválido ou sem permissão — verificação pode falhar.', 'err');
+        toast('Token CF inválido — atualize via ☁️ CF Token. Dados CF não serão alterados.', 'err');
+        // cfZoneMap = null: verificação CF individual também não irá sobrescrever obs
       }
     }
 
@@ -1483,8 +1490,8 @@ async function runVerification() {
         const cf = cfZoneMap
           ? await checkCFfromMap(c.domain, cfZoneMap)
           : await checkCFzone(c.domain, cfToken);
-        if (cf.status !== '') DATA.clients[idx].cloudflare = cf.status;
-        applyAutoCfObs(DATA.clients[idx], !!cf.clientCf, !!cf.pendingCf, cf.status);
+        if (cf.apiOk && cf.status !== '') DATA.clients[idx].cloudflare = cf.status;
+        applyAutoCfObs(DATA.clients[idx], !!cf.clientCf, !!cf.pendingCf, cf.status, !!cf.apiOk);
         cfDone++;
         setCF(Math.round(cfDone / totalNow * 100));
       }));
