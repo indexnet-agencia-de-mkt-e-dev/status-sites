@@ -1252,7 +1252,35 @@ async function checkCFzone(domain, cfToken) {
     } catch(e) { /* fallback */ }
   }
   const dns = await checkCFviaDNS(domain);
-  return { status: dns, clientCf: dns === 'Ativo (NS Cloudflare)', pendingCf: false };
+  const isClient = dns === 'Ativo (NS Cloudflare)';
+  return { status: isClient ? 'não cadastrado' : (dns || ''), clientCf: isClient, pendingCf: false };
+}
+
+function buildCFzoneMap(zones) {
+  const map = {};
+  zones.forEach(z => {
+    const d = normDomain(z.name);
+    if (!d) return;
+    map[d] = {
+      status: z.status === 'active' ? 'Ativo' : (z.status || ''),
+      pendingCf: z.status !== 'active',
+    };
+  });
+  return map;
+}
+
+async function checkCFfromMap(domain, cfZoneMap) {
+  if (!domain) return { status: '', clientCf: false, pendingCf: false };
+  const d = normDomain(domain);
+  if (cfZoneMap[d]) {
+    const z = cfZoneMap[d];
+    return { status: z.status, clientCf: false, pendingCf: z.pendingCf };
+  }
+  const dns = await checkCFviaDNS(domain);
+  if (dns === 'Ativo (NS Cloudflare)') {
+    return { status: 'não cadastrado', clientCf: true, pendingCf: false };
+  }
+  return { status: dns || 'não cadastrado', clientCf: false, pendingCf: false };
 }
 
 const CF_OBS_CLIENT  = 'CF do cliente';
@@ -1321,8 +1349,8 @@ function syncCFzonesToList(zones) {
     DATA.clients.push({
       username, domain: name, servidor: '', suspended: false, github: false,
       cloudflare: status, backup: '', platform: '', traffic: '', obs: '',
-      cf_obs: 'Adicionado via Cloudflare',
-      _cf_obs: 'Adicionado via Cloudflare',
+      cf_obs: status === 'Ativo' ? CF_OBS_OK : (zone.status !== 'active' ? CF_OBS_PENDING : ''),
+      _cf_obs: status === 'Ativo' ? CF_OBS_OK : (zone.status !== 'active' ? CF_OBS_PENDING : ''),
       _responsavel: '', _status_gh: 'Pendente', _status_cf: 'Pendente', _prioridade: '',
       _obs: '', _uso: '', _data_exec: '', _servidor: '', _platform: '',
       _php_ver: '', _wp_ver: '', _plugins: '', _php_fpm: '', _duplicado: false,
@@ -1344,7 +1372,7 @@ function resolveCFduplicates() {
   });
   Object.values(byDomain).forEach(group => {
     if (group.length <= 1) return;
-    const active = group.filter(g => (g.c.cloudflare || '').toLowerCase().startsWith('ativ'));
+    const active = group.filter(g => isCfAtivo(g.c));
     if (active.length <= 1) return;
     active.sort((a, b) => {
       const sa = a.c.suspended ? 1 : 0, sb = b.c.suspended ? 1 : 0;
@@ -1353,6 +1381,8 @@ function resolveCFduplicates() {
     });
     for (let i = 1; i < active.length; i++) {
       DATA.clients[active[i].idx].cloudflare = '';
+      const obs = (DATA.clients[active[i].idx]._cf_obs || '').trim();
+      if (obs === CF_OBS_OK) DATA.clients[active[i].idx]._cf_obs = '';
     }
   });
 }
@@ -1368,6 +1398,10 @@ async function runVerification() {
   if (!DATA) { toast('Dados não carregados ainda.', 'err'); return; }
 
   const cfToken = localStorage.getItem('cf_token');
+  if (!cfToken) {
+    toast('Sem token Cloudflare — configure em ☁️ CF Token para verificação correta.', 'err');
+    document.getElementById('cf-token-bar').style.display = 'flex';
+  }
   const btn = document.getElementById('btn-verify');
   btn.disabled = true;
   btn.textContent = '⏳ Verificando...';
@@ -1407,13 +1441,17 @@ async function runVerification() {
     }
     setGH(10);
 
-    /* 1b — sincronizar zonas Cloudflare faltantes */
+    /* 1b — sincronizar zonas Cloudflare e montar mapa */
+    let cfZoneMap = null;
     if (cfToken) {
       setStatus('Sincronizando zonas Cloudflare...');
       const allZones = await fetchAllCFzones(cfToken);
       if (allZones) {
+        cfZoneMap = buildCFzoneMap(allZones);
         const nAdded = syncCFzonesToList(allZones);
         if (nAdded) toast(nAdded + ' zona(s) Cloudflare adicionada(s) à lista', 'ok');
+      } else {
+        toast('Token CF inválido ou sem permissão — verificação pode falhar.', 'err');
       }
     }
 
@@ -1442,7 +1480,9 @@ async function runVerification() {
         setGH(10 + Math.round(ghDone / totalNow * 90));
 
         /* Cloudflare */
-        const cf = await checkCFzone(c.domain, cfToken);
+        const cf = cfZoneMap
+          ? await checkCFfromMap(c.domain, cfZoneMap)
+          : await checkCFzone(c.domain, cfToken);
         if (cf.status !== '') DATA.clients[idx].cloudflare = cf.status;
         applyAutoCfObs(DATA.clients[idx], !!cf.clientCf, !!cf.pendingCf, cf.status);
         cfDone++;
