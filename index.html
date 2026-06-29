@@ -483,9 +483,9 @@ input[type=checkbox].row-chk,input[type=checkbox]#chk-all{width:15px;height:15px
         <th class="chk-col" title="DNS pendente de apontamento para Cloudflare">Pend.</th>
         <th title="Observação Cloudflare (manual)">CF Obs</th>
         <th class="chk-col" title="Tráfego">Tráf.</th>
-        <th class="col-ver-hide">WP</th>
-        <th class="col-ver-hide">PHP</th>
-        <th class="chk-col col-ver-hide" title="PHP-FPM ativo">FPM</th>
+        <th class="">WP</th>
+        <th class="">PHP</th>
+        <th class="chk-col " title="PHP-FPM ativo">FPM</th>
         <th class="chk-col" title="Plugins atualizados">Plug.</th>
         <th class="chk-col" title="PageSpeed Insights">⚡</th>
         <th class="del-col"></th>
@@ -522,9 +522,9 @@ input[type=checkbox].row-chk,input[type=checkbox]#chk-all{width:15px;height:15px
 <div id="toast"></div>
 
 <script>
-const GIST_ID    = 'df47ec214fc8c71cc9a7707da73df3c0';
+const GIST_ID    = '68f4681838beb1ff9b4bf670dc7f9dcd';
 const GIST_OWNER = 'Franppires';
-const RAW        = `https://gist.githubusercontent.com/${GIST_OWNER}/${GIST_ID}/raw/data.json`;
+const DATA_URL   = 'data.json';
 const API_GIST   = `https://api.github.com/gists/${GIST_ID}`;
 
 let DATA = null, editMode = false, dirty = false;
@@ -543,7 +543,7 @@ function toast(msg, type='info') {
 async function loadData() {
   document.getElementById('loader').style.display = 'flex';
   try {
-    const r = await fetch(RAW + '?t=' + Date.now());
+    const r = await fetch(DATA_URL + '?t=' + Date.now());
     if (!r.ok) throw new Error('HTTP ' + r.status);
     DATA = await r.json();
     renderAll();
@@ -810,9 +810,9 @@ function renderTable(clients) {
         </select>
       </td>
       <td class="chk-col"><span class="ck ck-toggle ${traff?'ck-ok':'ck-no'}" onclick="toggleFld(this,'traffic',${i})">${traff?'✓':'✗'}</span></td>
-      <td class="editable col-ver-hide" data-field="_wp_ver"><code style="font-size:.75rem">${esc(wpVer)}</code></td>
-      <td class="editable col-ver-hide" data-field="_php_ver"><code style="font-size:.75rem">${esc(phpVer)}</code></td>
-      <td class="chk-col col-ver-hide"><span class="ck ck-toggle ${fpmOk?'ck-ok':'ck-no'}" onclick="toggleFld(this,'_php_fpm',${i})">${fpmOk?'✓':'✗'}</span></td>
+      <td class="editable " data-field="_wp_ver"><code style="font-size:.75rem">${esc(wpVer)}</code></td>
+      <td class="editable " data-field="_php_ver"><code style="font-size:.75rem">${esc(phpVer)}</code></td>
+      <td class="chk-col "><span class="ck ck-toggle ${fpmOk?'ck-ok':'ck-no'}" onclick="toggleFld(this,'_php_fpm',${i})">${fpmOk?'✓':'✗'}</span></td>
       <td class="chk-col"><span class="ck ck-toggle ${plgOk?'ck-ok':'ck-no'}" onclick="toggleFld(this,'_plugins',${i})">${plgOk?'✓':'✗'}</span></td>
       <td class="chk-col"><a href="${speedUrl}" target="_blank" class="speed-link" title="Abrir PageSpeed Insights">⚡</a></td>
       <td class="del-col"><button class="del-btn" onclick="deleteRow(${i})" title="Remover linha">✕</button></td>`;
