@@ -161,7 +161,10 @@ button:active{transform:scale(.97)}
 .card-pct{font-size:.7rem;color:var(--text3);margin-top:2px}
 
 /* ── CONTROLS ── */
-#controls{padding:8px 28px 10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:var(--sticky-header-h,64px);z-index:90}
+#controls{padding:8px 28px 10px;display:flex;flex-direction:column;gap:6px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:var(--sticky-header-h,64px);z-index:90}
+.ctrl-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn-clear-fil{background:var(--muted-bg);color:var(--text2);border:1px solid var(--border);padding:7px 12px;border-radius:7px;font-size:.75rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap}
+.btn-clear-fil:hover{background:var(--hover-row);color:var(--text)}
 .ctrl-search{position:relative;flex:1;min-width:200px;max-width:280px}
 .ctrl-search input{width:100%;padding:7px 10px 7px 32px;border:1px solid var(--border);border-radius:7px;font-size:.8rem;font-family:inherit;background:var(--bg)}
 .ctrl-search input:focus{outline:2px solid var(--blue);border-color:transparent}
@@ -442,41 +445,87 @@ input[type=checkbox].row-chk,input[type=checkbox]#chk-all{width:15px;height:15px
 </div>
 
 <div id="controls">
-  <div class="ctrl-search"><span class="ico">🔍</span><input type="text" id="search" placeholder="Buscar cliente ou domínio..." oninput="filterRows()"></div>
-  <select class="fil" id="fil-srv" onchange="filterRows()">
-    <option value="">Todos os servidores</option>
-    <option>Hostinger</option>
-    <option>Hostgator Dedicado</option>
-    <option>Hostgator Turbo</option>
-    <option>Hostgator P</option>
-  </select>
-  <select class="fil" id="fil-plat" onchange="filterRows()">
-    <option value="">Plataforma: todas</option>
-    <option>WordPress</option><option>Tray</option><option>Shopify</option>
-    <option>HTML</option><option>PHP</option><option>Loja Integrada</option><option>Agile</option><option>Outro</option>
-  </select>
-  <select class="fil" id="fil-gh" onchange="filterRows()">
-    <option value="">GitHub: todos</option>
-    <option value="true">✓ Com repo</option>
-    <option value="false">✗ Sem repo</option>
-  </select>
-  <select class="fil" id="fil-cf" onchange="filterRows()">
-    <option value="">Cloudflare: todos</option>
-    <option value="ok">✓ Ativo</option>
-    <option value="no">✗ Sem CF</option>
-    <option value="pend">⚠ Sem apontamento DNS</option>
-    <option value="cliente">☁ CF do cliente</option>
-  </select>
-  <select class="fil" id="fil-status" onchange="filterRows()">
-    <option value="">Status GH: todos</option>
-    <option>Criado</option><option>Enviado</option><option>Concluído</option><option>Atualizar</option>
-  </select>
-  <select class="fil" id="fil-susp" onchange="filterRows()">
-    <option value="">Suspenso: todos</option>
-    <option value="no">Só ativos</option>
-    <option value="yes">Só suspensos</option>
-  </select>
-  <span class="count-badge" id="count-badge"></span>
+  <div class="ctrl-row">
+    <div class="ctrl-search"><span class="ico">🔍</span><input type="text" id="search" placeholder="Buscar cliente ou domínio..." oninput="filterRows()"></div>
+    <select class="fil" id="fil-srv" onchange="filterRows()">
+      <option value="">Todos os servidores</option>
+      <option>Hostinger</option>
+      <option>Hostgator Dedicado</option>
+      <option>Hostgator Turbo</option>
+      <option>Hostgator P</option>
+    </select>
+    <select class="fil" id="fil-plat" onchange="filterRows()">
+      <option value="">Plataforma: todas</option>
+      <option>WordPress</option><option>Tray</option><option>Shopify</option>
+      <option>HTML</option><option>PHP</option><option>Loja Integrada</option><option>Agile</option><option>Outro</option>
+    </select>
+    <select class="fil" id="fil-gh" onchange="filterRows()">
+      <option value="">GitHub: todos</option>
+      <option value="true">✓ Com repo</option>
+      <option value="false">✗ Sem repo</option>
+    </select>
+    <select class="fil" id="fil-cf" onchange="filterRows()">
+      <option value="">Cloudflare: todos</option>
+      <option value="ok">✓ Ativo</option>
+      <option value="no">✗ Sem CF</option>
+      <option value="pend">⚠ Sem apontamento DNS</option>
+      <option value="cliente">☁ CF do cliente</option>
+    </select>
+    <select class="fil" id="fil-status" onchange="filterRows()">
+      <option value="">Status GH: todos</option>
+      <option>Criado</option><option>Enviado</option><option>Concluído</option><option>Atualizar</option>
+    </select>
+    <select class="fil" id="fil-susp" onchange="filterRows()">
+      <option value="">Suspenso: todos</option>
+      <option value="no">Só ativos</option>
+      <option value="yes">Só suspensos</option>
+    </select>
+  </div>
+  <div class="ctrl-row">
+    <select class="fil" id="fil-php" onchange="filterRows()">
+      <option value="">PHP: todos</option>
+      <option value="ok">✓ 8.1+</option>
+      <option value="warn">⚠ 7.4–8.0</option>
+      <option value="old">✗ &lt; 7.4</option>
+      <option value="none">— Sem info</option>
+    </select>
+    <select class="fil" id="fil-wp" onchange="filterRows()">
+      <option value="">WP: todos</option>
+      <option value="ok">✓ 6.5+</option>
+      <option value="warn">⚠ 6.0–6.4</option>
+      <option value="old">✗ Antigo</option>
+      <option value="none">— Sem info</option>
+    </select>
+    <select class="fil" id="fil-backup" onchange="filterRows()">
+      <option value="">Backup: todos</option>
+      <option value="ok">✓ Atualizado (&lt;30d)</option>
+      <option value="stale30">⚠ 30–60 dias</option>
+      <option value="stale60">⚠ 60–90 dias</option>
+      <option value="stale90">✗ +90 dias</option>
+      <option value="nobackup">— Sem data (com GH)</option>
+    </select>
+    <select class="fil" id="fil-traf" onchange="filterRows()">
+      <option value="">Tráfego: todos</option>
+      <option value="yes">✓ Com tráfego</option>
+      <option value="no">✗ Sem tráfego</option>
+    </select>
+    <select class="fil" id="fil-plg" onchange="filterRows()">
+      <option value="">Plugins: todos</option>
+      <option value="ok">✓ Ok</option>
+      <option value="no">⚠ Desatualizados</option>
+    </select>
+    <select class="fil" id="fil-fpm" onchange="filterRows()">
+      <option value="">FPM: todos</option>
+      <option value="yes">✓ Ativo</option>
+      <option value="no">✗ Inativo</option>
+    </select>
+    <select class="fil" id="fil-dup" onchange="filterRows()">
+      <option value="">Domínio: todos</option>
+      <option value="dup">⚠ Duplicados</option>
+    </select>
+    <button type="button" class="btn-clear-fil" onclick="clearFilters()">✕ Limpar filtros</button>
+    <span class="count-badge" id="count-badge"></span>
+  </div>
 </div>
 
 <div id="bulk-bar">
@@ -909,6 +958,54 @@ function verTag(v, kind) {
   if (!txt) return '<span class="ver-tag ver-none">—</span>';
   return `<code class="ver-tag ${verCls(txt, kind)}">${esc(txt)}</code>`;
 }
+function parseBackupDate(s) {
+  if (!s || s === 'None' || s === '' || s === 'False') return null;
+  const p = String(s).split('/');
+  if (p.length !== 3) return null;
+  const d = new Date(parseInt(p[2], 10), parseInt(p[1], 10) - 1, parseInt(p[0], 10));
+  return isNaN(d.getTime()) ? null : d;
+}
+function backupStat(c) {
+  const d = parseBackupDate(c.backup);
+  if (!d) return c.github === true ? 'nobackup' : 'na';
+  const days = Math.floor((Date.now() - d) / 86400000);
+  if (days > 90) return 'stale90';
+  if (days > 60) return 'stale60';
+  if (days > 30) return 'stale30';
+  return 'ok';
+}
+function phpVerStat(c) { return verCls(String(c._php_ver || c.php_ver || '').trim(), 'php'); }
+function wpVerStat(c) { return verCls(String(c._wp_ver || c.wp_ver || '').trim(), 'wp'); }
+function hasTraffic(c) {
+  const t = String(c.traffic || '').trim().toLowerCase();
+  return !!(t && t !== 'none' && t !== '0' && t !== 'false');
+}
+function pluginsStat(c) {
+  const plg = String(c._plugins || c.plugins || '').toLowerCase().trim();
+  if (!plg || plg === 'none' || plg === 'false') return 'none';
+  if (plg === 'ativo' || plg === '0' || parseInt(plg, 10) === 0) return 'ok';
+  return 'no';
+}
+function fpmActive(c) {
+  const f = String(c._php_fpm || c.php_fpm || '').toLowerCase().trim();
+  return !!(f && f !== 'none' && f !== 'false' && f !== '0' && f !== 'não' && f !== 'nao');
+}
+const FILTER_IDS = ['fil-srv','fil-plat','fil-gh','fil-cf','fil-status','fil-susp','fil-php','fil-wp','fil-backup','fil-traf','fil-plg','fil-fpm','fil-dup'];
+let alertExtraFilter = null;
+function clearFilters(silent) {
+  document.getElementById('search').value = '';
+  FILTER_IDS.forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  alertExtraFilter = null;
+  filterRows();
+  if (!silent) toast('Filtros limpos.', 'info');
+}
+function matchesExec7(c) {
+  if (!c._data_exec) return false;
+  const ex = new Date(c._data_exec);
+  if (isNaN(ex.getTime())) return false;
+  const diff = (ex - Date.now()) / 86400000;
+  return diff >= 0 && diff <= 7;
+}
 function markDirty() { dirty = true; }
 function updateCount(shown, total) {
   document.getElementById('count-badge').textContent = shown === total ? `${total} clientes` : `${shown} de ${total}`;
@@ -1015,6 +1112,15 @@ function filterRows() {
   const gh   = document.getElementById('fil-gh').value;
   const cf   = document.getElementById('fil-cf').value;
   const st   = document.getElementById('fil-status').value;
+  const susp = document.getElementById('fil-susp').value;
+  const plat = document.getElementById('fil-plat').value;
+  const php  = document.getElementById('fil-php').value;
+  const wp   = document.getElementById('fil-wp').value;
+  const bk   = document.getElementById('fil-backup').value;
+  const traf = document.getElementById('fil-traf').value;
+  const plg  = document.getElementById('fil-plg').value;
+  const fpm  = document.getElementById('fil-fpm').value;
+  const dup  = document.getElementById('fil-dup').value;
   let shown = 0;
   document.querySelectorAll('#tbody tr').forEach(tr => {
     const idx = parseInt(tr.dataset.idx);
@@ -1033,14 +1139,22 @@ function filterRows() {
     }
     if (cf === 'cliente' && cfObsDisp(c) !== 'CF do cliente') ok = false;
     if (st && c._status_gh !== st) ok = false;
-    const susp = document.getElementById('fil-susp').value;
     if (susp === 'yes' && !c.suspended) ok = false;
     if (susp === 'no' && c.suspended) ok = false;
-    const plat = document.getElementById('fil-plat').value;
     if (plat) {
       const p = (c._platform||c.platform||'').trim();
       if (!p || p !== plat) ok = false;
     }
+    if (php && phpVerStat(c) !== php) ok = false;
+    if (wp && wpVerStat(c) !== wp) ok = false;
+    if (bk && backupStat(c) !== bk) ok = false;
+    if (traf === 'yes' && !hasTraffic(c)) ok = false;
+    if (traf === 'no' && hasTraffic(c)) ok = false;
+    if (plg && pluginsStat(c) !== plg) ok = false;
+    if (fpm === 'yes' && !fpmActive(c)) ok = false;
+    if (fpm === 'no' && fpmActive(c)) ok = false;
+    if (dup === 'dup' && c._duplicado !== true) ok = false;
+    if (alertExtraFilter === 'exec7' && !matchesExec7(c)) ok = false;
     tr.style.display = ok ? '' : 'none';
     if (ok) shown++;
   });
@@ -1196,26 +1310,15 @@ function renderAlerts(clients) {
   ).join('');
 }
 function applyAlertFilter(f) {
-  const now = new Date();
-  const parseDate = s => { if(!s||s==='None')return null; const p=s.split('/'); if(p.length!==3)return null; const d=new Date(parseInt(p[2]),parseInt(p[1])-1,parseInt(p[0])); return isNaN(d.getTime())?null:d; };
-  const daysSince = d => Math.floor((now-d)/86400000);
-  document.querySelectorAll('#tbody tr').forEach(tr => {
-    const idx = parseInt(tr.dataset.idx);
-    const c = DATA.clients[idx];
-    if (!c) return;
-    const d = parseDate(c.backup);
-    let show = false;
-    if (f==='stale90') show = d && daysSince(d)>90;
-    else if (f==='stale60') show = d && daysSince(d)>60 && daysSince(d)<=90;
-    else if (f==='stale30') show = d && daysSince(d)>30 && daysSince(d)<=60;
-    else if (f==='nobackup') show = !d && c.github===true;
-    else if (f==='susp') show = c.suspended===true;
-    else if (f==='exec7') { if(c._data_exec){const ex=new Date(c._data_exec);const diff=(ex-now)/86400000;show=!isNaN(ex.getTime())&&diff>=0&&diff<=7;} }
-    tr.style.display = show ? '' : 'none';
-  });
-  const shown = document.querySelectorAll('#tbody tr:not([style*="display: none"])').length;
-  updateCount(shown, DATA.clients.length);
-  toast('Filtro aplicado. Clique ↻ ou busque para limpar.','info');
+  clearFilters(true);
+  if (f === 'stale90') document.getElementById('fil-backup').value = 'stale90';
+  else if (f === 'stale60') document.getElementById('fil-backup').value = 'stale60';
+  else if (f === 'stale30') document.getElementById('fil-backup').value = 'stale30';
+  else if (f === 'nobackup') document.getElementById('fil-backup').value = 'nobackup';
+  else if (f === 'susp') document.getElementById('fil-susp').value = 'yes';
+  else if (f === 'exec7') alertExtraFilter = 'exec7';
+  filterRows();
+  toast('Filtro aplicado.', 'info');
 }
 
 /* ── Exportar CSV ── */
