@@ -361,6 +361,15 @@ input[type=checkbox].row-chk,input[type=checkbox]#chk-all{width:15px;height:15px
 .ver-old{background:var(--ver-old-bg);color:var(--ver-old-fg);border-color:var(--ver-old-bd)}
 .ver-none{background:var(--ver-none-bg);color:var(--ver-none-fg);border-color:var(--ver-none-bd)}
 
+/* ── SUBDOMÍNIOS (toggle sob o cliente pai) ── */
+.sub-toggle{background:var(--muted-bg);border:1px solid var(--border);color:var(--text2);border-radius:5px;padding:1px 7px;font-size:.68rem;font-weight:600;cursor:pointer;margin-right:6px;font-family:inherit;vertical-align:middle}
+.sub-toggle:hover{background:var(--hover-row);color:var(--text)}
+tr.row-subdomain td{background:var(--bg)!important;font-size:.78rem}
+tr.row-subdomain td strong,tr.row-subdomain .srv-sel,tr.row-subdomain .plat-sel{color:var(--text3)!important}
+tr.row-subdomain td a{color:var(--text2)!important;font-size:.75rem}
+tr.row-subdomain td:first-child{box-shadow:inset 3px 0 0 var(--border)}
+body.dark tr.row-subdomain td{background:#141c2b!important}
+
 /* ── MODAL ── */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:center;justify-content:center}
 .modal-inner{background:var(--modal-bg);border-radius:14px;padding:28px 32px;min-width:360px;box-shadow:0 24px 60px rgba(0,0,0,.3);border:1px solid var(--border)}
@@ -522,6 +531,10 @@ input[type=checkbox].row-chk,input[type=checkbox]#chk-all{width:15px;height:15px
     <select class="fil" id="fil-dup" onchange="filterRows()">
       <option value="">Domínio: todos</option>
       <option value="dup">⚠ Duplicados</option>
+    </select>
+    <select class="fil" id="fil-sub" onchange="filterRows()">
+      <option value="">Subdomínios: todos</option>
+      <option value="has">Com subdomínios</option>
     </select>
     <button type="button" class="btn-clear-fil" onclick="clearFilters()">✕ Limpar filtros</button>
     <span class="count-badge" id="count-badge"></span>
@@ -827,6 +840,53 @@ async function autoSave() {
 
 
 /* ── Table render ── */
+let expandedSubs = new Set(JSON.parse(localStorage.getItem('expanded_subs') || '[]').map(Number));
+
+function toggleSubdomains(idx) {
+  if (expandedSubs.has(idx)) expandedSubs.delete(idx);
+  else expandedSubs.add(idx);
+  localStorage.setItem('expanded_subs', JSON.stringify([...expandedSubs]));
+  syncSubdomainRows();
+}
+
+function syncSubdomainRows() {
+  document.querySelectorAll('#tbody tr[data-idx]').forEach(tr => {
+    const idx = parseInt(tr.dataset.idx, 10);
+    if (isNaN(idx)) return;
+    const parentVisible = tr.style.display !== 'none';
+    const show = parentVisible && expandedSubs.has(idx);
+    document.querySelectorAll(`#tbody tr.row-subdomain[data-parent-idx="${idx}"]`).forEach(sub => {
+      sub.style.display = show ? '' : 'none';
+    });
+    const btn = tr.querySelector('.sub-toggle');
+    if (btn) btn.textContent = (expandedSubs.has(idx) ? '▾ ' : '▶ ') + (DATA.clients[idx].subdomains || []).length;
+  });
+}
+
+function renderSubdomainRow(parentIdx, sub, tbody) {
+  const tr = document.createElement('tr');
+  tr.className = 'row-subdomain';
+  tr.dataset.parentIdx = parentIdx;
+  const phpVer = sub._php_ver || sub.php_ver || '';
+  const speedUrl = `https://pagespeed.web.dev/analysis?url=https://${sub.domain}`;
+  tr.innerHTML = `
+    <td class="cb-col"></td>
+    <td class="num-col" style="color:var(--text3)">↳</td>
+    <td style="color:var(--text3);font-size:.72rem;padding-left:18px">subdomínio</td>
+    <td style="padding-left:12px"><a href="https://${sub.domain}" target="_blank" style="color:var(--text2);text-decoration:none;font-size:.75rem">${esc(sub.domain)}</a></td>
+    <td class="chk-col"><span class="ck" style="opacity:.25">·</span></td>
+    <td colspan="8" style="color:var(--text3);font-size:.72rem">herda servidor / plataforma do domínio principal</td>
+    <td class="chk-col"><span class="ck" style="opacity:.25">·</span></td>
+    <td class="" style="opacity:.35">—</td>
+    <td class="">${verTag(phpVer, 'php')}</td>
+    <td class="chk-col "><span class="ck" style="opacity:.25">·</span></td>
+    <td class="chk-col"><span class="ck" style="opacity:.25">·</span></td>
+    <td class="chk-col"><a href="${speedUrl}" target="_blank" class="speed-link" title="PageSpeed">⚡</a></td>
+    <td class="del-col"></td>`;
+  tr.style.display = expandedSubs.has(parentIdx) ? '' : 'none';
+  tbody.appendChild(tr);
+}
+
 function renderTable(clients) {
   const tbody = document.getElementById('tbody');
   tbody.innerHTML = '';
@@ -858,12 +918,16 @@ function renderTable(clients) {
     const fpmOk   = fpmVal && fpmVal !== 'none' && fpmVal !== 'false' && fpmVal !== '0' && fpmVal !== 'não' && fpmVal !== 'nao';
     const plgVal  = String(c._plugins||c.plugins||'').toLowerCase().trim();
     const plgOk   = plgVal === 'ativo' || plgVal === '0' || (plgVal && plgVal !== 'none' && plgVal !== 'false' && parseInt(plgVal) === 0);
+    const subs = c.subdomains || [];
+    const subBtn = subs.length
+      ? `<button type="button" class="sub-toggle" onclick="toggleSubdomains(${i})" title="Mostrar/ocultar subdomínios">${expandedSubs.has(i) ? '▾' : '▶'} ${subs.length}</button>`
+      : '';
     const speedUrl = `https://pagespeed.web.dev/analysis?url=https://${c.domain}`;
     tr.innerHTML = `
       <td class="cb-col"><input type="checkbox" class="row-chk" data-idx="${i}" onchange="onRowCheck(this)" ${selected.has(i)?'checked':''}></td>
       <td class="num-col">${i+1}</td>
       <td><strong style="color:var(--navy)">${esc(c.username)}</strong>${isDup?' <span title="Domínio duplicado" style="background:#fee2e2;color:#dc2626;border-radius:3px;padding:0 3px;font-size:.65rem;font-weight:600;vertical-align:middle">dup</span>':''}</td>
-      <td><a href="https://${c.domain}" target="_blank" style="color:inherit;text-decoration:none;font-size:.78rem">${esc(c.domain)}</a></td>
+      <td>${subBtn}<a href="https://${c.domain}" target="_blank" style="color:inherit;text-decoration:none;font-size:.78rem">${esc(c.domain)}</a></td>
       <td class="chk-col"><span class="ck ck-toggle ${isSusp?'ck-no':'ck-ok'}" style="${isSusp?'background:#fef2f2;color:#dc2626':''}" onclick="toggleFld(this,'suspended',${i})">${isSusp?'⚠':'✓'}</span></td>
       <td class="editable" data-field="_servidor">
         <select class="srv-sel srv ${srvCls(srv)}" data-field="_servidor" onchange="if(!autoEditSel(this,${i},'_servidor'))return;autoSave();this.className='srv-sel srv '+srvCls(this.value)">
@@ -918,8 +982,10 @@ function renderTable(clients) {
       <td class="chk-col"><a href="${speedUrl}" target="_blank" class="speed-link" title="Abrir PageSpeed Insights">⚡</a></td>
       <td class="del-col"><button class="del-btn" onclick="deleteRow(${i})" title="Remover linha">✕</button></td>`;
     tbody.appendChild(tr);
+    subs.forEach(sub => renderSubdomainRow(i, sub, tbody));
     visible++;
   });
+  syncSubdomainRows();
   updateCount(visible, clients.length);
 }
 
@@ -990,7 +1056,7 @@ function fpmActive(c) {
   const f = String(c._php_fpm || c.php_fpm || '').toLowerCase().trim();
   return !!(f && f !== 'none' && f !== 'false' && f !== '0' && f !== 'não' && f !== 'nao');
 }
-const FILTER_IDS = ['fil-srv','fil-plat','fil-gh','fil-cf','fil-status','fil-susp','fil-php','fil-wp','fil-backup','fil-traf','fil-plg','fil-fpm','fil-dup'];
+const FILTER_IDS = ['fil-srv','fil-plat','fil-gh','fil-cf','fil-status','fil-susp','fil-php','fil-wp','fil-backup','fil-traf','fil-plg','fil-fpm','fil-dup','fil-sub'];
 let alertExtraFilter = null;
 function clearFilters(silent) {
   document.getElementById('search').value = '';
@@ -1121,6 +1187,7 @@ function filterRows() {
   const plg  = document.getElementById('fil-plg').value;
   const fpm  = document.getElementById('fil-fpm').value;
   const dup  = document.getElementById('fil-dup').value;
+  const subf = document.getElementById('fil-sub').value;
   let shown = 0;
   document.querySelectorAll('#tbody tr').forEach(tr => {
     const idx = parseInt(tr.dataset.idx);
@@ -1154,10 +1221,12 @@ function filterRows() {
     if (fpm === 'yes' && !fpmActive(c)) ok = false;
     if (fpm === 'no' && fpmActive(c)) ok = false;
     if (dup === 'dup' && c._duplicado !== true) ok = false;
+    if (subf === 'has' && !(c.subdomains && c.subdomains.length)) ok = false;
     if (alertExtraFilter === 'exec7' && !matchesExec7(c)) ok = false;
     tr.style.display = ok ? '' : 'none';
     if (ok) shown++;
   });
+  syncSubdomainRows();
   updateCount(shown, DATA.clients.length);
 }
 
