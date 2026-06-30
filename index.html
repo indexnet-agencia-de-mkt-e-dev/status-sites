@@ -1189,11 +1189,16 @@ function filterRows() {
   const dup  = document.getElementById('fil-dup').value;
   const subf = document.getElementById('fil-sub').value;
   let shown = 0;
-  document.querySelectorAll('#tbody tr').forEach(tr => {
-    const idx = parseInt(tr.dataset.idx);
+  document.querySelectorAll('#tbody tr[data-idx]').forEach(tr => {
+    const idx = parseInt(tr.dataset.idx, 10);
     const c = DATA.clients[idx];
+    if (!c) return;
     let ok = true;
-    if (q && !tr.innerText.toLowerCase().includes(q)) ok = false;
+    if (q) {
+      const hay = tr.innerText.toLowerCase();
+      const subHay = (c.subdomains || []).map(s => (s.domain || '').toLowerCase()).join(' ');
+      if (!hay.includes(q) && !subHay.includes(q)) ok = false;
+    }
     if (srv && (c._servidor||c.servidor) !== srv) ok = false;
     if (gh === 'true' && c.github !== true) ok = false;
     if (gh === 'false' && c.github === true) ok = false;
@@ -1212,7 +1217,11 @@ function filterRows() {
       const p = (c._platform||c.platform||'').trim();
       if (!p || p !== plat) ok = false;
     }
-    if (php && phpVerStat(c) !== php) ok = false;
+    if (php) {
+      const parentPhp = phpVerStat(c);
+      const subPhp = (c.subdomains || []).some(s => phpVerStat(s) === php);
+      if (parentPhp !== php && !subPhp) ok = false;
+    }
     if (wp && wpVerStat(c) !== wp) ok = false;
     if (bk && backupStat(c) !== bk) ok = false;
     if (traf === 'yes' && !hasTraffic(c)) ok = false;
@@ -1416,7 +1425,7 @@ function onRowCheck(chk) {
 }
 
 function toggleAllVisible(checked) {
-  document.querySelectorAll('#tbody tr').forEach(tr => {
+  document.querySelectorAll('#tbody tr[data-idx]').forEach(tr => {
     if (tr.style.display === 'none') return;
     const chk = tr.querySelector('.row-chk');
     if (!chk) return;
@@ -1428,7 +1437,7 @@ function toggleAllVisible(checked) {
 }
 
 function selectAllVisible() {
-  document.querySelectorAll('#tbody tr').forEach(tr => {
+  document.querySelectorAll('#tbody tr[data-idx]').forEach(tr => {
     if (tr.style.display === 'none') return;
     const chk = tr.querySelector('.row-chk');
     if (!chk) return;
